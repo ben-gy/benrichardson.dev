@@ -363,15 +363,14 @@
             html, body {
                 margin: 0;
                 padding: 0;
-                overflow-x: hidden;
+                overflow: hidden;
                 width: 100%;
+                height: 100%;
+                position: fixed;
                 background: white;
             }
             .window {
-                width: calc(100% - 2rem) !important;
-                left: 1rem !important;
-                top: 50% !important;
-                transform: translateY(-50%);
+                width: calc(100% - 2rem);
                 max-width: none;
                 overflow: hidden;
             }
@@ -397,6 +396,10 @@
             }
             .menu-clock {
                 padding-right: 16px;
+            }
+            /* Mobile menu - toggle via JavaScript instead of :focus */
+            ul[role="menu-bar"] > [role="menu-item"].menu-open > ul[role="menu"] {
+                display: block;
             }
             .calculator-window,
             .puzzle-window,
@@ -1005,6 +1008,7 @@
                 initialX = rect.left;
                 initialY = rect.top;
                 windowEl.style.margin = '0';
+                windowEl.style.transform = 'none';
                 windowEl.style.left = initialX + 'px';
                 windowEl.style.top = initialY + 'px';
             }
@@ -1600,6 +1604,51 @@
                 document.querySelectorAll('.desktop-icon').forEach(i => i.classList.remove('selected'));
             }
         });
+
+        // ============ MOBILE MENU HANDLING ============
+        (function() {
+            const menuItems = document.querySelectorAll('ul[role="menu-bar"] > [role="menu-item"][aria-haspopup="true"]');
+
+            function closeAllMenus() {
+                menuItems.forEach(function(item) {
+                    item.classList.remove('menu-open');
+                });
+            }
+
+            menuItems.forEach(function(menuItem) {
+                menuItem.addEventListener('click', function(e) {
+                    // Don't toggle if clicking on a submenu link
+                    if (e.target.closest('ul[role="menu"] a')) {
+                        closeAllMenus();
+                        return;
+                    }
+
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    const isOpen = this.classList.contains('menu-open');
+                    closeAllMenus();
+
+                    if (!isOpen) {
+                        this.classList.add('menu-open');
+                    }
+                });
+            });
+
+            // Close menus when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('ul[role="menu-bar"]')) {
+                    closeAllMenus();
+                }
+            });
+
+            // Close menus when touching outside on mobile
+            document.addEventListener('touchstart', function(e) {
+                if (!e.target.closest('ul[role="menu-bar"]')) {
+                    closeAllMenus();
+                }
+            }, { passive: true });
+        })();
     </script>
 </body>
 </html>
