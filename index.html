@@ -282,6 +282,34 @@
             0% { top: 80px; }
             100% { top: -200px; }
         }
+        /* Mobile responsive styles */
+        @media (max-width: 480px) {
+            html, body {
+                overflow: hidden;
+                height: 100%;
+                position: fixed;
+                width: 100%;
+                background: white;
+            }
+            .window {
+                width: calc(100% - 1rem) !important;
+                left: 0.5rem !important;
+                max-width: none;
+            }
+            .desktop-icon {
+                display: none;
+            }
+            ul[role="menu-bar"] > [role="menu-item"],
+            .menu-clock {
+                padding: 8px 6px;
+                font-size: 12px;
+            }
+            .calculator-window,
+            .puzzle-window,
+            .notepad-window {
+                width: calc(100% - 1rem) !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -339,6 +367,9 @@
                 <li class="divider"></li>
                 <li role="menu-item">
                     <a href="mailto:hi@benrichardson.dev">New Message...</a>
+                </li>
+                <li role="menu-item">
+                    <a href="#" onclick="showWhatsAppDialog(); return false;">WhatsApp...</a>
                 </li>
                 <li class="divider"></li>
                 <li role="menu-item">
@@ -607,7 +638,70 @@
         </div>
     </div>
 
+    <!-- WhatsApp Dialog -->
+    <div class="modal-overlay" id="whatsapp-modal">
+        <div class="window" style="width: 280px;">
+            <div class="title-bar">
+                <button aria-label="Close" class="close" onclick="hideModal('whatsapp-modal')"></button>
+                <h1 class="title">WhatsApp</h1>
+                <button aria-label="Resize" disabled class="hidden"></button>
+            </div>
+            <div class="separator"></div>
+            <div class="modeless-dialog">
+                <section class="field-row" style="justify-content: flex-start">
+                    <label for="whatsapp-code" class="modeless-text">Code:</label>
+                    <input id="whatsapp-code" type="password" style="width: 100%;" placeholder="">
+                </section>
+                <section class="field-row" style="justify-content: flex-end; margin-top: 1rem;">
+                    <button class="btn" onclick="hideModal('whatsapp-modal')">Cancel</button>
+                    <button class="btn btn-default" onclick="verifyWhatsAppCode()">Connect</button>
+                </section>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // ============ WHATSAPP SECRET CONTACT ============
+        // Encrypted phone number (XOR with key, then base64)
+        const ENCRYPTED_PHONE = '***REMOVED***';
+
+        function xorDecrypt(base64Data, key) {
+            const decoded = atob(base64Data);
+            let result = '';
+            for (let i = 0; i < decoded.length; i++) {
+                result += String.fromCharCode(decoded.charCodeAt(i) ^ key.charCodeAt(i % key.length));
+            }
+            return result;
+        }
+
+        function showWhatsAppDialog() {
+            document.getElementById('whatsapp-code').value = '';
+            showModal('whatsapp-modal');
+            document.getElementById('whatsapp-code').focus();
+        }
+
+        function verifyWhatsAppCode() {
+            const code = document.getElementById('whatsapp-code').value;
+            const decrypted = xorDecrypt(ENCRYPTED_PHONE, code);
+
+            // Check if decryption produced valid digits (correct key)
+            if (/^\d+$/.test(decrypted) && decrypted.length === 11) {
+                hideModal('whatsapp-modal');
+                window.open('https://wa.me/' + decrypted, '_blank');
+            } else {
+                showAlert('Invalid code');
+            }
+        }
+
+        // Allow Enter key to submit
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('whatsapp-code').addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    verifyWhatsAppCode();
+                }
+            });
+        });
+
         // ============ MENU BAR CLOCK ============
         function updateClock() {
             const now = new Date();
@@ -643,30 +737,57 @@
             let isDragging = false;
             let startX, startY, initialX, initialY;
 
-            handleEl.addEventListener('mousedown', function(e) {
-                if (e.target.classList.contains('close') || e.target.classList.contains('resize')) return;
+            function startDrag(clientX, clientY) {
                 isDragging = true;
-                startX = e.clientX;
-                startY = e.clientY;
+                startX = clientX;
+                startY = clientY;
                 const rect = windowEl.getBoundingClientRect();
                 initialX = rect.left;
                 initialY = rect.top;
                 windowEl.style.margin = '0';
                 windowEl.style.left = initialX + 'px';
                 windowEl.style.top = initialY + 'px';
+            }
+
+            function moveDrag(clientX, clientY) {
+                if (!isDragging) return;
+                const dx = clientX - startX;
+                const dy = clientY - startY;
+                windowEl.style.left = (initialX + dx) + 'px';
+                windowEl.style.top = (initialY + dy) + 'px';
+            }
+
+            function endDrag() {
+                isDragging = false;
+            }
+
+            // Mouse events
+            handleEl.addEventListener('mousedown', function(e) {
+                if (e.target.classList.contains('close') || e.target.classList.contains('resize')) return;
+                startDrag(e.clientX, e.clientY);
             });
 
             document.addEventListener('mousemove', function(e) {
-                if (!isDragging) return;
-                const dx = e.clientX - startX;
-                const dy = e.clientY - startY;
-                windowEl.style.left = (initialX + dx) + 'px';
-                windowEl.style.top = (initialY + dy) + 'px';
+                moveDrag(e.clientX, e.clientY);
             });
 
-            document.addEventListener('mouseup', function() {
-                isDragging = false;
-            });
+            document.addEventListener('mouseup', endDrag);
+
+            // Touch events
+            handleEl.addEventListener('touchstart', function(e) {
+                if (e.target.classList.contains('close') || e.target.classList.contains('resize')) return;
+                const touch = e.touches[0];
+                startDrag(touch.clientX, touch.clientY);
+            }, { passive: true });
+
+            document.addEventListener('touchmove', function(e) {
+                if (!isDragging) return;
+                e.preventDefault();
+                const touch = e.touches[0];
+                moveDrag(touch.clientX, touch.clientY);
+            }, { passive: false });
+
+            document.addEventListener('touchend', endDrag);
 
             // Double-click to collapse/expand (window shade)
             handleEl.addEventListener('dblclick', function(e) {
@@ -755,13 +876,18 @@
 
         // ============ ZOOM FUNCTIONS ============
         let currentZoom = 1;
+        function applyZoom() {
+            document.querySelectorAll('.window').forEach(function(w) {
+                w.style.transform = 'scale(' + currentZoom + ')';
+            });
+        }
         function zoomIn() {
             currentZoom = Math.min(currentZoom + 0.1, 2);
-            document.getElementById('main-window').style.transform = 'scale(' + currentZoom + ')';
+            applyZoom();
         }
         function zoomOut() {
             currentZoom = Math.max(currentZoom - 0.1, 0.5);
-            document.getElementById('main-window').style.transform = 'scale(' + currentZoom + ')';
+            applyZoom();
         }
 
         // ============ SPECIAL MENU FUNCTIONS ============
