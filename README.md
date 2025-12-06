@@ -1,7 +1,5 @@
 # Ben Richardson OS
 
-Indie hacker, aerospace engineer, full-stack founder.
-
 A personal website styled as a classic 1984 Macintosh operating system, built with [system.css](https://github.com/sakofchit/system.css).
 
 **Live site:** [benrichardson.dev](https://benrichardson.dev)
