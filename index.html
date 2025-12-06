@@ -131,9 +131,11 @@
             height: 100%;
             background: white;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 9999;
+            gap: 1rem;
         }
         #startup-screen.hidden {
             display: none;
@@ -142,12 +144,178 @@
             width: 64px;
             height: 64px;
         }
+        .startup-text {
+            font-family: 'ChicagoFLF', 'ChiKareGo2', monospace;
+            font-size: 14px;
+        }
+        /* Menu bar clock */
+        .menu-clock {
+            margin-left: auto;
+            padding: 0 0.5rem;
+            font-family: 'ChicagoFLF', 'ChiKareGo2', monospace;
+        }
+        /* Desktop icons */
+        .desktop-icon {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            padding: 0.5rem;
+            user-select: none;
+        }
+        .desktop-icon:hover {
+            background: rgba(0,0,0,0.1);
+        }
+        .desktop-icon.selected {
+            background: black;
+            color: white;
+        }
+        .desktop-icon img {
+            width: 48px;
+            height: 48px;
+            image-rendering: pixelated;
+        }
+        .desktop-icon span {
+            font-family: 'ChicagoFLF', 'ChiKareGo2', monospace;
+            font-size: 12px;
+            margin-top: 4px;
+            text-align: center;
+        }
+        .trash-icon.has-items img {
+            transform: scale(1.1);
+        }
+        /* Puzzle game */
+        .puzzle-window {
+            width: 200px;
+        }
+        .puzzle-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2px;
+            background: black;
+            padding: 2px;
+        }
+        .puzzle-tile {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'ChicagoFLF', 'ChiKareGo2', monospace;
+            font-size: 1.2rem;
+            font-weight: bold;
+            background: white;
+            border: 1px solid #999;
+            cursor: pointer;
+        }
+        .puzzle-tile:hover {
+            background: #eee;
+        }
+        .puzzle-tile.empty {
+            background: #ccc;
+            border: none;
+            cursor: default;
+        }
+        .puzzle-controls {
+            display: flex;
+            justify-content: center;
+            margin-top: 0.5rem;
+        }
+        /* Note Pad */
+        .notepad-window {
+            width: 280px;
+        }
+        .notepad-content {
+            position: relative;
+        }
+        .notepad-textarea {
+            width: 100%;
+            height: 150px;
+            border: 1px solid black;
+            font-family: 'Geneva', 'ChiKareGo2', monospace;
+            font-size: 12px;
+            padding: 0.5rem;
+            resize: none;
+            box-sizing: border-box;
+        }
+        .notepad-corner {
+            position: absolute;
+            bottom: 5px;
+            left: 5px;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        .notepad-page-num {
+            text-align: center;
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+        }
+        /* Sad Mac */
+        .sad-mac-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .sad-mac-screen.visible {
+            display: flex;
+        }
+                .sad-mac-code {
+            color: #fff;
+            font-family: 'ChicagoFLF', 'ChiKareGo2', monospace;
+            font-size: 14px;
+        }
+        /* Scrolling credits */
+        .credits-container {
+            height: 80px;
+            overflow: hidden;
+            position: relative;
+        }
+        .credits-scroll {
+            position: absolute;
+            width: 100%;
+            animation: scrollCredits 10s linear infinite paused;
+        }
+        .credits-container:active .credits-scroll {
+            animation-play-state: running;
+        }
+        @keyframes scrollCredits {
+            0% { top: 80px; }
+            100% { top: -200px; }
+        }
     </style>
 </head>
 <body>
     <!-- Startup Screen -->
     <div id="startup-screen">
         <img src="icon/apple.svg" alt="Apple" class="startup-icon">
+        <div class="startup-text">Welcome to Macintosh.</div>
+    </div>
+
+    <!-- Sad Mac Screen -->
+    <div class="sad-mac-screen" id="sad-mac-screen" onclick="this.classList.remove('visible')">
+        <img src="icon/sad-mac.svg" alt="Sad Mac" style="width: 128px; height: 160px;">
+        <div class="sad-mac-code">Sad Mac</div>
+        <div class="sad-mac-code">Error Code: 0F0003</div>
+        <div class="sad-mac-code" style="margin-top: 2rem; font-size: 12px;">(click to dismiss)</div>
+    </div>
+
+    <!-- Desktop Icons -->
+    <div class="desktop-icon" id="hd-icon" style="right: 20px; top: 40px;" ondblclick="showMainWindow()">
+        <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='4' y='6' width='24' height='18' fill='white' stroke='black' stroke-width='2'/><rect x='6' y='8' width='20' height='12' fill='%23ccc'/><rect x='6' y='20' width='20' height='2' fill='black'/><circle cx='24' cy='21' r='1' fill='white'/></svg>" alt="HD">
+        <span>Macintosh HD</span>
+    </div>
+    <div class="desktop-icon trash-icon" id="trash-icon" style="right: 20px; bottom: 20px;" ondblclick="emptyTrash()">
+        <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='8' y='8' width='16' height='20' fill='white' stroke='black' stroke-width='2'/><rect x='6' y='6' width='20' height='4' fill='white' stroke='black' stroke-width='2'/><line x1='12' y1='12' x2='12' y2='24' stroke='black'/><line x1='16' y1='12' x2='16' y2='24' stroke='black'/><line x1='20' y1='12' x2='20' y2='24' stroke='black'/></svg>" alt="Trash">
+        <span>Trash</span>
     </div>
 
     <!-- Menu Bar -->
@@ -228,12 +396,18 @@
                 <li role="menu-item">
                     <a href="#" onclick="toggleCalculator(); return false;">Calculator</a>
                 </li>
+                <li role="menu-item">
+                    <a href="#" onclick="togglePuzzle(); return false;">Puzzle</a>
+                </li>
+                <li role="menu-item">
+                    <a href="#" onclick="toggleNotePad(); return false;">Note Pad</a>
+                </li>
                 <li class="divider"></li>
                 <li role="menu-item">
                     <a href="#" onclick="cleanUp(); return false;">Clean Up</a>
                 </li>
                 <li role="menu-item">
-                    <a href="#" onclick="showAlert('The Trash is already empty.'); return false;">Empty Trash</a>
+                    <a href="#" onclick="emptyTrash(); return false;">Empty Trash</a>
                 </li>
                 <li class="divider"></li>
                 <li role="menu-item">
@@ -244,6 +418,7 @@
                 </li>
             </ul>
         </li>
+        <li class="menu-clock" id="menu-clock"></li>
     </ul>
 
     <!-- Main Window -->
@@ -298,6 +473,39 @@
         </div>
     </div>
 
+    <!-- Puzzle Window -->
+    <div class="window puzzle-window" id="puzzle-window" style="display: none;">
+        <div class="title-bar" id="puzzle-title-bar">
+            <button aria-label="Close" class="close" onclick="togglePuzzle()"></button>
+            <h1 class="title">Puzzle</h1>
+            <button aria-label="Resize" disabled class="hidden"></button>
+        </div>
+        <div class="separator"></div>
+        <div class="window-pane">
+            <div class="puzzle-grid" id="puzzle-grid"></div>
+            <div class="puzzle-controls">
+                <button class="btn" onclick="shufflePuzzle()">Shuffle</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Note Pad Window -->
+    <div class="window notepad-window" id="notepad-window" style="display: none;">
+        <div class="title-bar" id="notepad-title-bar">
+            <button aria-label="Close" class="close" onclick="toggleNotePad()"></button>
+            <h1 class="title">Note Pad</h1>
+            <button aria-label="Resize" disabled class="hidden"></button>
+        </div>
+        <div class="separator"></div>
+        <div class="window-pane">
+            <div class="notepad-content">
+                <textarea class="notepad-textarea" id="notepad-textarea" placeholder="Type your notes here..."></textarea>
+                <div class="notepad-corner" onclick="nextNotePage()">📄</div>
+            </div>
+            <div class="notepad-page-num">Page <span id="notepad-page-num">1</span> of <span id="notepad-total-pages">8</span></div>
+        </div>
+    </div>
+
     <!-- About This Mac Modal -->
     <div class="modal-overlay" id="about-mac-modal">
         <div class="modal-dialog outer-border">
@@ -306,8 +514,16 @@
                     <img src="icon/apple.svg" alt="Apple" style="width: 48px; height: 48px; margin-bottom: 1rem;">
                     <h2 style="margin: 0;">Ben Richardson OS</h2>
                     <p>Version 1.0</p>
-                    <p style="font-size: 0.8rem;">Built with <a href="https://github.com/sakofchit/system.css" target="_blank">system.css</a></p>
-                    <p style="font-size: 0.8rem;">640K ought to be enough for anybody.</p>
+                    <div class="credits-container" title="Click and hold for credits">
+                        <div class="credits-scroll">
+                            <p style="font-size: 0.8rem;">Built with <a href="https://github.com/sakofchit/system.css" target="_blank">system.css</a></p>
+                            <p style="font-size: 0.8rem;">Created by Ben Richardson</p>
+                            <p style="font-size: 0.8rem;">system.css by @sakofchit</p>
+                            <p style="font-size: 0.8rem;">Inspired by Apple Macintosh</p>
+                            <p style="font-size: 0.8rem;">© 1984-2024</p>
+                            <p style="font-size: 0.8rem;">640K ought to be enough.</p>
+                        </div>
+                    </div>
                     <button class="btn btn-default" onclick="hideModal('about-mac-modal')" style="margin-top: 1rem;">OK</button>
                 </div>
             </div>
@@ -388,7 +604,33 @@
         </div>
     </div>
 
+    <!-- Puzzle Win Modal -->
+    <div class="modal-overlay" id="puzzle-win-modal">
+        <div class="modal-dialog outer-border">
+            <div class="inner-border">
+                <div class="modal-contents">
+                    <p style="font-size: 2rem; margin: 0;">🎊</p>
+                    <h2 style="margin: 0.5rem 0;">You Win!</h2>
+                    <p>Congratulations, you solved the puzzle!</p>
+                    <button class="btn btn-default" onclick="hideModal('puzzle-win-modal')" style="margin-top: 1rem;">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // ============ MENU BAR CLOCK ============
+        function updateClock() {
+            const now = new Date();
+            let hours = now.getHours();
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12 || 12;
+            document.getElementById('menu-clock').textContent = hours + ':' + minutes + ' ' + ampm;
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+
         // ============ STARTUP ============
         window.addEventListener('load', function() {
             setTimeout(function() {
@@ -397,7 +639,7 @@
                     document.getElementById('startup-screen').classList.add('hidden');
                     centerWindow(document.getElementById('main-window'));
                 }, 500);
-            }, 800);
+            }, 1200);
         });
 
         // ============ WINDOW DRAGGING ============
@@ -440,6 +682,8 @@
         // Initialize draggable windows
         makeDraggable(document.getElementById('main-window'), document.getElementById('title-bar'));
         makeDraggable(document.getElementById('calculator-window'), document.getElementById('calc-title-bar'));
+        makeDraggable(document.getElementById('puzzle-window'), document.getElementById('puzzle-title-bar'));
+        makeDraggable(document.getElementById('notepad-window'), document.getElementById('notepad-title-bar'));
 
         // ============ WINDOW FUNCTIONS ============
         function centerWindow(windowEl) {
@@ -449,9 +693,13 @@
             windowEl.style.top = (60 + (window.innerHeight - 60 - rect.height) / 3) + 'px';
         }
 
+        let trashHasItems = false;
+
         function closeMainWindow() {
             const win = document.getElementById('main-window');
             win.style.display = 'none';
+            trashHasItems = true;
+            document.getElementById('trash-icon').classList.add('has-items');
         }
 
         function showMainWindow() {
@@ -464,6 +712,16 @@
         function showAboutBen(e) {
             e.preventDefault();
             showMainWindow();
+        }
+
+        function emptyTrash() {
+            if (trashHasItems) {
+                showMainWindow();
+                trashHasItems = false;
+                document.getElementById('trash-icon').classList.remove('has-items');
+            } else {
+                showAlert('The Trash is already empty.');
+            }
         }
 
         // ============ MODAL FUNCTIONS ============
@@ -512,12 +770,20 @@
 
         // ============ SPECIAL MENU FUNCTIONS ============
         function cleanUp() {
-            const win = document.getElementById('main-window');
-            win.style.transition = 'all 0.3s ease';
-            centerWindow(win);
-            setTimeout(function() {
-                win.style.transition = '';
-            }, 300);
+            const windows = ['main-window', 'calculator-window', 'puzzle-window', 'notepad-window'];
+            let offset = 0;
+            windows.forEach(function(id) {
+                const win = document.getElementById(id);
+                if (win.style.display !== 'none') {
+                    win.style.transition = 'all 0.3s ease';
+                    centerWindow(win);
+                    win.style.top = (parseInt(win.style.top) + offset) + 'px';
+                    offset += 30;
+                    setTimeout(function() {
+                        win.style.transition = '';
+                    }, 300);
+                }
+            });
         }
 
         function restartSystem() {
@@ -529,7 +795,12 @@
         }
 
         function shutDown() {
-            document.body.innerHTML = '<div style="background:black;color:white;font-family:Chicago,ChiKareGo2,monospace;padding:2rem;text-align:center;position:fixed;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;"><div>It is now safe to turn off<br>your computer.</div></div>';
+            const shutdownScreen = document.createElement('div');
+            shutdownScreen.id = 'shutdown-screen';
+            shutdownScreen.style.cssText = 'background:black;color:white;font-family:Chicago,ChiKareGo2,monospace;padding:2rem;text-align:center;position:fixed;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2rem;z-index:10001;cursor:pointer;';
+            shutdownScreen.innerHTML = '<div>It is now safe to turn off<br>your computer.</div><div style="font-size:12px;">(click to restart)</div>';
+            shutdownScreen.onclick = function() { location.reload(); };
+            document.body.appendChild(shutdownScreen);
         }
 
         // ============ CALCULATOR ============
@@ -581,11 +852,140 @@
             updateCalcDisplay();
         }
 
-        // ============ KONAMI CODE ============
+        // ============ PUZZLE ============
+        let puzzleTiles = [];
+
+        function initPuzzle() {
+            puzzleTiles = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0];
+            renderPuzzle();
+        }
+
+        function renderPuzzle() {
+            const grid = document.getElementById('puzzle-grid');
+            grid.innerHTML = '';
+            puzzleTiles.forEach(function(tile, index) {
+                const div = document.createElement('div');
+                div.className = 'puzzle-tile' + (tile === 0 ? ' empty' : '');
+                div.textContent = tile === 0 ? '' : tile;
+                if (tile !== 0) {
+                    div.onclick = function() { moveTile(index); };
+                }
+                grid.appendChild(div);
+            });
+        }
+
+        function moveTile(index) {
+            const emptyIndex = puzzleTiles.indexOf(0);
+            const validMoves = [index - 1, index + 1, index - 4, index + 4];
+
+            // Check if move is valid (adjacent to empty)
+            if (validMoves.includes(emptyIndex)) {
+                // Check not wrapping around edges
+                if ((index % 4 === 0 && emptyIndex === index - 1) ||
+                    (index % 4 === 3 && emptyIndex === index + 1)) {
+                    return;
+                }
+                // Swap
+                puzzleTiles[emptyIndex] = puzzleTiles[index];
+                puzzleTiles[index] = 0;
+                renderPuzzle();
+                checkPuzzleWin();
+            }
+        }
+
+        function shufflePuzzle() {
+            // Perform random valid moves
+            for (let i = 0; i < 100; i++) {
+                const emptyIndex = puzzleTiles.indexOf(0);
+                const moves = [];
+                if (emptyIndex >= 4) moves.push(emptyIndex - 4);
+                if (emptyIndex < 12) moves.push(emptyIndex + 4);
+                if (emptyIndex % 4 !== 0) moves.push(emptyIndex - 1);
+                if (emptyIndex % 4 !== 3) moves.push(emptyIndex + 1);
+                const randomMove = moves[Math.floor(Math.random() * moves.length)];
+                puzzleTiles[emptyIndex] = puzzleTiles[randomMove];
+                puzzleTiles[randomMove] = 0;
+            }
+            renderPuzzle();
+        }
+
+        function checkPuzzleWin() {
+            const winning = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0];
+            if (puzzleTiles.every((tile, i) => tile === winning[i])) {
+                setTimeout(function() {
+                    showModal('puzzle-win-modal');
+                }, 300);
+            }
+        }
+
+        function togglePuzzle() {
+            const puzzle = document.getElementById('puzzle-window');
+            if (puzzle.style.display === 'none') {
+                puzzle.style.display = 'block';
+                puzzle.style.left = '100px';
+                puzzle.style.top = '80px';
+                if (puzzleTiles.length === 0) {
+                    initPuzzle();
+                    shufflePuzzle();
+                }
+            } else {
+                puzzle.style.display = 'none';
+            }
+        }
+
+        // ============ NOTE PAD ============
+        let notepadPages = ['', '', '', '', '', '', '', ''];
+        let currentNotePage = 0;
+
+        function toggleNotePad() {
+            const notepad = document.getElementById('notepad-window');
+            if (notepad.style.display === 'none') {
+                notepad.style.display = 'block';
+                notepad.style.left = '150px';
+                notepad.style.top = '120px';
+                loadNotepadFromStorage();
+                updateNotepadDisplay();
+            } else {
+                saveCurrentNotePage();
+                notepad.style.display = 'none';
+            }
+        }
+
+        function saveCurrentNotePage() {
+            notepadPages[currentNotePage] = document.getElementById('notepad-textarea').value;
+            localStorage.setItem('notepadPages', JSON.stringify(notepadPages));
+        }
+
+        function loadNotepadFromStorage() {
+            const saved = localStorage.getItem('notepadPages');
+            if (saved) {
+                notepadPages = JSON.parse(saved);
+            }
+        }
+
+        function updateNotepadDisplay() {
+            document.getElementById('notepad-textarea').value = notepadPages[currentNotePage];
+            document.getElementById('notepad-page-num').textContent = currentNotePage + 1;
+        }
+
+        function nextNotePage() {
+            saveCurrentNotePage();
+            currentNotePage = (currentNotePage + 1) % notepadPages.length;
+            updateNotepadDisplay();
+        }
+
+        // Auto-save on input
+        document.getElementById('notepad-textarea').addEventListener('input', function() {
+            notepadPages[currentNotePage] = this.value;
+            localStorage.setItem('notepadPages', JSON.stringify(notepadPages));
+        });
+
+        // ============ EASTER EGGS ============
         const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
         let konamiIndex = 0;
 
         document.addEventListener('keydown', function(e) {
+            // Konami code
             if (e.code === konamiCode[konamiIndex]) {
                 konamiIndex++;
                 if (konamiIndex === konamiCode.length) {
@@ -600,6 +1000,12 @@
             if (e.ctrlKey && e.shiftKey && e.code === 'KeyB') {
                 showModal('bomb-modal');
             }
+
+            // Sad Mac trigger: Ctrl+Shift+S
+            if (e.ctrlKey && e.shiftKey && e.code === 'KeyS') {
+                e.preventDefault();
+                document.getElementById('sad-mac-screen').classList.add('visible');
+            }
         });
 
         // ============ CLICK OUTSIDE TO CLOSE MODALS ============
@@ -609,6 +1015,20 @@
                     overlay.classList.remove('visible');
                 }
             });
+        });
+
+        // ============ DESKTOP ICON SELECTION ============
+        document.querySelectorAll('.desktop-icon').forEach(function(icon) {
+            icon.addEventListener('click', function(e) {
+                document.querySelectorAll('.desktop-icon').forEach(i => i.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.desktop-icon')) {
+                document.querySelectorAll('.desktop-icon').forEach(i => i.classList.remove('selected'));
+            }
         });
     </script>
 </body>
