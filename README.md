@@ -41,11 +41,11 @@ benrichardson.dev/
 | Menu | Items |
 |------|-------|
 | **Apple** | About This Mac, Restart, Shut Down |
-| **File** | About Ben, Email, WhatsApp, Print, Close All Windows |
+| **File** | About Ben, Email, Print, Close All Windows |
 | **Edit** | Copy Email, Find |
 | **View** | View Source, Zoom In/Out, Refresh, Clean Up |
 | **Sites** | GitHub, LinkedIn |
-| **Apps** | Calculator, Puzzle, Note Pad, Email, WhatsApp, Internet, Lunar Lander |
+| **Apps** | Calculator, Puzzle, Note Pad, Email, Internet, Lunar Lander |
 
 ### Windows
 
@@ -56,7 +56,6 @@ All windows are draggable (desktop and touch), closeable, and support the classi
 - **Puzzle** - 15-puzzle sliding tile game
 - **Note Pad** - Multi-page text editor with page navigation
 - **Email** - Compose window (opens mailto: link)
-- **WhatsApp** - Secret contact feature with encrypted phone number
 - **Internet Search** - Google search in new tab
 - **Lunar Lander** - Text-based game (1976 style)
 
@@ -99,7 +98,7 @@ The entire application is contained in `index.html`:
 ```javascript
 // Window management
 toggleCalculator(), togglePuzzle(), toggleNotePad()
-toggleEmail(), toggleWhatsApp(), toggleSearch(), toggleLander()
+toggleEmail(), toggleSearch(), toggleLander()
 closeAllWindows(), cleanUp()
 
 // Desktop icons
