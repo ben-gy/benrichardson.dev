@@ -6,12 +6,167 @@
     <meta name="description" content="Ben Richardson - Indie hacker & Full-stack founder based in Canberra/Melbourne, Australia">
     <title>Ben Richardson</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Custom styles for interactive features */
+        .apple-logo {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            background: url('icon/apple.svg') no-repeat center;
+            background-size: contain;
+            cursor: pointer;
+            vertical-align: middle;
+        }
+        .apple-menu:focus .apple-logo,
+        .apple-menu:active .apple-logo {
+            filter: invert(1);
+        }
+        .window {
+            position: absolute;
+            cursor: default;
+        }
+        .title-bar {
+            cursor: grab;
+        }
+        .title-bar:active {
+            cursor: grabbing;
+        }
+        .window.collapsed .window-pane,
+        .window.collapsed .separator {
+            display: none;
+        }
+        .hidden-dialog {
+            display: none;
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-overlay.visible {
+            display: flex;
+        }
+        .modal-dialog {
+            background: white;
+            padding: 0;
+        }
+        .modal-contents {
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .modal-contents p {
+            margin: 0.5rem 0;
+        }
+        .alert-box {
+            background: white;
+        }
+        .alert-contents {
+            display: flex;
+            align-items: flex-start;
+            padding: 1rem;
+            gap: 1rem;
+        }
+        .alert-icon {
+            font-size: 2rem;
+            line-height: 1;
+        }
+        .alert-text-container {
+            flex: 1;
+        }
+        .alert-buttons {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        .calculator-window {
+            width: 180px;
+        }
+        .calc-display {
+            background: white;
+            border: 1px solid black;
+            padding: 0.25rem 0.5rem;
+            text-align: right;
+            font-family: 'ChiKareGo2', monospace;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        .calc-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2px;
+        }
+        .calc-buttons button {
+            padding: 0.5rem;
+            min-width: 0;
+            width: 100%;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+        .fade-out {
+            animation: fadeOut 0.5s forwards;
+        }
+        .fade-in {
+            animation: fadeIn 0.3s forwards;
+        }
+        /* Startup screen */
+        #startup-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        #startup-screen.hidden {
+            display: none;
+        }
+        .startup-icon {
+            width: 64px;
+            height: 64px;
+        }
+    </style>
 </head>
 <body>
+    <!-- Startup Screen -->
+    <div id="startup-screen">
+        <img src="icon/apple.svg" alt="Apple" class="startup-icon">
+    </div>
+
+    <!-- Menu Bar -->
     <ul role="menu-bar">
+        <li role="menu-item" tabindex="0" aria-haspopup="true" class="apple-menu">
+            <span class="apple-logo"></span>
+            <ul role="menu">
+                <li role="menu-item">
+                    <a href="#" onclick="showAboutMac(event)">About This Mac</a>
+                </li>
+            </ul>
+        </li>
         <li role="menu-item" tabindex="0" aria-haspopup="true">
             File
             <ul role="menu">
+                <li role="menu-item">
+                    <a href="#" onclick="showAboutBen(event)">About Ben...</a>
+                </li>
+                <li class="divider"></li>
                 <li role="menu-item">
                     <a href="mailto:hi@benrichardson.dev">New Message...</a>
                 </li>
@@ -21,7 +176,7 @@
                 </li>
                 <li class="divider"></li>
                 <li role="menu-item">
-                    <a href="#" onclick="window.close(); return false;">Close Window</a>
+                    <a href="#" onclick="closeMainWindow(); return false;">Close Window</a>
                 </li>
             </ul>
         </li>
@@ -29,7 +184,11 @@
             Edit
             <ul role="menu">
                 <li role="menu-item">
-                    <a href="#" onclick="navigator.clipboard.writeText('hi@benrichardson.dev'); alert('Email copied to clipboard!'); return false;">Copy Email</a>
+                    <a href="#" onclick="navigator.clipboard.writeText('hi@benrichardson.dev'); showAlert('Email copied to clipboard!'); return false;">Copy Email</a>
+                </li>
+                <li class="divider"></li>
+                <li role="menu-item">
+                    <a href="#" onclick="showFindDialog(); return false;">Find...</a>
                 </li>
                 <li class="divider"></li>
                 <li role="menu-item">
@@ -41,7 +200,14 @@
             View
             <ul role="menu">
                 <li role="menu-item">
-                    <a href="https://github.com/ben-gy/benrichardson.dev">View Source</a>
+                    <a href="https://github.com/ben-gy/benrichardson.dev" target="_blank">View Source</a>
+                </li>
+                <li class="divider"></li>
+                <li role="menu-item">
+                    <a href="#" onclick="zoomIn(); return false;">Zoom In</a>
+                </li>
+                <li role="menu-item">
+                    <a href="#" onclick="zoomOut(); return false;">Zoom Out</a>
                 </li>
                 <li class="divider"></li>
                 <li role="menu-item">
@@ -53,22 +219,37 @@
             Special
             <ul role="menu">
                 <li role="menu-item">
-                    <a href="https://github.com/ben-gy">Open GitHub</a>
+                    <a href="https://github.com/ben-gy" target="_blank">Open GitHub</a>
                 </li>
                 <li role="menu-item">
-                    <a href="https://www.linkedin.com/in/benrichardsonco/">Open LinkedIn</a>
+                    <a href="https://www.linkedin.com/in/benrichardsonco/" target="_blank">Open LinkedIn</a>
                 </li>
                 <li class="divider"></li>
                 <li role="menu-item">
-                    <a href="#" onclick="document.body.style.background='black'; document.body.innerHTML='<div style=\'color:white;font-family:Chicago,monospace;padding:2rem;text-align:center;margin-top:40vh;\'>It is now safe to turn off your computer.</div>'; return false;">Shut Down</a>
+                    <a href="#" onclick="toggleCalculator(); return false;">Calculator</a>
+                </li>
+                <li class="divider"></li>
+                <li role="menu-item">
+                    <a href="#" onclick="cleanUp(); return false;">Clean Up</a>
+                </li>
+                <li role="menu-item">
+                    <a href="#" onclick="showAlert('The Trash is already empty.'); return false;">Empty Trash</a>
+                </li>
+                <li class="divider"></li>
+                <li role="menu-item">
+                    <a href="#" onclick="restartSystem(); return false;">Restart</a>
+                </li>
+                <li role="menu-item">
+                    <a href="#" onclick="shutDown(); return false;">Shut Down</a>
                 </li>
             </ul>
         </li>
     </ul>
 
-    <div class="window" style="margin: 2rem auto; max-width: 400px;">
-        <div class="title-bar">
-            <button aria-label="Close" class="close"></button>
+    <!-- Main Window -->
+    <div class="window" id="main-window" style="width: 320px;">
+        <div class="title-bar" id="title-bar">
+            <button aria-label="Close" class="close" onclick="closeMainWindow()"></button>
             <h1 class="title">Ben Richardson</h1>
             <button aria-label="Resize" disabled class="hidden"></button>
         </div>
@@ -78,10 +259,357 @@
             <p>Based in Canberra/Melbourne, Australia</p>
             <p><a href="mailto:hi@benrichardson.dev">hi@benrichardson.dev</a></p>
             <section class="field-row" style="justify-content: flex-start; padding-top: 1rem;">
-                <a href="https://github.com/ben-gy"><button class="btn">GitHub</button></a>
-                <a href="https://www.linkedin.com/in/benrichardsonco/"><button class="btn">LinkedIn</button></a>
+                <a href="https://github.com/ben-gy" target="_blank"><button class="btn">GitHub</button></a>
+                <a href="https://www.linkedin.com/in/benrichardsonco/" target="_blank"><button class="btn">LinkedIn</button></a>
             </section>
         </div>
     </div>
+
+    <!-- Calculator Window -->
+    <div class="window calculator-window" id="calculator-window" style="display: none;">
+        <div class="title-bar" id="calc-title-bar">
+            <button aria-label="Close" class="close" onclick="toggleCalculator()"></button>
+            <h1 class="title">Calculator</h1>
+            <button aria-label="Resize" disabled class="hidden"></button>
+        </div>
+        <div class="separator"></div>
+        <div class="window-pane">
+            <div class="calc-display" id="calc-display">0</div>
+            <div class="calc-buttons">
+                <button class="btn" onclick="calcClear()">C</button>
+                <button class="btn" onclick="calcInput('/')">/</button>
+                <button class="btn" onclick="calcInput('*')">×</button>
+                <button class="btn" onclick="calcBackspace()">⌫</button>
+                <button class="btn" onclick="calcInput('7')">7</button>
+                <button class="btn" onclick="calcInput('8')">8</button>
+                <button class="btn" onclick="calcInput('9')">9</button>
+                <button class="btn" onclick="calcInput('-')">-</button>
+                <button class="btn" onclick="calcInput('4')">4</button>
+                <button class="btn" onclick="calcInput('5')">5</button>
+                <button class="btn" onclick="calcInput('6')">6</button>
+                <button class="btn" onclick="calcInput('+')">+</button>
+                <button class="btn" onclick="calcInput('1')">1</button>
+                <button class="btn" onclick="calcInput('2')">2</button>
+                <button class="btn" onclick="calcInput('3')">3</button>
+                <button class="btn btn-default" onclick="calcEquals()" style="grid-row: span 2;">=</button>
+                <button class="btn" onclick="calcInput('0')" style="grid-column: span 2;">0</button>
+                <button class="btn" onclick="calcInput('.')">.</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- About This Mac Modal -->
+    <div class="modal-overlay" id="about-mac-modal">
+        <div class="modal-dialog outer-border">
+            <div class="inner-border">
+                <div class="modal-contents">
+                    <img src="icon/apple.svg" alt="Apple" style="width: 48px; height: 48px; margin-bottom: 1rem;">
+                    <h2 style="margin: 0;">Ben Richardson OS</h2>
+                    <p>Version 1.0</p>
+                    <p style="font-size: 0.8rem;">Built with <a href="https://github.com/sakofchit/system.css" target="_blank">system.css</a></p>
+                    <p style="font-size: 0.8rem;">640K ought to be enough for anybody.</p>
+                    <button class="btn btn-default" onclick="hideModal('about-mac-modal')" style="margin-top: 1rem;">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Find Dialog -->
+    <div class="modal-overlay" id="find-modal">
+        <div class="window" style="width: 300px;">
+            <div class="title-bar">
+                <button aria-label="Close" class="close" onclick="hideModal('find-modal')"></button>
+                <h1 class="title">Find</h1>
+                <button aria-label="Resize" disabled class="hidden"></button>
+            </div>
+            <div class="separator"></div>
+            <div class="modeless-dialog">
+                <section class="field-row" style="justify-content: flex-start">
+                    <label for="find-input" class="modeless-text">Find:</label>
+                    <input id="find-input" type="text" style="width: 100%;" placeholder="">
+                </section>
+                <section class="field-row" style="justify-content: flex-end; margin-top: 1rem;">
+                    <button class="btn" onclick="hideModal('find-modal')">Cancel</button>
+                    <button class="btn btn-default" onclick="doFind()">Find</button>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alert Box Modal -->
+    <div class="modal-overlay" id="alert-modal">
+        <div class="alert-box outer-border">
+            <div class="inner-border">
+                <div class="alert-contents">
+                    <span class="alert-icon">⚠️</span>
+                    <div class="alert-text-container">
+                        <p class="alert-text" id="alert-text">Alert message</p>
+                        <div class="alert-buttons">
+                            <button class="btn btn-default" onclick="hideModal('alert-modal')">OK</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bomb Error Modal -->
+    <div class="modal-overlay" id="bomb-modal">
+        <div class="alert-box outer-border">
+            <div class="inner-border">
+                <div class="alert-contents">
+                    <span class="alert-icon">💣</span>
+                    <div class="alert-text-container">
+                        <p class="alert-text">Sorry, a system error occurred.</p>
+                        <p style="font-size: 0.8rem; margin: 0.5rem 0;">"Ben Richardson"</p>
+                        <p style="font-size: 0.7rem; margin: 0;">unimplemented trap</p>
+                        <div class="alert-buttons">
+                            <button class="btn" onclick="restartSystem()">Restart</button>
+                            <button class="btn btn-default" onclick="hideModal('bomb-modal')">Resume</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Konami Code Success Modal -->
+    <div class="modal-overlay" id="konami-modal">
+        <div class="modal-dialog outer-border">
+            <div class="inner-border">
+                <div class="modal-contents">
+                    <p style="font-size: 2rem; margin: 0;">🎉</p>
+                    <h2 style="margin: 0.5rem 0;">Secret Unlocked!</h2>
+                    <p>You found the Konami Code easter egg!</p>
+                    <p style="font-size: 0.8rem;">↑↑↓↓←→←→BA</p>
+                    <button class="btn btn-default" onclick="hideModal('konami-modal')" style="margin-top: 1rem;">Nice!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============ STARTUP ============
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('startup-screen').classList.add('fade-out');
+                setTimeout(function() {
+                    document.getElementById('startup-screen').classList.add('hidden');
+                    centerWindow(document.getElementById('main-window'));
+                }, 500);
+            }, 800);
+        });
+
+        // ============ WINDOW DRAGGING ============
+        function makeDraggable(windowEl, handleEl) {
+            let isDragging = false;
+            let startX, startY, initialX, initialY;
+
+            handleEl.addEventListener('mousedown', function(e) {
+                if (e.target.classList.contains('close') || e.target.classList.contains('resize')) return;
+                isDragging = true;
+                startX = e.clientX;
+                startY = e.clientY;
+                const rect = windowEl.getBoundingClientRect();
+                initialX = rect.left;
+                initialY = rect.top;
+                windowEl.style.margin = '0';
+                windowEl.style.left = initialX + 'px';
+                windowEl.style.top = initialY + 'px';
+            });
+
+            document.addEventListener('mousemove', function(e) {
+                if (!isDragging) return;
+                const dx = e.clientX - startX;
+                const dy = e.clientY - startY;
+                windowEl.style.left = (initialX + dx) + 'px';
+                windowEl.style.top = (initialY + dy) + 'px';
+            });
+
+            document.addEventListener('mouseup', function() {
+                isDragging = false;
+            });
+
+            // Double-click to collapse/expand (window shade)
+            handleEl.addEventListener('dblclick', function(e) {
+                if (e.target.classList.contains('close') || e.target.classList.contains('resize')) return;
+                windowEl.classList.toggle('collapsed');
+            });
+        }
+
+        // Initialize draggable windows
+        makeDraggable(document.getElementById('main-window'), document.getElementById('title-bar'));
+        makeDraggable(document.getElementById('calculator-window'), document.getElementById('calc-title-bar'));
+
+        // ============ WINDOW FUNCTIONS ============
+        function centerWindow(windowEl) {
+            const rect = windowEl.getBoundingClientRect();
+            windowEl.style.margin = '0';
+            windowEl.style.left = ((window.innerWidth - rect.width) / 2) + 'px';
+            windowEl.style.top = (60 + (window.innerHeight - 60 - rect.height) / 3) + 'px';
+        }
+
+        function closeMainWindow() {
+            const win = document.getElementById('main-window');
+            win.style.display = 'none';
+        }
+
+        function showMainWindow() {
+            const win = document.getElementById('main-window');
+            win.style.display = 'block';
+            win.classList.remove('collapsed');
+            centerWindow(win);
+        }
+
+        function showAboutBen(e) {
+            e.preventDefault();
+            showMainWindow();
+        }
+
+        // ============ MODAL FUNCTIONS ============
+        function showModal(id) {
+            document.getElementById(id).classList.add('visible');
+        }
+
+        function hideModal(id) {
+            document.getElementById(id).classList.remove('visible');
+        }
+
+        function showAlert(message) {
+            document.getElementById('alert-text').textContent = message;
+            showModal('alert-modal');
+        }
+
+        function showAboutMac(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            showModal('about-mac-modal');
+        }
+
+        function showFindDialog() {
+            showModal('find-modal');
+            document.getElementById('find-input').focus();
+        }
+
+        function doFind() {
+            const query = document.getElementById('find-input').value;
+            if (query) {
+                window.find(query);
+            }
+            hideModal('find-modal');
+        }
+
+        // ============ ZOOM FUNCTIONS ============
+        let currentZoom = 1;
+        function zoomIn() {
+            currentZoom = Math.min(currentZoom + 0.1, 2);
+            document.getElementById('main-window').style.transform = 'scale(' + currentZoom + ')';
+        }
+        function zoomOut() {
+            currentZoom = Math.max(currentZoom - 0.1, 0.5);
+            document.getElementById('main-window').style.transform = 'scale(' + currentZoom + ')';
+        }
+
+        // ============ SPECIAL MENU FUNCTIONS ============
+        function cleanUp() {
+            const win = document.getElementById('main-window');
+            win.style.transition = 'all 0.3s ease';
+            centerWindow(win);
+            setTimeout(function() {
+                win.style.transition = '';
+            }, 300);
+        }
+
+        function restartSystem() {
+            hideModal('bomb-modal');
+            document.body.classList.add('fade-out');
+            setTimeout(function() {
+                location.reload();
+            }, 500);
+        }
+
+        function shutDown() {
+            document.body.innerHTML = '<div style="background:black;color:white;font-family:Chicago,ChiKareGo2,monospace;padding:2rem;text-align:center;position:fixed;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;"><div>It is now safe to turn off<br>your computer.</div></div>';
+        }
+
+        // ============ CALCULATOR ============
+        let calcValue = '0';
+
+        function toggleCalculator() {
+            const calc = document.getElementById('calculator-window');
+            if (calc.style.display === 'none') {
+                calc.style.display = 'block';
+                calc.style.left = '50px';
+                calc.style.top = '100px';
+            } else {
+                calc.style.display = 'none';
+            }
+        }
+
+        function updateCalcDisplay() {
+            document.getElementById('calc-display').textContent = calcValue;
+        }
+
+        function calcInput(val) {
+            if (calcValue === '0' && !isNaN(val)) {
+                calcValue = val;
+            } else {
+                calcValue += val;
+            }
+            updateCalcDisplay();
+        }
+
+        function calcClear() {
+            calcValue = '0';
+            updateCalcDisplay();
+        }
+
+        function calcBackspace() {
+            calcValue = calcValue.slice(0, -1) || '0';
+            updateCalcDisplay();
+        }
+
+        function calcEquals() {
+            try {
+                calcValue = String(eval(calcValue));
+                if (calcValue === 'Infinity' || calcValue === 'NaN') {
+                    calcValue = 'Error';
+                }
+            } catch (e) {
+                calcValue = 'Error';
+            }
+            updateCalcDisplay();
+        }
+
+        // ============ KONAMI CODE ============
+        const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
+        let konamiIndex = 0;
+
+        document.addEventListener('keydown', function(e) {
+            if (e.code === konamiCode[konamiIndex]) {
+                konamiIndex++;
+                if (konamiIndex === konamiCode.length) {
+                    showModal('konami-modal');
+                    konamiIndex = 0;
+                }
+            } else {
+                konamiIndex = 0;
+            }
+
+            // Secret bomb trigger: Ctrl+Shift+B
+            if (e.ctrlKey && e.shiftKey && e.code === 'KeyB') {
+                showModal('bomb-modal');
+            }
+        });
+
+        // ============ CLICK OUTSIDE TO CLOSE MODALS ============
+        document.querySelectorAll('.modal-overlay').forEach(function(overlay) {
+            overlay.addEventListener('click', function(e) {
+                if (e.target === overlay) {
+                    overlay.classList.remove('visible');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
