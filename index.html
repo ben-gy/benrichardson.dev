@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Ben Richardson - Indie hacker & Full-stack founder based in Canberra/Melbourne, Australia">
     <title>Ben Richardson</title>
-    <link rel="stylesheet" href="https://unpkg.com/@sakun/system.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <ul role="menu-bar">
-        <li role="menu-item" aria-haspopup="true">
+        <li role="menu-item" tabindex="0" aria-haspopup="true">
             File
             <ul role="menu">
                 <li role="menu-item">
@@ -17,39 +17,51 @@
                 </li>
                 <li class="divider"></li>
                 <li role="menu-item">
+                    <a href="#" onclick="window.print(); return false;">Print...</a>
+                </li>
+                <li class="divider"></li>
+                <li role="menu-item">
+                    <a href="#" onclick="window.close(); return false;">Close Window</a>
+                </li>
+            </ul>
+        </li>
+        <li role="menu-item" tabindex="0" aria-haspopup="true">
+            Edit
+            <ul role="menu">
+                <li role="menu-item">
+                    <a href="#" onclick="navigator.clipboard.writeText('hi@benrichardson.dev'); alert('Email copied to clipboard!'); return false;">Copy Email</a>
+                </li>
+                <li class="divider"></li>
+                <li role="menu-item">
+                    <a href="#" onclick="document.execCommand('selectAll'); return false;">Select All</a>
+                </li>
+            </ul>
+        </li>
+        <li role="menu-item" tabindex="0" aria-haspopup="true">
+            View
+            <ul role="menu">
+                <li role="menu-item">
+                    <a href="https://github.com/ben-gy/benrichardson.dev">View Source</a>
+                </li>
+                <li class="divider"></li>
+                <li role="menu-item">
+                    <a href="#" onclick="location.reload(); return false;">Refresh</a>
+                </li>
+            </ul>
+        </li>
+        <li role="menu-item" tabindex="0" aria-haspopup="true">
+            Special
+            <ul role="menu">
+                <li role="menu-item">
                     <a href="https://github.com/ben-gy">Open GitHub</a>
                 </li>
                 <li role="menu-item">
                     <a href="https://www.linkedin.com/in/benrichardsonco/">Open LinkedIn</a>
                 </li>
-            </ul>
-        </li>
-        <li role="menu-item" aria-haspopup="true">
-            Edit
-            <ul role="menu">
-                <li role="menu-item" class="disabled">Undo</li>
                 <li class="divider"></li>
-                <li role="menu-item" class="disabled">Cut</li>
-                <li role="menu-item" class="disabled">Copy</li>
-                <li role="menu-item" class="disabled">Paste</li>
-            </ul>
-        </li>
-        <li role="menu-item" aria-haspopup="true">
-            View
-            <ul role="menu">
-                <li role="menu-item" class="disabled">by Icon</li>
-                <li role="menu-item" class="disabled">by Name</li>
-                <li role="menu-item" class="disabled">by Date</li>
-            </ul>
-        </li>
-        <li role="menu-item" aria-haspopup="true">
-            Special
-            <ul role="menu">
-                <li role="menu-item" class="disabled">Clean Up</li>
-                <li role="menu-item" class="disabled">Empty Trash</li>
-                <li class="divider"></li>
-                <li role="menu-item" class="disabled">Restart</li>
-                <li role="menu-item" class="disabled">Shut Down</li>
+                <li role="menu-item">
+                    <a href="#" onclick="document.body.style.background='black'; document.body.innerHTML='<div style=\'color:white;font-family:Chicago,monospace;padding:2rem;text-align:center;margin-top:40vh;\'>It is now safe to turn off your computer.</div>'; return false;">Shut Down</a>
+                </li>
             </ul>
         </li>
     </ul>
@@ -58,18 +70,17 @@
         <div class="title-bar">
             <button aria-label="Close" class="close"></button>
             <h1 class="title">Ben Richardson</h1>
-            <button aria-label="Resize" disabled class="resize"></button>
+            <button aria-label="Resize" disabled class="hidden"></button>
         </div>
         <div class="separator"></div>
         <div class="window-pane">
             <p><strong>Indie hacker & Full-stack founder</strong></p>
             <p>Based in Canberra/Melbourne, Australia</p>
-            <div class="separator"></div>
-            <div class="field-row" style="justify-content: center; gap: 0.5rem; flex-wrap: wrap;">
-                <a href="mailto:hi@benrichardson.dev"><button class="btn">Email</button></a>
+            <p><a href="mailto:hi@benrichardson.dev">hi@benrichardson.dev</a></p>
+            <section class="field-row" style="justify-content: flex-start; padding-top: 1rem;">
                 <a href="https://github.com/ben-gy"><button class="btn">GitHub</button></a>
                 <a href="https://www.linkedin.com/in/benrichardsonco/"><button class="btn">LinkedIn</button></a>
-            </div>
+            </section>
         </div>
     </div>
 </body>
