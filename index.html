@@ -6,6 +6,20 @@
     <meta name="description" content="Ben Richardson - Indie hacker, aerospace engineer, full-stack founder based in Canberra/Melbourne, Australia">
     <title>Ben Richardson</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <!-- Apple Touch Icon (home screen) -->
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <!-- Apple Web App -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Ben Richardson">
+    <!-- Apple Splash Screens -->
+    <link rel="apple-touch-startup-image" href="splash/iphone-8.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)">
+    <link rel="apple-touch-startup-image" href="splash/iphone-12.png" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3)">
+    <link rel="apple-touch-startup-image" href="splash/iphone-14-pro.png" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3)">
+    <link rel="apple-touch-startup-image" href="splash/iphone-14-pro-max.png" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3)">
     <style>
         /* Disable text selection highlighting */
         ::selection {
@@ -347,16 +361,17 @@
         /* Mobile responsive styles */
         @media (max-width: 480px) {
             html, body {
-                overflow: hidden;
+                margin: 0;
+                padding: 0;
                 overflow-x: hidden;
-                height: 100%;
-                position: fixed;
                 width: 100%;
                 background: white;
             }
             .window {
-                width: calc(100% - 1rem) !important;
-                left: 0.5rem !important;
+                width: calc(100% - 2rem) !important;
+                left: 1rem !important;
+                top: 50% !important;
+                transform: translateY(-50%);
                 max-width: none;
                 overflow: hidden;
             }
@@ -369,17 +384,27 @@
             ul[role="menu-bar"] {
                 overflow-x: auto;
                 -webkit-overflow-scrolling: touch;
+                width: 100%;
+                box-sizing: border-box;
             }
             ul[role="menu-bar"] > [role="menu-item"],
             .menu-clock {
-                padding: 10px 8px;
-                font-size: 14px;
+                padding: 12px 12px;
+                font-size: 16px;
+            }
+            ul[role="menu-bar"] > [role="menu-item"]:first-child {
+                padding-left: 16px;
+            }
+            .menu-clock {
+                padding-right: 16px;
             }
             .calculator-window,
             .puzzle-window,
             .notepad-window,
-            .email-window {
-                width: calc(100% - 1rem) !important;
+            .email-window,
+            .search-window,
+            .lander-window {
+                width: calc(100% - 2rem) !important;
             }
         }
     </style>
@@ -531,7 +556,7 @@
     </ul>
 
     <!-- Main Window -->
-    <div class="window" id="main-window" style="width: 320px;">
+    <div class="window" id="main-window" style="width: 640px;">
         <div class="title-bar" id="title-bar">
             <button aria-label="Close" class="close" onclick="closeMainWindow()"></button>
             <h1 class="title">Ben Richardson</h1>

@@ -1,0 +1,22 @@
+<svg width="180" height="180" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="180" height="180" fill="white"/>
+  <!-- Pixel Apple logo centered and scaled -->
+  <g transform="translate(45, 30) scale(5)">
+    <!-- Stem -->
+    <rect x="10" y="0" width="4" height="2" fill="black"/>
+    <rect x="8" y="2" width="4" height="2" fill="black"/>
+    <rect x="8" y="4" width="2" height="2" fill="black"/>
+    <!-- Leaf area -->
+    <rect x="2" y="6" width="6" height="2" fill="black"/>
+    <rect x="10" y="6" width="6" height="2" fill="black"/>
+    <!-- Body -->
+    <rect x="0" y="8" width="18" height="2" fill="black"/>
+    <rect x="0" y="10" width="14" height="4" fill="black"/>
+    <rect x="0" y="14" width="18" height="4" fill="black"/>
+    <rect x="2" y="18" width="14" height="2" fill="black"/>
+    <!-- Feet -->
+    <rect x="4" y="20" width="4" height="2" fill="black"/>
+    <rect x="10" y="20" width="4" height="2" fill="black"/>
+  </g>
+</svg>
