@@ -367,7 +367,6 @@
                 width: 100%;
                 height: 100%;
                 position: fixed;
-                background: white;
             }
             .window {
                 width: calc(100% - 2rem);
@@ -381,8 +380,7 @@
                 display: none;
             }
             ul[role="menu-bar"] {
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
+                overflow: visible;
                 width: 100%;
                 box-sizing: border-box;
             }
@@ -559,7 +557,7 @@
     </ul>
 
     <!-- Main Window -->
-    <div class="window" id="main-window" style="width: 640px;">
+    <div class="window" id="main-window" style="max-width: 640px; width: calc(100% - 2rem);">
         <div class="title-bar" id="title-bar">
             <button aria-label="Close" class="close" onclick="closeMainWindow()"></button>
             <h1 class="title">Ben Richardson</h1>
