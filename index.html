@@ -68,19 +68,10 @@
             background: white;
         }
         .alert-contents {
-            display: flex;
-            align-items: flex-start;
             padding: 1rem;
-            gap: 1rem;
+            text-align: center;
         }
-        .alert-icon {
-            font-size: 2rem;
-            line-height: 1;
-        }
-        .alert-text-container {
-            flex: 1;
-        }
-        .alert-buttons {
+                .alert-buttons {
             display: flex;
             gap: 0.5rem;
             justify-content: center;
@@ -151,8 +142,8 @@
         /* Menu bar clock */
         .menu-clock {
             margin-left: auto;
-            padding: 0 0.5rem;
-            font-family: 'ChicagoFLF', 'ChiKareGo2', monospace;
+            padding: 6px 10px;
+            cursor: pointer;
         }
         /* Desktop icons */
         .desktop-icon {
@@ -418,7 +409,7 @@
                 </li>
             </ul>
         </li>
-        <li class="menu-clock" id="menu-clock"></li>
+        <li class="menu-clock" id="menu-clock" onclick="showDate()"></li>
     </ul>
 
     <!-- Main Window -->
@@ -557,12 +548,9 @@
         <div class="alert-box outer-border">
             <div class="inner-border">
                 <div class="alert-contents">
-                    <span class="alert-icon">⚠️</span>
-                    <div class="alert-text-container">
-                        <p class="alert-text" id="alert-text">Alert message</p>
-                        <div class="alert-buttons">
-                            <button class="btn btn-default" onclick="hideModal('alert-modal')">OK</button>
-                        </div>
+                    <p class="alert-text" id="alert-text">Alert message</p>
+                    <div class="alert-buttons">
+                        <button class="btn btn-default" onclick="hideModal('alert-modal')">OK</button>
                     </div>
                 </div>
             </div>
@@ -630,6 +618,13 @@
         }
         updateClock();
         setInterval(updateClock, 1000);
+
+        function showDate() {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const dateStr = now.toLocaleDateString('en-US', options);
+            showAlert(dateStr);
+        }
 
         // ============ STARTUP ============
         window.addEventListener('load', function() {
