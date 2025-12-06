@@ -206,6 +206,16 @@
         .trash-icon.has-items img {
             transform: scale(1.1);
         }
+        /* Lunar Lander */
+        .lander-output {
+            font-family: 'ChiKareGo2', monospace;
+            font-size: 12px;
+            border: 1px solid black;
+            padding: 0.5rem;
+            margin: 0 0 0.5rem 0;
+            height: 160px;
+            overflow-y: auto;
+        }
         /* Puzzle game */
         .puzzle-window {
             width: 200px;
@@ -512,6 +522,10 @@
                 <li role="menu-item">
                     <a href="#" onclick="toggleSearch(); return false;">Internet</a>
                 </li>
+                <li class="divider"></li>
+                <li role="menu-item">
+                    <a href="#" onclick="toggleLander(); return false;">Lunar Lander</a>
+                </li>
             </ul>
         </li>
         <li class="menu-clock" id="menu-clock" onclick="showDate()"></li>
@@ -664,6 +678,24 @@
             <section class="field-row" style="justify-content: flex-end; margin-top: 0.5rem;">
                 <button class="btn" onclick="toggleSearch()">Cancel</button>
                 <button class="btn btn-default" onclick="searchGoogle()">Search</button>
+            </section>
+        </div>
+    </div>
+
+    <!-- Lunar Lander Window -->
+    <div class="window" id="lander-window" style="display: none; width: 280px;">
+        <div class="title-bar" id="lander-title-bar">
+            <button aria-label="Close" class="close" onclick="toggleLander()"></button>
+            <h1 class="title">Lunar Lander</h1>
+            <button aria-label="Resize" disabled class="hidden"></button>
+        </div>
+        <div class="separator"></div>
+        <div class="window-pane">
+            <pre class="lander-output" id="lander-output"></pre>
+            <section class="field-row" style="justify-content: flex-start">
+                <label class="modeless-text">BURN:</label>
+                <input type="number" id="lander-input" min="0" max="30" style="width: 60px;">
+                <button class="btn btn-default" onclick="landerBurn()">OK</button>
             </section>
         </div>
     </div>
@@ -828,6 +860,95 @@
             }
         }
 
+        // ============ LUNAR LANDER GAME ============
+        let landerState = null;
+
+        function initLander() {
+            landerState = {
+                altitude: 120,
+                velocity: 1,
+                fuel: 1600,
+                gameOver: false,
+                message: ''
+            };
+        }
+
+        function toggleLander() {
+            const lander = document.getElementById('lander-window');
+            if (lander.style.display === 'none') {
+                lander.style.display = 'block';
+                lander.style.left = '120px';
+                lander.style.top = '80px';
+                initLander();
+                updateLanderDisplay();
+                document.getElementById('lander-input').value = '';
+                document.getElementById('lander-input').focus();
+            } else {
+                lander.style.display = 'none';
+            }
+        }
+
+        function updateLanderDisplay() {
+            const output = document.getElementById('lander-output');
+            let text = 'LUNAR LANDER\n';
+            text += '====================\n\n';
+            text += 'ALTITUDE: ' + landerState.altitude.toFixed(1) + ' MI\n';
+            text += 'VELOCITY: ' + landerState.velocity.toFixed(1) + ' MI/S\n';
+            text += 'FUEL:     ' + landerState.fuel.toFixed(0) + '\n\n';
+
+            if (landerState.message) {
+                text += landerState.message + '\n';
+            }
+
+            if (!landerState.gameOver) {
+                text += 'BURN RATE? (0-30)';
+            } else {
+                text += '\n[OK TO PLAY AGAIN]';
+            }
+
+            output.textContent = text;
+        }
+
+        function landerBurn() {
+            if (landerState.gameOver) {
+                initLander();
+                updateLanderDisplay();
+                document.getElementById('lander-input').value = '';
+                return;
+            }
+
+            let burn = parseInt(document.getElementById('lander-input').value) || 0;
+            burn = Math.max(0, Math.min(30, burn));
+
+            if (burn > landerState.fuel) {
+                burn = landerState.fuel;
+            }
+
+            const thrustAcc = (burn * 1.8) / 33000;
+            const netAcc = 0.001 - thrustAcc;
+            landerState.velocity += netAcc * 10;
+            landerState.altitude -= landerState.velocity * 10;
+            landerState.fuel -= burn;
+
+            if (landerState.altitude <= 0) {
+                landerState.altitude = 0;
+                if (landerState.velocity < 2) {
+                    landerState.message = '*** SAFE LANDING! ***\nFUEL LEFT: ' + landerState.fuel.toFixed(0);
+                } else {
+                    landerState.message = '*** CRASH! ***\nTOO FAST: ' + landerState.velocity.toFixed(1);
+                }
+                landerState.gameOver = true;
+            } else if (landerState.fuel <= 0) {
+                landerState.message = 'OUT OF FUEL!';
+            } else {
+                landerState.message = '';
+            }
+
+            updateLanderDisplay();
+            document.getElementById('lander-input').value = '';
+            document.getElementById('lander-input').focus();
+        }
+
         // ============ WHATSAPP SECRET CONTACT ============
         // Encrypted phone number (XOR with key, then base64)
         const ENCRYPTED_PHONE = '***REMOVED***';
@@ -983,11 +1104,19 @@
         makeDraggable(document.getElementById('email-window'), document.getElementById('email-title-bar'));
         makeDraggable(document.getElementById('whatsapp-window'), document.getElementById('whatsapp-title-bar'));
         makeDraggable(document.getElementById('search-window'), document.getElementById('search-title-bar'));
+        makeDraggable(document.getElementById('lander-window'), document.getElementById('lander-title-bar'));
 
         // Enter key support for search
         document.getElementById('search-input').addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 searchGoogle();
+            }
+        });
+
+        // Enter key support for lander
+        document.getElementById('lander-input').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                landerBurn();
             }
         });
 
@@ -1009,7 +1138,7 @@
         }
 
         function closeAllWindows() {
-            const windows = ['main-window', 'calculator-window', 'puzzle-window', 'notepad-window', 'email-window', 'whatsapp-window', 'search-window'];
+            const windows = ['main-window', 'calculator-window', 'puzzle-window', 'notepad-window', 'email-window', 'whatsapp-window', 'search-window', 'lander-window'];
             windows.forEach(function(id) {
                 document.getElementById(id).style.display = 'none';
             });
@@ -1091,7 +1220,7 @@
         // ============ SPECIAL MENU FUNCTIONS ============
         function cleanUp() {
             // Clean up windows
-            const windows = ['main-window', 'calculator-window', 'puzzle-window', 'notepad-window', 'email-window', 'whatsapp-window', 'search-window'];
+            const windows = ['main-window', 'calculator-window', 'puzzle-window', 'notepad-window', 'email-window', 'whatsapp-window', 'search-window', 'lander-window'];
             let offset = 0;
             windows.forEach(function(id) {
                 const win = document.getElementById(id);
