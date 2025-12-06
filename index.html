@@ -317,6 +317,17 @@
                 <li role="menu-item">
                     <a href="#" onclick="showAboutMac(event)">About This Mac</a>
                 </li>
+                <li class="divider"></li>
+                <li role="menu-item">
+                    <a href="#" onclick="cleanUp(); return false;">Clean Up</a>
+                </li>
+                <li class="divider"></li>
+                <li role="menu-item">
+                    <a href="#" onclick="restartSystem(); return false;">Restart</a>
+                </li>
+                <li role="menu-item">
+                    <a href="#" onclick="shutDown(); return false;">Shut Down</a>
+                </li>
             </ul>
         </li>
         <li role="menu-item" tabindex="0" aria-haspopup="true">
@@ -375,15 +386,19 @@
             </ul>
         </li>
         <li role="menu-item" tabindex="0" aria-haspopup="true">
-            Special
+            Sites
             <ul role="menu">
                 <li role="menu-item">
-                    <a href="https://github.com/ben-gy" target="_blank">Open GitHub</a>
+                    <a href="https://github.com/ben-gy" target="_blank">GitHub</a>
                 </li>
                 <li role="menu-item">
-                    <a href="https://www.linkedin.com/in/benrichardsonco/" target="_blank">Open LinkedIn</a>
+                    <a href="https://www.linkedin.com/in/benrichardsonco/" target="_blank">LinkedIn</a>
                 </li>
-                <li class="divider"></li>
+            </ul>
+        </li>
+        <li role="menu-item" tabindex="0" aria-haspopup="true">
+            Apps
+            <ul role="menu">
                 <li role="menu-item">
                     <a href="#" onclick="toggleCalculator(); return false;">Calculator</a>
                 </li>
@@ -392,20 +407,6 @@
                 </li>
                 <li role="menu-item">
                     <a href="#" onclick="toggleNotePad(); return false;">Note Pad</a>
-                </li>
-                <li class="divider"></li>
-                <li role="menu-item">
-                    <a href="#" onclick="cleanUp(); return false;">Clean Up</a>
-                </li>
-                <li role="menu-item">
-                    <a href="#" onclick="emptyTrash(); return false;">Empty Trash</a>
-                </li>
-                <li class="divider"></li>
-                <li role="menu-item">
-                    <a href="#" onclick="restartSystem(); return false;">Restart</a>
-                </li>
-                <li role="menu-item">
-                    <a href="#" onclick="shutDown(); return false;">Shut Down</a>
                 </li>
             </ul>
         </li>
