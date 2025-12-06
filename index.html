@@ -394,6 +394,11 @@
                 padding: 12px 12px;
                 font-size: 16px;
             }
+            /* Hide File and Edit menus on mobile */
+            ul[role="menu-bar"] > [role="menu-item"]:nth-child(2),
+            ul[role="menu-bar"] > [role="menu-item"]:nth-child(3) {
+                display: none;
+            }
             ul[role="menu-bar"] > [role="menu-item"]:first-child {
                 padding-left: 16px;
             }
