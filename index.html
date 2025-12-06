@@ -7,6 +7,13 @@
     <title>Ben Richardson</title>
     <link rel="stylesheet" href="style.css">
     <style>
+        /* Disable text selection highlighting */
+        ::selection {
+            background: transparent;
+        }
+        ::-moz-selection {
+            background: transparent;
+        }
         /* Custom styles for interactive features */
         .apple-logo {
             display: inline-block;
@@ -24,6 +31,7 @@
         .window {
             position: absolute;
             cursor: default;
+            z-index: 10;
         }
         .title-bar {
             cursor: grab;
@@ -145,6 +153,16 @@
             padding: 6px 10px;
             cursor: pointer;
         }
+        /* Desktop grid system */
+        .desktop-grid {
+            position: fixed;
+            top: 28px; /* Below menu bar */
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
         /* Desktop icons */
         .desktop-icon {
             position: absolute;
@@ -154,6 +172,10 @@
             cursor: pointer;
             padding: 0.5rem;
             user-select: none;
+            width: 80px;
+            height: 80px;
+            pointer-events: auto;
+            box-sizing: border-box;
         }
         .desktop-icon:hover {
             background: rgba(0,0,0,0.1);
@@ -161,6 +183,13 @@
         .desktop-icon.selected {
             background: black;
             color: white;
+        }
+        .desktop-icon.selected img {
+            filter: invert(1);
+        }
+        .desktop-icon.dragging {
+            opacity: 0.7;
+            z-index: 5;
         }
         .desktop-icon img {
             width: 48px;
@@ -172,6 +201,7 @@
             font-size: 12px;
             margin-top: 4px;
             text-align: center;
+            white-space: nowrap;
         }
         .trash-icon.has-items img {
             transform: scale(1.1);
@@ -295,18 +325,17 @@
             height: 80px;
             overflow: hidden;
             position: relative;
+            border: 1px solid black;
+            margin-top: 0.5rem;
         }
         .credits-scroll {
             position: absolute;
             width: 100%;
-            animation: scrollCredits 10s linear infinite paused;
-        }
-        .credits-container:active .credits-scroll {
-            animation-play-state: running;
+            animation: scrollCredits 12s linear infinite;
         }
         @keyframes scrollCredits {
             0% { top: 80px; }
-            100% { top: -200px; }
+            100% { top: -180px; }
         }
         /* Mobile responsive styles */
         @media (max-width: 480px) {
@@ -355,30 +384,24 @@
         <div class="sad-mac-code" style="margin-top: 2rem; font-size: 12px;">(click to dismiss)</div>
     </div>
 
-    <!-- Desktop Icons -->
-    <div class="desktop-icon" id="hd-icon" style="right: 20px; top: 40px;" ondblclick="showMainWindow()">
-        <img src="icon/mac-hd.svg" alt="HD">
-        <span>Macintosh HD</span>
-    </div>
-    <div class="desktop-icon" id="email-icon" style="right: 20px; top: 120px;" ondblclick="toggleEmail()">
-        <img src="icon/email.svg" alt="Email">
-        <span>Email</span>
-    </div>
-    <div class="desktop-icon" id="internet-icon" style="right: 20px; top: 200px;" ondblclick="toggleSearch()">
-        <img src="icon/internet.svg" alt="Internet">
-        <span>Internet</span>
-    </div>
-    <div class="desktop-icon" id="github-icon" style="right: 20px; top: 280px;" ondblclick="window.open('https://github.com/ben-gy', '_blank')">
-        <img src="icon/document.svg" alt="GitHub">
-        <span>GitHub</span>
-    </div>
-    <div class="desktop-icon" id="linkedin-icon" style="right: 20px; top: 360px;" ondblclick="window.open('https://www.linkedin.com/in/benrichardsonco/', '_blank')">
-        <img src="icon/person.svg" alt="LinkedIn">
-        <span>LinkedIn</span>
-    </div>
-    <div class="desktop-icon trash-icon" id="trash-icon" style="right: 20px; bottom: 20px;" ondblclick="emptyTrash()">
-        <img src="icon/trash.svg" alt="Trash">
-        <span>Trash</span>
+    <!-- Desktop Grid with Icons -->
+    <div class="desktop-grid" id="desktop-grid">
+        <div class="desktop-icon" id="hd-icon" style="right: 10px; top: 10px;" ondblclick="showMainWindow()">
+            <img src="icon/mac-hd.svg" alt="HD">
+            <span>Macintosh HD</span>
+        </div>
+        <div class="desktop-icon" id="email-icon" style="left: 10px; top: 10px;" ondblclick="toggleEmail()">
+            <img src="icon/email.svg" alt="Email">
+            <span>Email</span>
+        </div>
+        <div class="desktop-icon" id="internet-icon" style="left: 10px; top: 90px;" ondblclick="toggleSearch()">
+            <img src="icon/internet.svg" alt="Internet">
+            <span>Internet</span>
+        </div>
+        <div class="desktop-icon trash-icon" id="trash-icon" style="right: 10px; bottom: 10px;" ondblclick="emptyTrash()">
+            <img src="icon/trash.svg" alt="Trash">
+            <span>Trash</span>
+        </div>
     </div>
 
     <!-- Menu Bar -->
@@ -388,10 +411,6 @@
             <ul role="menu">
                 <li role="menu-item">
                     <a href="#" onclick="showAboutMac(event)">About This Mac</a>
-                </li>
-                <li class="divider"></li>
-                <li role="menu-item">
-                    <a href="#" onclick="cleanUp(); return false;">Clean Up</a>
                 </li>
                 <li class="divider"></li>
                 <li role="menu-item">
@@ -421,7 +440,7 @@
                 </li>
                 <li class="divider"></li>
                 <li role="menu-item">
-                    <a href="#" onclick="closeMainWindow(); return false;">Close Window</a>
+                    <a href="#" onclick="closeAllWindows(); return false;">Close All Windows</a>
                 </li>
             </ul>
         </li>
@@ -434,10 +453,6 @@
                 <li class="divider"></li>
                 <li role="menu-item">
                     <a href="#" onclick="showFindDialog(); return false;">Find...</a>
-                </li>
-                <li class="divider"></li>
-                <li role="menu-item">
-                    <a href="#" onclick="document.execCommand('selectAll'); return false;">Select All</a>
                 </li>
             </ul>
         </li>
@@ -457,6 +472,10 @@
                 <li class="divider"></li>
                 <li role="menu-item">
                     <a href="#" onclick="location.reload(); return false;">Refresh</a>
+                </li>
+                <li class="divider"></li>
+                <li role="menu-item">
+                    <a href="#" onclick="cleanUp(); return false;">Clean Up</a>
                 </li>
             </ul>
         </li>
@@ -482,6 +501,16 @@
                 </li>
                 <li role="menu-item">
                     <a href="#" onclick="toggleNotePad(); return false;">Note Pad</a>
+                </li>
+                <li class="divider"></li>
+                <li role="menu-item">
+                    <a href="#" onclick="toggleEmail(); return false;">Email</a>
+                </li>
+                <li role="menu-item">
+                    <a href="#" onclick="toggleWhatsApp(); return false;">WhatsApp</a>
+                </li>
+                <li role="menu-item">
+                    <a href="#" onclick="toggleSearch(); return false;">Internet</a>
                 </li>
             </ul>
         </li>
@@ -647,7 +676,7 @@
                     <img src="icon/apple.svg" alt="Apple" style="width: 48px; height: 48px; margin-bottom: 1rem;">
                     <h2 style="margin: 0;">Ben Richardson OS</h2>
                     <p>Version 1.0</p>
-                    <div class="credits-container" title="Click and hold for credits">
+                    <div class="credits-container">
                         <div class="credits-scroll">
                             <p style="font-size: 0.8rem;">Built with <a href="https://github.com/sakofchit/system.css" target="_blank">system.css</a></p>
                             <p style="font-size: 0.8rem;">Created by Ben Richardson</p>
@@ -979,6 +1008,15 @@
             document.getElementById('trash-icon').classList.add('has-items');
         }
 
+        function closeAllWindows() {
+            const windows = ['main-window', 'calculator-window', 'puzzle-window', 'notepad-window', 'email-window', 'whatsapp-window', 'search-window'];
+            windows.forEach(function(id) {
+                document.getElementById(id).style.display = 'none';
+            });
+            trashHasItems = true;
+            document.getElementById('trash-icon').classList.add('has-items');
+        }
+
         function showMainWindow() {
             const win = document.getElementById('main-window');
             win.style.display = 'block';
@@ -1052,6 +1090,7 @@
 
         // ============ SPECIAL MENU FUNCTIONS ============
         function cleanUp() {
+            // Clean up windows
             const windows = ['main-window', 'calculator-window', 'puzzle-window', 'notepad-window', 'email-window', 'whatsapp-window', 'search-window'];
             let offset = 0;
             windows.forEach(function(id) {
@@ -1063,6 +1102,28 @@
                     offset += 30;
                     setTimeout(function() {
                         win.style.transition = '';
+                    }, 300);
+                }
+            });
+
+            // Reset desktop icons to original positions
+            const iconPositions = {
+                'hd-icon': { right: '10px', top: '10px', left: '', bottom: '' },
+                'email-icon': { left: '10px', top: '10px', right: '', bottom: '' },
+                'internet-icon': { left: '10px', top: '90px', right: '', bottom: '' },
+                'trash-icon': { right: '10px', bottom: '10px', left: '', top: '' }
+            };
+            Object.keys(iconPositions).forEach(function(id) {
+                const icon = document.getElementById(id);
+                if (icon) {
+                    icon.style.transition = 'all 0.3s ease';
+                    const pos = iconPositions[id];
+                    icon.style.left = pos.left;
+                    icon.style.right = pos.right;
+                    icon.style.top = pos.top;
+                    icon.style.bottom = pos.bottom;
+                    setTimeout(function() {
+                        icon.style.transition = '';
                     }, 300);
                 }
             });
@@ -1299,11 +1360,150 @@
             });
         });
 
-        // ============ DESKTOP ICON SELECTION ============
+        // ============ DESKTOP ICON SELECTION & DRAGGING ============
+        const GRID_SIZE = 80;
+        const GRID_PADDING = 10;
+
+        function snapToGrid(value) {
+            return Math.round((value - GRID_PADDING) / GRID_SIZE) * GRID_SIZE + GRID_PADDING;
+        }
+
         document.querySelectorAll('.desktop-icon').forEach(function(icon) {
+            let isDragging = false;
+            let hasMoved = false;
+            let startX, startY, iconStartX, iconStartY;
+            let clickTimeout;
+
+            icon.addEventListener('mousedown', function(e) {
+                if (e.button !== 0) return;
+                e.preventDefault();
+
+                // Capture position from bounding rect BEFORE modifying styles
+                const rect = icon.getBoundingClientRect();
+                const gridRect = document.getElementById('desktop-grid').getBoundingClientRect();
+                const leftPos = rect.left - gridRect.left;
+                const topPos = rect.top - gridRect.top;
+
+                isDragging = true;
+                hasMoved = false;
+                icon.classList.add('dragging');
+
+                startX = e.clientX;
+                startY = e.clientY;
+                iconStartX = leftPos;
+                iconStartY = topPos;
+
+                // Convert to left/top positioning
+                icon.style.left = leftPos + 'px';
+                icon.style.top = topPos + 'px';
+                icon.style.right = '';
+                icon.style.bottom = '';
+            });
+
             icon.addEventListener('click', function(e) {
+                if (hasMoved) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return;
+                }
                 document.querySelectorAll('.desktop-icon').forEach(i => i.classList.remove('selected'));
                 this.classList.add('selected');
+            });
+
+            document.addEventListener('mousemove', function(e) {
+                if (!isDragging) return;
+
+                const deltaX = e.clientX - startX;
+                const deltaY = e.clientY - startY;
+
+                if (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5) {
+                    hasMoved = true;
+                }
+
+                const gridRect = document.getElementById('desktop-grid').getBoundingClientRect();
+                let newX = iconStartX + deltaX;
+                let newY = iconStartY + deltaY;
+
+                // Constrain to grid bounds
+                newX = Math.max(GRID_PADDING, Math.min(newX, gridRect.width - GRID_SIZE - GRID_PADDING));
+                newY = Math.max(GRID_PADDING, Math.min(newY, gridRect.height - GRID_SIZE - GRID_PADDING));
+
+                icon.style.left = newX + 'px';
+                icon.style.top = newY + 'px';
+            });
+
+            document.addEventListener('mouseup', function(e) {
+                if (!isDragging) return;
+                isDragging = false;
+                icon.classList.remove('dragging');
+
+                if (hasMoved) {
+                    // Snap to grid
+                    const gridRect = document.getElementById('desktop-grid').getBoundingClientRect();
+                    let currentX = parseFloat(icon.style.left);
+                    let currentY = parseFloat(icon.style.top);
+
+                    icon.style.left = snapToGrid(currentX) + 'px';
+                    icon.style.top = snapToGrid(currentY) + 'px';
+                }
+            });
+
+            // Touch support for mobile
+            icon.addEventListener('touchstart', function(e) {
+                const touch = e.touches[0];
+                isDragging = true;
+                hasMoved = false;
+                icon.classList.add('dragging');
+
+                const rect = icon.getBoundingClientRect();
+                const gridRect = document.getElementById('desktop-grid').getBoundingClientRect();
+
+                startX = touch.clientX;
+                startY = touch.clientY;
+                iconStartX = rect.left - gridRect.left;
+                iconStartY = rect.top - gridRect.top;
+
+                icon.style.left = iconStartX + 'px';
+                icon.style.top = iconStartY + 'px';
+                icon.style.right = '';
+                icon.style.bottom = '';
+            }, { passive: true });
+
+            icon.addEventListener('touchmove', function(e) {
+                if (!isDragging) return;
+                const touch = e.touches[0];
+
+                const deltaX = touch.clientX - startX;
+                const deltaY = touch.clientY - startY;
+
+                if (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5) {
+                    hasMoved = true;
+                }
+
+                const gridRect = document.getElementById('desktop-grid').getBoundingClientRect();
+                let newX = iconStartX + deltaX;
+                let newY = iconStartY + deltaY;
+
+                newX = Math.max(GRID_PADDING, Math.min(newX, gridRect.width - GRID_SIZE - GRID_PADDING));
+                newY = Math.max(GRID_PADDING, Math.min(newY, gridRect.height - GRID_SIZE - GRID_PADDING));
+
+                icon.style.left = newX + 'px';
+                icon.style.top = newY + 'px';
+            }, { passive: true });
+
+            icon.addEventListener('touchend', function(e) {
+                if (!isDragging) return;
+                isDragging = false;
+                icon.classList.remove('dragging');
+
+                if (hasMoved) {
+                    const gridRect = document.getElementById('desktop-grid').getBoundingClientRect();
+                    let currentX = parseFloat(icon.style.left);
+                    let currentY = parseFloat(icon.style.top);
+
+                    icon.style.left = snapToGrid(currentX) + 'px';
+                    icon.style.top = snapToGrid(currentY) + 'px';
+                }
             });
         });
 
