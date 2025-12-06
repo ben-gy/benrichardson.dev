@@ -348,6 +348,7 @@
         @media (max-width: 480px) {
             html, body {
                 overflow: hidden;
+                overflow-x: hidden;
                 height: 100%;
                 position: fixed;
                 width: 100%;
@@ -357,14 +358,22 @@
                 width: calc(100% - 1rem) !important;
                 left: 0.5rem !important;
                 max-width: none;
+                overflow: hidden;
+            }
+            .window .title-bar {
+                overflow: hidden;
             }
             .desktop-icon {
                 display: none;
             }
+            ul[role="menu-bar"] {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
             ul[role="menu-bar"] > [role="menu-item"],
             .menu-clock {
-                padding: 8px 6px;
-                font-size: 12px;
+                padding: 10px 8px;
+                font-size: 14px;
             }
             .calculator-window,
             .puzzle-window,
