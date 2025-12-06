@@ -357,11 +357,27 @@
 
     <!-- Desktop Icons -->
     <div class="desktop-icon" id="hd-icon" style="right: 20px; top: 40px;" ondblclick="showMainWindow()">
-        <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='4' y='6' width='24' height='18' fill='white' stroke='black' stroke-width='2'/><rect x='6' y='8' width='20' height='12' fill='%23ccc'/><rect x='6' y='20' width='20' height='2' fill='black'/><circle cx='24' cy='21' r='1' fill='white'/></svg>" alt="HD">
+        <img src="icon/mac-hd.svg" alt="HD">
         <span>Macintosh HD</span>
     </div>
+    <div class="desktop-icon" id="email-icon" style="right: 20px; top: 120px;" ondblclick="toggleEmail()">
+        <img src="icon/email.svg" alt="Email">
+        <span>Email</span>
+    </div>
+    <div class="desktop-icon" id="internet-icon" style="right: 20px; top: 200px;" ondblclick="toggleSearch()">
+        <img src="icon/internet.svg" alt="Internet">
+        <span>Internet</span>
+    </div>
+    <div class="desktop-icon" id="github-icon" style="right: 20px; top: 280px;" ondblclick="window.open('https://github.com/ben-gy', '_blank')">
+        <img src="icon/document.svg" alt="GitHub">
+        <span>GitHub</span>
+    </div>
+    <div class="desktop-icon" id="linkedin-icon" style="right: 20px; top: 360px;" ondblclick="window.open('https://www.linkedin.com/in/benrichardsonco/', '_blank')">
+        <img src="icon/person.svg" alt="LinkedIn">
+        <span>LinkedIn</span>
+    </div>
     <div class="desktop-icon trash-icon" id="trash-icon" style="right: 20px; bottom: 20px;" ondblclick="emptyTrash()">
-        <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='8' y='8' width='16' height='20' fill='white' stroke='black' stroke-width='2'/><rect x='6' y='6' width='20' height='4' fill='white' stroke='black' stroke-width='2'/><line x1='12' y1='12' x2='12' y2='24' stroke='black'/><line x1='16' y1='12' x2='16' y2='24' stroke='black'/><line x1='20' y1='12' x2='20' y2='24' stroke='black'/></svg>" alt="Trash">
+        <img src="icon/trash.svg" alt="Trash">
         <span>Trash</span>
     </div>
 
@@ -603,6 +619,26 @@
         </div>
     </div>
 
+    <!-- Internet Search Window -->
+    <div class="window search-window" id="search-window" style="display: none; width: 300px;">
+        <div class="title-bar" id="search-title-bar">
+            <button aria-label="Close" class="close" onclick="toggleSearch()"></button>
+            <h1 class="title">Internet Search</h1>
+            <button aria-label="Resize" disabled class="hidden"></button>
+        </div>
+        <div class="separator"></div>
+        <div class="window-pane">
+            <section class="field-row" style="justify-content: flex-start">
+                <label for="search-input" class="modeless-text">Search:</label>
+                <input id="search-input" type="text" style="flex: 1;" placeholder="Search the web...">
+            </section>
+            <section class="field-row" style="justify-content: flex-end; margin-top: 0.5rem;">
+                <button class="btn" onclick="toggleSearch()">Cancel</button>
+                <button class="btn btn-default" onclick="searchGoogle()">Search</button>
+            </section>
+        </div>
+    </div>
+
     <!-- About This Mac Modal -->
     <div class="modal-overlay" id="about-mac-modal">
         <div class="modal-dialog outer-border">
@@ -616,6 +652,7 @@
                             <p style="font-size: 0.8rem;">Built with <a href="https://github.com/sakofchit/system.css" target="_blank">system.css</a></p>
                             <p style="font-size: 0.8rem;">Created by Ben Richardson</p>
                             <p style="font-size: 0.8rem;">system.css by @sakofchit</p>
+                            <p style="font-size: 0.8rem;">Icons by Susan Kare (1984)</p>
                             <p style="font-size: 0.8rem;">Inspired by Apple Macintosh</p>
                             <p style="font-size: 0.8rem;">© 1984-2024</p>
                             <p style="font-size: 0.8rem;">640K ought to be enough.</p>
@@ -738,6 +775,28 @@
             const body = encodeURIComponent(document.getElementById('email-body').value);
             window.location.href = 'mailto:hi@benrichardson.dev?subject=' + subject + '&body=' + body;
             toggleEmail();
+        }
+
+        // ============ INTERNET SEARCH ============
+        function toggleSearch() {
+            const search = document.getElementById('search-window');
+            if (search.style.display === 'none') {
+                search.style.display = 'block';
+                search.style.left = '100px';
+                search.style.top = '130px';
+                document.getElementById('search-input').value = '';
+                document.getElementById('search-input').focus();
+            } else {
+                search.style.display = 'none';
+            }
+        }
+
+        function searchGoogle() {
+            const query = document.getElementById('search-input').value;
+            if (query.trim()) {
+                window.open('https://www.google.com/search?q=' + encodeURIComponent(query), '_blank');
+                toggleSearch();
+            }
         }
 
         // ============ WHATSAPP SECRET CONTACT ============
@@ -894,6 +953,14 @@
         makeDraggable(document.getElementById('notepad-window'), document.getElementById('notepad-title-bar'));
         makeDraggable(document.getElementById('email-window'), document.getElementById('email-title-bar'));
         makeDraggable(document.getElementById('whatsapp-window'), document.getElementById('whatsapp-title-bar'));
+        makeDraggable(document.getElementById('search-window'), document.getElementById('search-title-bar'));
+
+        // Enter key support for search
+        document.getElementById('search-input').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                searchGoogle();
+            }
+        });
 
         // ============ WINDOW FUNCTIONS ============
         function centerWindow(windowEl) {
@@ -985,7 +1052,7 @@
 
         // ============ SPECIAL MENU FUNCTIONS ============
         function cleanUp() {
-            const windows = ['main-window', 'calculator-window', 'puzzle-window', 'notepad-window', 'email-window', 'whatsapp-window'];
+            const windows = ['main-window', 'calculator-window', 'puzzle-window', 'notepad-window', 'email-window', 'whatsapp-window', 'search-window'];
             let offset = 0;
             windows.forEach(function(id) {
                 const win = document.getElementById(id);

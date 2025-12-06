@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="black">
+  <!-- Document/Code icon - Susan Kare style (for GitHub) -->
+  <!-- Document outline with folded corner -->
+  <path d="M6 2 L6 30 L26 30 L26 8 L20 2 Z" fill="none" stroke="black" stroke-width="2"/>
+  <!-- Folded corner -->
+  <path d="M20 2 L20 8 L26 8" fill="none" stroke="black" stroke-width="2"/>
+  <!-- Text lines -->
+  <rect x="9" y="12" width="14" height="2"/>
+  <rect x="9" y="17" width="14" height="2"/>
+  <rect x="9" y="22" width="10" height="2"/>
+</svg>

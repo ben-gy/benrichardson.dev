@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="black">
+  <!-- Classic Macintosh Hard Drive icon - Susan Kare style -->
+  <!-- Outer frame -->
+  <rect x="2" y="6" width="28" height="20" fill="none" stroke="black" stroke-width="2"/>
+  <!-- Screen area -->
+  <rect x="5" y="9" width="22" height="11" fill="black"/>
+  <!-- Disk slot -->
+  <rect x="8" y="22" width="16" height="2" fill="black"/>
+  <!-- LED light -->
+  <rect x="24" y="22" width="3" height="2" fill="black"/>
+</svg>

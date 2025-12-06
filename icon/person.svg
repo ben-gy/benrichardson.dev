@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="black">
+  <!-- Person/Contact icon - Susan Kare style (for LinkedIn) -->
+  <!-- Head -->
+  <circle cx="16" cy="10" r="6" fill="none" stroke="black" stroke-width="2"/>
+  <!-- Body/shoulders -->
+  <path d="M4 30 L4 24 Q4 18 16 18 Q28 18 28 24 L28 30" fill="none" stroke="black" stroke-width="2"/>
+</svg>
