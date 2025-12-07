@@ -110,6 +110,7 @@
         }
         .calculator-window {
             width: 180px;
+            min-width: 180px;
         }
         .calc-display {
             background: white;
@@ -172,9 +173,21 @@
         }
         /* Menu bar clock */
         .menu-clock {
-            margin-left: auto;
             padding: 6px 10px;
             cursor: pointer;
+        }
+        /* Menu bar sound icon */
+        .menu-sound {
+            margin-left: auto;
+            padding: 4px 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        .menu-sound img {
+            width: 16px;
+            height: 16px;
+            image-rendering: pixelated;
         }
         /* Desktop grid system */
         .desktop-grid {
@@ -241,6 +254,7 @@
         .startrek-window {
             width: 360px;
             min-width: 340px;
+            min-height: 380px;
         }
         .startrek-output {
             font-family: 'ChiKareGo2', monospace;
@@ -608,10 +622,6 @@
                 <li role="menu-item">
                     <a href="#" onclick="cleanUp(); return false;">Clean Up</a>
                 </li>
-                <li class="divider"></li>
-                <li role="menu-item">
-                    <a href="#" onclick="toggleSound(); return false;"><span id="sound-check">✓</span> Sound</a>
-                </li>
             </ul>
         </li>
         <li role="menu-item" tabindex="0" aria-haspopup="true">
@@ -665,6 +675,9 @@
                     <a href="#" onclick="toggleHamurabi(); return false;">Hamurabi</a>
                 </li>
             </ul>
+        </li>
+        <li class="menu-sound" id="menu-sound" onclick="toggleSound()" title="Sound">
+            <img src="icon/sound-off.svg" alt="Sound" id="sound-icon">
         </li>
         <li class="menu-clock" id="menu-clock" onclick="showDate()"></li>
     </ul>
@@ -1041,7 +1054,7 @@
         let audioContext = null;
         const audioBuffers = {};
         const activeSources = {};
-        let soundEnabled = true;
+        let soundEnabled = false;
 
         // Initialize audio context on first user interaction
         function initAudioContext() {
@@ -1093,8 +1106,8 @@
 
         function toggleSound() {
             soundEnabled = !soundEnabled;
-            const check = document.getElementById('sound-check');
-            check.textContent = soundEnabled ? '✓' : '';
+            const icon = document.getElementById('sound-icon');
+            icon.src = soundEnabled ? 'icon/sound-on.svg' : 'icon/sound-off.svg';
             if (!soundEnabled) {
                 // Stop all active sounds
                 Object.keys(activeSources).forEach(name => stopSound(name));
@@ -2498,6 +2511,7 @@
         }
 
         let trashHasItems = false;
+        let trashedIcons = [];
 
         function setTrashFull(isFull) {
             trashHasItems = isFull;
@@ -2509,6 +2523,13 @@
                 trashImg.src = 'icon/Trash empty.png';
                 document.getElementById('trash-icon').classList.remove('has-items');
             }
+        }
+
+        function addToTrash(iconId) {
+            if (!trashedIcons.includes(iconId)) {
+                trashedIcons.push(iconId);
+            }
+            setTrashFull(true);
         }
 
         function closeMainWindow() {
@@ -2543,7 +2564,30 @@
 
         function emptyTrash() {
             if (trashHasItems) {
-                showMainWindow();
+                // Restore all trashed icons to their original positions
+                const iconPositions = {
+                    'hd-icon': { right: '10px', top: '10px', left: '', bottom: '' },
+                    'email-icon': { left: '10px', top: '10px', right: '', bottom: '' },
+                    'internet-icon': { left: '10px', top: '90px', right: '', bottom: '' }
+                };
+                trashedIcons.forEach(function(iconId) {
+                    const icon = document.getElementById(iconId);
+                    if (icon && iconPositions[iconId]) {
+                        icon.style.display = '';
+                        icon.style.transition = 'all 0.3s ease';
+                        Object.keys(iconPositions[iconId]).forEach(function(key) {
+                            icon.style[key] = iconPositions[iconId][key];
+                        });
+                        setTimeout(function() {
+                            icon.style.transition = '';
+                        }, 300);
+                    }
+                });
+                // Show main window if it was trashed
+                if (trashedIcons.includes('hd-icon')) {
+                    showMainWindow();
+                }
+                trashedIcons = [];
                 setTrashFull(false);
             } else {
                 showAlert('The Trash is already empty.');
@@ -3002,7 +3046,7 @@
                 if (icon.id === 'hd-icon') {
                     // Dragging system disk to trash causes crash
                     icon.style.display = 'none';
-                    setTrashFull(true);
+                    addToTrash(icon.id);
                     playSound('beep');
                     setTimeout(function() {
                         showSadMac('0F0001', true);
@@ -3010,9 +3054,9 @@
                     return true;
                 } else if (icon.id === 'email-icon' || icon.id === 'internet-icon') {
                     // Hide the icon (move to trash)
-                    playSound('click');
+                    playSound('beep');
                     icon.style.display = 'none';
-                    setTrashFull(true);
+                    addToTrash(icon.id);
                     return true;
                 }
             }
