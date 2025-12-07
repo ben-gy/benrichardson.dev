@@ -130,6 +130,66 @@
             margin: 0;
             font-family: Chicago_12, 'ChiKareGo2', monospace;
         }
+        /* About This Mac */
+        .about-mac-contents {
+            font-family: Chicago_12, 'ChiKareGo2', monospace;
+            min-width: 280px;
+            text-align: left;
+        }
+        .about-mac-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid black;
+        }
+        .about-mac-icon {
+            width: 32px;
+            height: 32px;
+        }
+        .about-mac-info {
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+        .about-mac-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2px;
+        }
+        .about-mac-divider {
+            border-top: 1px dotted black;
+            margin: 8px 0;
+        }
+        .about-mac-memory {
+            margin: 8px 0;
+            padding-left: 12px;
+        }
+        .about-mac-bar {
+            height: 12px;
+            border: 1px solid black;
+            background: white;
+        }
+        .about-mac-bar-fill {
+            height: 100%;
+            background: repeating-linear-gradient(
+                90deg,
+                black 0px,
+                black 2px,
+                white 2px,
+                white 4px
+            );
+        }
+        .about-mac-credits {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #666;
+            border-top: 1px solid black;
+            padding-top: 0.5rem;
+        }
+        .about-mac-credits p {
+            margin: 0;
+        }
         .calculator-window {
             width: 220px;
             min-width: 220px;
@@ -276,7 +336,7 @@
         .startrek-window {
             width: 360px;
             min-width: 340px;
-            min-height: 380px;
+            min-height: 480px;
         }
         .startrek-output {
             font-family: 'ChiKareGo2', monospace;
@@ -284,10 +344,16 @@
             border: 1px solid black;
             padding: 0.5rem;
             margin: 0 0 0.5rem 0;
-            height: 240px;
+            height: 320px;
             overflow-y: auto;
             white-space: pre;
             line-height: 1.2;
+        }
+        .startrek-window .btn {
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         /* Blackjack */
         .blackjack-window {
@@ -308,6 +374,12 @@
         .blackjack-buttons {
             display: flex;
             gap: 4px;
+            justify-content: center;
+        }
+        .blackjack-buttons .btn {
+            text-align: center;
+            display: flex;
+            align-items: center;
             justify-content: center;
         }
         /* Mastermind */
@@ -963,38 +1035,53 @@
     <div class="modal-overlay" id="about-mac-modal">
         <div class="modal-dialog outer-border">
             <div class="inner-border">
-                <div class="modal-contents">
-                    <img src="icon/apple.svg" alt="Apple" style="width: 48px; height: 48px; margin-bottom: 1rem;">
-                    <h2 style="margin: 0;">Ben Richardson OS</h2>
-                    <p>Version 1.0</p>
-                    <p style="font-size: 0.7rem; color: #666; margin: 0;">Build <span id="build-hash">41522df</span> • Updated <span id="build-date">December 07, 2025</span></p>
-                    <div class="credits-container">
-                        <div class="credits-scroll">
-                            <p style="font-size: 0.8rem;">Created by Ben Richardson</p>
-                            <p style="font-size: 0.8rem;">&nbsp;</p>
-                            <p style="font-size: 0.8rem; font-weight: bold;">--- UI Framework ---</p>
-                            <p style="font-size: 0.8rem;"><a href="https://github.com/sakofchit/system.css" target="_blank">system.css</a> by @sakofchit</p>
-                            <p style="font-size: 0.8rem;">Icons by Susan Kare (1984)</p>
-                            <p style="font-size: 0.8rem;">&nbsp;</p>
-                            <p style="font-size: 0.8rem; font-weight: bold;">--- Classic Games ---</p>
-                            <p style="font-size: 0.8rem;">Lunar Lander by Jim Storer (1969)</p>
-                            <p style="font-size: 0.8rem;">Star Trek by Mike Mayfield (1971)</p>
-                            <p style="font-size: 0.8rem;">Hamurabi by Doug Dyment (1968)</p>
-                            <p style="font-size: 0.8rem;">Mastermind by Steve Wozniak (1976)</p>
-                            <p style="font-size: 0.8rem;">15-Puzzle by Sam Loyd (1878)</p>
-                            <p style="font-size: 0.8rem;">&nbsp;</p>
-                            <p style="font-size: 0.8rem; font-weight: bold;">--- Publications ---</p>
-                            <p style="font-size: 0.8rem;">"BASIC Computer Games" (1978)</p>
-                            <p style="font-size: 0.8rem;">by David Ahl</p>
-                            <p style="font-size: 0.8rem;">&nbsp;</p>
-                            <p style="font-size: 0.8rem;">Inspired by Apple Macintosh</p>
-                            <p style="font-size: 0.8rem;">and the Apple 1 (1976)</p>
-                            <p style="font-size: 0.8rem;">&nbsp;</p>
-                            <p style="font-size: 0.8rem; font-weight: bold;">--- Built With ---</p>
-                            <p style="font-size: 0.8rem;"><a href="https://claude.com/claude-code" target="_blank">Claude Code</a> by Anthropic</p>
-                            <p style="font-size: 0.8rem;">&nbsp;</p>
-                            <p style="font-size: 0.8rem;">© 2025 Ben Richardson</p>
+                <div class="modal-contents about-mac-contents">
+                    <div class="about-mac-header">
+                        <img src="icon/apple.svg" alt="Apple" class="about-mac-icon">
+                        <div class="about-mac-title">
+                            <div style="font-size: 1.2rem; font-weight: bold;">About This Macintosh</div>
                         </div>
+                    </div>
+                    <div class="about-mac-info">
+                        <div class="about-mac-row">
+                            <span>System Software</span>
+                            <span>Ben Richardson OS 1.0</span>
+                        </div>
+                        <div class="about-mac-row">
+                            <span>Macintosh</span>
+                            <span>128K</span>
+                        </div>
+                        <div class="about-mac-divider"></div>
+                        <div class="about-mac-row">
+                            <span>Total Memory</span>
+                            <span id="about-total-mem">128K</span>
+                        </div>
+                        <div class="about-mac-memory">
+                            <div class="about-mac-row" style="margin-bottom: 4px;">
+                                <span>System</span>
+                                <span id="about-system-mem">42K</span>
+                            </div>
+                            <div class="about-mac-bar">
+                                <div class="about-mac-bar-fill" id="about-system-bar" style="width: 33%;"></div>
+                            </div>
+                            <div class="about-mac-row" style="margin-bottom: 4px; margin-top: 8px;">
+                                <span>Finder</span>
+                                <span id="about-finder-mem">56K</span>
+                            </div>
+                            <div class="about-mac-bar">
+                                <div class="about-mac-bar-fill" id="about-finder-bar" style="width: 44%;"></div>
+                            </div>
+                        </div>
+                        <div class="about-mac-divider"></div>
+                        <div class="about-mac-row">
+                            <span>Largest Unused Block</span>
+                            <span id="about-free-mem">30K</span>
+                        </div>
+                    </div>
+                    <div class="about-mac-credits">
+                        <p>© 2025 Ben Richardson</p>
+                        <p style="font-size: 0.7rem; margin-top: 4px;">Inspired by Apple Macintosh (1984)</p>
+                        <p style="font-size: 0.7rem;">UI: <a href="https://github.com/sakofchit/system.css" target="_blank">system.css</a> • Icons: Susan Kare</p>
                     </div>
                     <button class="btn btn-default" onclick="hideModal('about-mac-modal')" style="margin-top: 1rem;">OK</button>
                 </div>
@@ -2733,12 +2820,99 @@
             document.getElementById('find-input').focus();
         }
 
+        let lastFindQuery = '';
+        let findHighlights = [];
+
         function doFind() {
-            const query = document.getElementById('find-input').value;
-            if (query) {
-                window.find(query);
+            const query = document.getElementById('find-input').value.trim();
+            if (!query) {
+                hideModal('find-modal');
+                return;
             }
+
+            // Clear previous highlights
+            clearFindHighlights();
+
+            // Search through all visible text in windows
+            const windows = document.querySelectorAll('.window');
+            let foundCount = 0;
+
+            windows.forEach(function(win) {
+                if (win.style.display === 'none') return;
+
+                const pane = win.querySelector('.window-pane');
+                if (!pane) return;
+
+                // Search in text content
+                const walker = document.createTreeWalker(
+                    pane,
+                    NodeFilter.SHOW_TEXT,
+                    null,
+                    false
+                );
+
+                const textNodes = [];
+                while (walker.nextNode()) {
+                    textNodes.push(walker.currentNode);
+                }
+
+                textNodes.forEach(function(node) {
+                    const text = node.nodeValue;
+                    const lowerText = text.toLowerCase();
+                    const lowerQuery = query.toLowerCase();
+                    let index = lowerText.indexOf(lowerQuery);
+
+                    if (index !== -1) {
+                        // Found a match - highlight it
+                        const span = document.createElement('span');
+                        span.className = 'find-highlight';
+                        span.style.cssText = 'background: black; color: white;';
+
+                        const before = text.substring(0, index);
+                        const match = text.substring(index, index + query.length);
+                        const after = text.substring(index + query.length);
+
+                        const parent = node.parentNode;
+                        const beforeNode = document.createTextNode(before);
+                        span.textContent = match;
+                        const afterNode = document.createTextNode(after);
+
+                        parent.insertBefore(beforeNode, node);
+                        parent.insertBefore(span, node);
+                        parent.insertBefore(afterNode, node);
+                        parent.removeChild(node);
+
+                        findHighlights.push(span);
+                        foundCount++;
+
+                        // Scroll first match into view
+                        if (foundCount === 1) {
+                            span.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            bringToFront(win);
+                        }
+                    }
+                });
+            });
+
+            lastFindQuery = query;
             hideModal('find-modal');
+
+            if (foundCount === 0) {
+                showAlert('"' + query + '" not found.');
+            } else {
+                showAlert('Found ' + foundCount + ' match' + (foundCount > 1 ? 'es' : '') + '.');
+            }
+        }
+
+        function clearFindHighlights() {
+            findHighlights.forEach(function(span) {
+                if (span.parentNode) {
+                    const text = span.textContent;
+                    const textNode = document.createTextNode(text);
+                    span.parentNode.replaceChild(textNode, span);
+                }
+            });
+            findHighlights = [];
         }
 
         // ============ ZOOM FUNCTIONS ============
@@ -2810,9 +2984,15 @@
             playSound('click');
             const shutdownScreen = document.createElement('div');
             shutdownScreen.id = 'shutdown-screen';
-            shutdownScreen.style.cssText = 'background:black;color:white;font-family:Chicago,ChiKareGo2,monospace;padding:2rem;text-align:center;position:fixed;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2rem;z-index:10001;cursor:pointer;';
-            shutdownScreen.innerHTML = '<div>It is now safe to turn off<br>your computer.</div><div style="font-size:12px;">(click to restart)</div>';
-            shutdownScreen.onclick = function() { location.reload(); };
+            shutdownScreen.style.cssText = 'background:black;color:white;font-family:Chicago_12,ChiKareGo2,monospace;padding:2rem;text-align:center;position:fixed;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2rem;z-index:10001;cursor:pointer;';
+            shutdownScreen.innerHTML = '<div>It is now safe to turn off<br>your computer.</div><div style="font-size:12px;">(press any key or click to restart)</div>';
+
+            function restartOnInteraction() {
+                location.reload();
+            }
+
+            shutdownScreen.onclick = restartOnInteraction;
+            document.addEventListener('keydown', restartOnInteraction);
             document.body.appendChild(shutdownScreen);
         }
 
