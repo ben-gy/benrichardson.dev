@@ -1039,8 +1039,6 @@
             if (!audioContext) {
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 // Preload all sounds
-                loadSound('click', 'sounds/click.wav');
-                loadSound('key', 'sounds/key.wav');
                 loadSound('beep', 'sounds/beep.wav');
                 loadSound('startup', 'sounds/startup.wav');
                 loadSound('death', 'sounds/death.wav');
@@ -2451,28 +2449,10 @@
             }
         });
 
-        // Global mouse click sound - plays on mousedown and mouseup like a real mouse
+        // Initialize audio on first interaction
         document.addEventListener('mousedown', function(e) {
-            initAudioContext();  // Initialize on first click
-            playSound('click');
-        });
-        document.addEventListener('mouseup', function(e) {
-            playSound('click');
-        });
-
-        // Global keyboard sound - plays on keydown and keyup like a mechanical keyboard
-        document.addEventListener('keydown', function(e) {
-            // Don't play for modifier keys alone
-            if (e.key.length === 1 || ['Enter', 'Backspace', 'Tab', 'Escape', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space'].includes(e.key) || e.key === ' ') {
-                playSound('key');
-            }
-        });
-        document.addEventListener('keyup', function(e) {
-            // Key release sound
-            if (e.key.length === 1 || ['Enter', 'Backspace', 'Tab', 'Escape', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space'].includes(e.key) || e.key === ' ') {
-                playSound('key');
-            }
-        });
+            initAudioContext();
+        }, { once: true });
 
         // Enter key support for lander
         document.getElementById('lander-input').addEventListener('keydown', function(e) {
