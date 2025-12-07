@@ -48,9 +48,13 @@
             cursor: default;
             z-index: 10;
             resize: both;
+            overflow: hidden;
+            min-width: 200px;
+            min-height: 120px;
+        }
+        .window-pane {
             overflow: auto;
-            min-width: 150px;
-            min-height: 100px;
+            max-height: calc(100% - 30px);
         }
         .title-bar {
             cursor: grab;
@@ -236,6 +240,7 @@
         /* Star Trek */
         .startrek-window {
             width: 360px;
+            min-width: 340px;
         }
         .startrek-output {
             font-family: 'ChiKareGo2', monospace;
@@ -251,6 +256,7 @@
         /* Blackjack */
         .blackjack-window {
             width: 260px;
+            min-width: 240px;
         }
         .blackjack-output {
             font-family: 'ChiKareGo2', monospace;
@@ -271,6 +277,7 @@
         /* Mastermind */
         .mastermind-window {
             width: 280px;
+            min-width: 260px;
         }
         .mastermind-output {
             font-family: 'ChiKareGo2', monospace;
@@ -286,6 +293,7 @@
         /* Hamurabi */
         .hamurabi-window {
             width: 320px;
+            min-width: 300px;
         }
         .hamurabi-output {
             font-family: 'ChiKareGo2', monospace;
@@ -300,7 +308,8 @@
         }
         /* Puzzle game */
         .puzzle-window {
-            width: 200px;
+            width: 220px;
+            min-width: 220px;
         }
         .puzzle-grid {
             display: grid;
@@ -1096,9 +1105,11 @@
         function toggleEmail() {
             const email = document.getElementById('email-window');
             if (email.style.display === 'none') {
+                if (!checkMemory()) return;
                 email.style.display = 'block';
                 email.style.left = '80px';
                 email.style.top = '90px';
+                bringToFront(email);
                 document.getElementById('email-subject').value = '';
                 document.getElementById('email-body').value = '';
                 document.getElementById('email-subject').focus();
@@ -1123,10 +1134,12 @@
         function toggleSearch() {
             const search = document.getElementById('search-window');
             if (search.style.display === 'none') {
+                if (!checkMemory()) return;
                 playSound('dialup');
                 search.style.display = 'block';
                 search.style.left = '100px';
                 search.style.top = '130px';
+                bringToFront(search);
                 document.getElementById('search-input').value = '';
                 document.getElementById('search-input').focus();
             } else {
@@ -1159,9 +1172,11 @@
         function toggleLander() {
             const lander = document.getElementById('lander-window');
             if (lander.style.display === 'none') {
+                if (!checkMemory()) return;
                 lander.style.display = 'block';
                 lander.style.left = '120px';
                 lander.style.top = '80px';
+                bringToFront(lander);
                 initLander();
                 updateLanderDisplay();
                 document.getElementById('lander-input').value = '';
@@ -1370,9 +1385,11 @@
         function toggleStartrek() {
             const win = document.getElementById('startrek-window');
             if (win.style.display === 'none') {
+                if (!checkMemory()) return;
                 win.style.display = 'block';
                 win.style.left = '60px';
                 win.style.top = '60px';
+                bringToFront(win);
                 initTrek();
                 trekOutput(getWelcome() + '\n\n' + shortRangeScan());
                 document.getElementById('startrek-input').value = '';
@@ -1903,9 +1920,11 @@
         function toggleBlackjack() {
             const win = document.getElementById('blackjack-window');
             if (win.style.display === 'none') {
+                if (!checkMemory()) return;
                 win.style.display = 'block';
                 win.style.left = '80px';
                 win.style.top = '70px';
+                bringToFront(win);
                 initBlackjack();
                 bjNewGame();
             } else {
@@ -2050,9 +2069,11 @@
         function toggleMastermind() {
             const win = document.getElementById('mastermind-window');
             if (win.style.display === 'none') {
+                if (!checkMemory()) return;
                 win.style.display = 'block';
                 win.style.left = '100px';
                 win.style.top = '80px';
+                bringToFront(win);
                 initMastermind();
                 mmUpdateDisplay();
                 document.getElementById('mastermind-input').value = '';
@@ -2305,9 +2326,11 @@
         function toggleHamurabi() {
             const win = document.getElementById('hamurabi-window');
             if (win.style.display === 'none') {
+                if (!checkMemory()) return;
                 win.style.display = 'block';
                 win.style.left = '120px';
                 win.style.top = '60px';
+                bringToFront(win);
                 initHamurabi();
                 hamUpdateDisplay();
                 document.getElementById('hamurabi-input').value = '';
@@ -2385,6 +2408,11 @@
             function endDrag() {
                 isDragging = false;
             }
+
+            // Click to bring to front
+            windowEl.addEventListener('mousedown', function() {
+                bringToFront(windowEl);
+            });
 
             // Mouse events
             handleEl.addEventListener('mousedown', function(e) {
@@ -2642,8 +2670,14 @@
             document.getElementById('sad-mac-screen').classList.remove('visible');
         }
 
+        let maxZIndex = 10;
+
+        function bringToFront(windowEl) {
+            maxZIndex++;
+            windowEl.style.zIndex = maxZIndex;
+        }
+
         function checkMemory() {
-            const openWindows = document.querySelectorAll('.window').length;
             let count = 0;
             document.querySelectorAll('.window').forEach(function(w) {
                 if (w.style.display !== 'none') count++;
@@ -2667,10 +2701,11 @@
         function toggleLicence() {
             const licence = document.getElementById('licence-window');
             if (licence.style.display === 'none') {
-                playSound('click');
+                if (!checkMemory()) return;
                 licence.style.display = 'block';
                 licence.style.left = '100px';
                 licence.style.top = '80px';
+                bringToFront(licence);
                 document.getElementById('licence-input').value = '';
                 document.getElementById('licence-input').focus();
             } else {
@@ -2717,10 +2752,10 @@
             const calc = document.getElementById('calculator-window');
             if (calc.style.display === 'none') {
                 if (!checkMemory()) return;
-                playSound('click');
                 calc.style.display = 'block';
                 calc.style.left = '50px';
                 calc.style.top = '100px';
+                bringToFront(calc);
             } else {
                 calc.style.display = 'none';
             }
@@ -2830,9 +2865,11 @@
         function togglePuzzle() {
             const puzzle = document.getElementById('puzzle-window');
             if (puzzle.style.display === 'none') {
+                if (!checkMemory()) return;
                 puzzle.style.display = 'block';
                 puzzle.style.left = '100px';
                 puzzle.style.top = '80px';
+                bringToFront(puzzle);
                 if (puzzleTiles.length === 0) {
                     initPuzzle();
                     shufflePuzzle();
@@ -2849,9 +2886,11 @@
         function toggleNotePad() {
             const notepad = document.getElementById('notepad-window');
             if (notepad.style.display === 'none') {
+                if (!checkMemory()) return;
                 notepad.style.display = 'block';
                 notepad.style.left = '150px';
                 notepad.style.top = '120px';
+                bringToFront(notepad);
                 loadNotepadFromStorage();
                 updateNotepadDisplay();
             } else {
