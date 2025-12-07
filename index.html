@@ -2418,12 +2418,9 @@
             }
         });
 
-        // Global mouse click sound
+        // Global mouse click sound - plays on any click like a real mouse
         document.addEventListener('mousedown', function(e) {
-            // Only play on interactive elements
-            if (e.target.closest('button, a, input, .desktop-icon, [role="menu-item"], .title-bar')) {
-                playSound('click');
-            }
+            playSound('click');
         });
 
         // Enter key support for lander
@@ -2926,6 +2923,8 @@
             if (overlap) {
                 if (icon.id === 'hd-icon') {
                     // Dragging system disk to trash causes crash
+                    icon.style.display = 'none';
+                    setTrashFull(true);
                     playSound('beep');
                     setTimeout(function() {
                         showSadMac('0F0001');
