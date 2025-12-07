@@ -245,6 +245,26 @@
             white-space: pre;
             line-height: 1.2;
         }
+        /* Blackjack */
+        .blackjack-window {
+            width: 260px;
+        }
+        .blackjack-output {
+            font-family: 'ChiKareGo2', monospace;
+            font-size: 11px;
+            border: 1px solid black;
+            padding: 0.5rem;
+            margin: 0 0 0.5rem 0;
+            height: 180px;
+            overflow-y: auto;
+            white-space: pre;
+            line-height: 1.3;
+        }
+        .blackjack-buttons {
+            display: flex;
+            gap: 4px;
+            justify-content: center;
+        }
         /* Puzzle game */
         .puzzle-window {
             width: 200px;
@@ -583,6 +603,9 @@
                 <li role="menu-item">
                     <a href="#" onclick="togglePuzzle(); return false;">Puzzle</a>
                 </li>
+                <li role="menu-item">
+                    <a href="#" onclick="toggleBlackjack(); return false;">Blackjack</a>
+                </li>
             </ul>
         </li>
         <li class="menu-clock" id="menu-clock" onclick="showDate()"></li>
@@ -752,6 +775,24 @@
                 <input type="text" id="startrek-input" style="flex: 1; text-transform: uppercase;" placeholder="NAV, SRS, LRS, PHA, TOR, SHE">
                 <button class="btn btn-default" onclick="trekCommand()">OK</button>
             </section>
+        </div>
+    </div>
+
+    <!-- Blackjack Window -->
+    <div class="window blackjack-window" id="blackjack-window" style="display: none;">
+        <div class="title-bar" id="blackjack-title-bar">
+            <button aria-label="Close" class="close" onclick="toggleBlackjack()"></button>
+            <h1 class="title">Blackjack</h1>
+            <button aria-label="Resize" disabled class="hidden"></button>
+        </div>
+        <div class="separator"></div>
+        <div class="window-pane">
+            <pre class="blackjack-output" id="blackjack-output"></pre>
+            <div class="blackjack-buttons">
+                <button class="btn" onclick="bjHit()">Hit</button>
+                <button class="btn" onclick="bjStand()">Stand</button>
+                <button class="btn btn-default" onclick="bjNewGame()">Deal</button>
+            </div>
         </div>
     </div>
 
@@ -1488,6 +1529,199 @@
             }
         });
 
+        // ============ BLACKJACK GAME ============
+        let bj = null;
+
+        function initBlackjack() {
+            bj = {
+                deck: [],
+                playerHand: [],
+                dealerHand: [],
+                gameOver: false,
+                playerStood: false,
+                wins: 0,
+                losses: 0,
+                pushes: 0
+            };
+            createDeck();
+            shuffleDeck();
+        }
+
+        function createDeck() {
+            bj.deck = [];
+            const suits = ['♠', '♥', '♦', '♣'];
+            const values = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+            for (const suit of suits) {
+                for (const value of values) {
+                    bj.deck.push({ value: value, suit: suit });
+                }
+            }
+        }
+
+        function shuffleDeck() {
+            for (let i = bj.deck.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [bj.deck[i], bj.deck[j]] = [bj.deck[j], bj.deck[i]];
+            }
+        }
+
+        function dealCard(hand) {
+            if (bj.deck.length === 0) {
+                createDeck();
+                shuffleDeck();
+            }
+            hand.push(bj.deck.pop());
+        }
+
+        function getCardValue(card) {
+            if (card.value === 'A') return 11;
+            if (['K', 'Q', 'J'].includes(card.value)) return 10;
+            return parseInt(card.value);
+        }
+
+        function calculateScore(hand) {
+            let score = 0;
+            let aces = 0;
+            for (const card of hand) {
+                score += getCardValue(card);
+                if (card.value === 'A') aces++;
+            }
+            while (score > 21 && aces > 0) {
+                score -= 10;
+                aces--;
+            }
+            return score;
+        }
+
+        function formatCard(card) {
+            return card.value + card.suit;
+        }
+
+        function formatHand(hand, hideFirst) {
+            if (hideFirst && hand.length > 0) {
+                return '[?] ' + hand.slice(1).map(formatCard).join(' ');
+            }
+            return hand.map(formatCard).join(' ');
+        }
+
+        function bjNewGame() {
+            if (!bj) initBlackjack();
+            bj.playerHand = [];
+            bj.dealerHand = [];
+            bj.gameOver = false;
+            bj.playerStood = false;
+
+            if (bj.deck.length < 10) {
+                createDeck();
+                shuffleDeck();
+            }
+
+            dealCard(bj.playerHand);
+            dealCard(bj.dealerHand);
+            dealCard(bj.playerHand);
+            dealCard(bj.dealerHand);
+
+            // Check for blackjack
+            const playerScore = calculateScore(bj.playerHand);
+            const dealerScore = calculateScore(bj.dealerHand);
+
+            if (playerScore === 21 && dealerScore === 21) {
+                bj.gameOver = true;
+                bj.pushes++;
+                bjUpdateDisplay('PUSH! Both have Blackjack!');
+            } else if (playerScore === 21) {
+                bj.gameOver = true;
+                bj.wins++;
+                bjUpdateDisplay('BLACKJACK! You win!');
+            } else if (dealerScore === 21) {
+                bj.gameOver = true;
+                bj.losses++;
+                bjUpdateDisplay('Dealer has Blackjack!');
+            } else {
+                bjUpdateDisplay('');
+            }
+        }
+
+        function bjHit() {
+            if (!bj || bj.gameOver) return;
+            dealCard(bj.playerHand);
+            const score = calculateScore(bj.playerHand);
+            if (score > 21) {
+                bj.gameOver = true;
+                bj.losses++;
+                bjUpdateDisplay('BUST! You lose.');
+            } else if (score === 21) {
+                bjStand();
+            } else {
+                bjUpdateDisplay('');
+            }
+        }
+
+        function bjStand() {
+            if (!bj || bj.gameOver) return;
+            bj.playerStood = true;
+
+            // Dealer plays
+            while (calculateScore(bj.dealerHand) < 17) {
+                dealCard(bj.dealerHand);
+            }
+
+            const playerScore = calculateScore(bj.playerHand);
+            const dealerScore = calculateScore(bj.dealerHand);
+            bj.gameOver = true;
+
+            let msg = '';
+            if (dealerScore > 21) {
+                bj.wins++;
+                msg = 'Dealer busts! You win!';
+            } else if (playerScore > dealerScore) {
+                bj.wins++;
+                msg = 'You win!';
+            } else if (dealerScore > playerScore) {
+                bj.losses++;
+                msg = 'Dealer wins.';
+            } else {
+                bj.pushes++;
+                msg = 'Push!';
+            }
+            bjUpdateDisplay(msg);
+        }
+
+        function bjUpdateDisplay(message) {
+            let out = '      BLACKJACK\n';
+            out += '  ==================\n\n';
+            out += '  DEALER: ' + formatHand(bj.dealerHand, !bj.gameOver && !bj.playerStood) + '\n';
+            if (bj.gameOver || bj.playerStood) {
+                out += '          (' + calculateScore(bj.dealerHand) + ')\n';
+            }
+            out += '\n';
+            out += '  YOU:    ' + formatHand(bj.playerHand, false) + '\n';
+            out += '          (' + calculateScore(bj.playerHand) + ')\n\n';
+            if (message) {
+                out += '  ' + message + '\n\n';
+            }
+            if (!bj.gameOver) {
+                out += '  [Hit] or [Stand]?\n';
+            } else {
+                out += '  [Deal] for new game\n';
+            }
+            out += '\n  W:' + bj.wins + ' L:' + bj.losses + ' P:' + bj.pushes;
+            document.getElementById('blackjack-output').textContent = out;
+        }
+
+        function toggleBlackjack() {
+            const win = document.getElementById('blackjack-window');
+            if (win.style.display === 'none') {
+                win.style.display = 'block';
+                win.style.left = '80px';
+                win.style.top = '70px';
+                initBlackjack();
+                bjNewGame();
+            } else {
+                win.style.display = 'none';
+            }
+        }
+
         // ============ MENU BAR CLOCK ============
         function updateClock() {
             const now = new Date();
@@ -1592,6 +1826,7 @@
         makeDraggable(document.getElementById('search-window'), document.getElementById('search-title-bar'));
         makeDraggable(document.getElementById('lander-window'), document.getElementById('lander-title-bar'));
         makeDraggable(document.getElementById('startrek-window'), document.getElementById('startrek-title-bar'));
+        makeDraggable(document.getElementById('blackjack-window'), document.getElementById('blackjack-title-bar'));
 
         // Enter key support for search
         document.getElementById('search-input').addEventListener('keydown', function(e) {
@@ -1625,7 +1860,7 @@
         }
 
         function closeAllWindows() {
-            const windows = ['main-window', 'calculator-window', 'puzzle-window', 'notepad-window', 'email-window', 'search-window', 'lander-window', 'startrek-window'];
+            const windows = ['main-window', 'calculator-window', 'puzzle-window', 'notepad-window', 'email-window', 'search-window', 'lander-window', 'startrek-window', 'blackjack-window'];
             windows.forEach(function(id) {
                 document.getElementById(id).style.display = 'none';
             });
@@ -1707,7 +1942,7 @@
         // ============ SPECIAL MENU FUNCTIONS ============
         function cleanUp() {
             // Clean up windows
-            const windows = ['main-window', 'calculator-window', 'puzzle-window', 'notepad-window', 'email-window', 'search-window', 'lander-window', 'startrek-window'];
+            const windows = ['main-window', 'calculator-window', 'puzzle-window', 'notepad-window', 'email-window', 'search-window', 'lander-window', 'startrek-window', 'blackjack-window'];
             let offset = 0;
             windows.forEach(function(id) {
                 const win = document.getElementById(id);
