@@ -560,9 +560,6 @@
                     <a href="#" onclick="toggleCalculator(); return false;">Calculator</a>
                 </li>
                 <li role="menu-item">
-                    <a href="#" onclick="togglePuzzle(); return false;">Puzzle</a>
-                </li>
-                <li role="menu-item">
                     <a href="#" onclick="toggleNotePad(); return false;">Note Pad</a>
                 </li>
                 <li class="divider"></li>
@@ -572,12 +569,19 @@
                 <li role="menu-item">
                     <a href="#" onclick="toggleSearch(); return false;">Internet</a>
                 </li>
-                <li class="divider"></li>
+            </ul>
+        </li>
+        <li role="menu-item" tabindex="0" aria-haspopup="true">
+            Game
+            <ul role="menu">
                 <li role="menu-item">
                     <a href="#" onclick="toggleLander(); return false;">Lunar Lander</a>
                 </li>
                 <li role="menu-item">
                     <a href="#" onclick="toggleStartrek(); return false;">Star Trek</a>
+                </li>
+                <li role="menu-item">
+                    <a href="#" onclick="togglePuzzle(); return false;">Puzzle</a>
                 </li>
             </ul>
         </li>
