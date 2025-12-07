@@ -1034,31 +1034,59 @@
     </div>
 
     <script>
-        // ============ AUDIO CONTROLLER ============
-        const sounds = {
-            startup: new Audio('sounds/startup.wav'),
-            click: new Audio('sounds/click.wav'),
-            beep: new Audio('sounds/beep.wav'),
-            dialup: new Audio('sounds/dialup.wav'),
-            death: new Audio('sounds/death.wav'),
-            key: new Audio('sounds/key.wav')
-        };
-
+        // ============ AUDIO CONTROLLER (Web Audio API) ============
+        let audioContext = null;
+        const audioBuffers = {};
+        const activeSources = {};
         let soundEnabled = true;
 
-        function playSound(name) {
-            if (soundEnabled && sounds[name]) {
-                // Stop any current playback first to allow rapid re-triggering
-                sounds[name].pause();
-                sounds[name].currentTime = 0;
-                sounds[name].play().catch(() => {});
+        // Initialize audio context on first user interaction
+        function initAudioContext() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                // Preload all sounds
+                loadSound('click', 'sounds/click.wav');
+                loadSound('key', 'sounds/key.wav');
+                loadSound('beep', 'sounds/beep.wav');
+                loadSound('startup', 'sounds/startup.wav');
+                loadSound('death', 'sounds/death.wav');
+                loadSound('dialup', 'sounds/dialup.wav');
             }
         }
 
+        async function loadSound(name, url) {
+            try {
+                const response = await fetch(url);
+                const arrayBuffer = await response.arrayBuffer();
+                audioBuffers[name] = await audioContext.decodeAudioData(arrayBuffer);
+            } catch (e) {
+                console.warn('Failed to load sound:', name, e);
+            }
+        }
+
+        function playSound(name) {
+            if (!soundEnabled || !audioContext || !audioBuffers[name]) return;
+
+            // Resume context if suspended (browser autoplay policy)
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+
+            const source = audioContext.createBufferSource();
+            source.buffer = audioBuffers[name];
+            source.connect(audioContext.destination);
+            source.start(0);
+
+            // Track active sources for stopSound
+            activeSources[name] = source;
+        }
+
         function stopSound(name) {
-            if (sounds[name]) {
-                sounds[name].pause();
-                sounds[name].currentTime = 0;
+            if (activeSources[name]) {
+                try {
+                    activeSources[name].stop();
+                } catch (e) {}
+                delete activeSources[name];
             }
         }
 
@@ -1067,7 +1095,8 @@
             const check = document.getElementById('sound-check');
             check.textContent = soundEnabled ? '✓' : '';
             if (!soundEnabled) {
-                Object.values(sounds).forEach(s => { s.pause(); s.currentTime = 0; });
+                // Stop all active sounds
+                Object.keys(activeSources).forEach(name => stopSound(name));
             }
         }
 
@@ -2430,6 +2459,7 @@
 
         // Global mouse click sound - plays on mousedown and mouseup like a real mouse
         document.addEventListener('mousedown', function(e) {
+            initAudioContext();  // Initialize on first click
             playSound('click');
         });
         document.addEventListener('mouseup', function(e) {
