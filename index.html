@@ -724,7 +724,6 @@
             <div class="puzzle-grid" id="puzzle-grid"></div>
             <div class="puzzle-controls">
                 <button class="btn" onclick="shufflePuzzle()">Shuffle</button>
-                <button class="btn" onclick="showGameInstructions('puzzle')">?</button>
             </div>
         </div>
     </div>
@@ -824,7 +823,6 @@
                 <label class="modeless-text">BURN:</label>
                 <input type="number" id="lander-input" min="0" max="30" style="width: 60px;">
                 <button class="btn btn-default" onclick="landerBurn()">OK</button>
-                <button class="btn" onclick="showGameInstructions('lander')">?</button>
             </section>
         </div>
     </div>
@@ -843,7 +841,6 @@
                 <label class="modeless-text">CMD:</label>
                 <input type="text" id="startrek-input" style="flex: 1; text-transform: uppercase;" placeholder="NAV, SRS, LRS, PHA, TOR, SHE">
                 <button class="btn btn-default" onclick="trekCommand()">OK</button>
-                <button class="btn" onclick="showGameInstructions('startrek')">?</button>
             </section>
         </div>
     </div>
@@ -862,7 +859,6 @@
                 <button class="btn" onclick="bjHit()">Hit</button>
                 <button class="btn" onclick="bjStand()">Stand</button>
                 <button class="btn btn-default" onclick="bjNewGame()">Deal</button>
-                <button class="btn" onclick="showGameInstructions('blackjack')">?</button>
             </div>
         </div>
     </div>
@@ -881,7 +877,6 @@
                 <label class="modeless-text">GUESS:</label>
                 <input type="text" id="mastermind-input" maxlength="5" style="width: 80px; text-align: center;" placeholder="00000">
                 <button class="btn btn-default" onclick="mmGuess()">OK</button>
-                <button class="btn" onclick="showGameInstructions('mastermind')">?</button>
             </section>
         </div>
     </div>
@@ -900,7 +895,6 @@
                 <label class="modeless-text" id="hamurabi-label">ACRES:</label>
                 <input type="number" id="hamurabi-input" style="width: 80px; text-align: center;">
                 <button class="btn btn-default" onclick="hamSubmit()">OK</button>
-                <button class="btn" onclick="showGameInstructions('hamurabi')">?</button>
             </section>
         </div>
     </div>
@@ -2561,21 +2555,6 @@
             playSound('beep');
             document.getElementById('alert-text').textContent = message;
             showModal('alert-modal');
-        }
-
-        const gameInstructions = {
-            puzzle: 'PUZZLE (15-Puzzle)\n\nSlide the numbered tiles to arrange them in order from 1-15.\n\nClick a tile adjacent to the empty space to move it.\n\nGoal: Arrange tiles 1-15 in order with empty space in bottom-right.',
-            lander: 'LUNAR LANDER\n\nYou are descending to the Moon!\n\nEach turn, enter BURN (0-200) to fire retro rockets.\nHigher burn = more fuel used = slower descent.\n\nGoal: Land with velocity < 5 m/s.\nWatch your altitude and fuel!',
-            startrek: 'STAR TREK\n\nCommands:\nNAV - Navigate (course 1-9, warp 0.1-8)\nSRS - Short Range Scan\nLRS - Long Range Scan\nPHA - Fire Phasers (energy amount)\nTOR - Fire Torpedoes (course 1-9)\nSHE - Shield Control (energy amount)\n\nGoal: Destroy all Klingons before time runs out!',
-            blackjack: 'BLACKJACK\n\nTry to get as close to 21 as possible without going over.\n\nHIT - Draw another card\nSTAND - Keep your hand\nDEAL - Start new game\n\nFace cards = 10, Aces = 1 or 11\nDealer must hit on 16, stand on 17.',
-            mastermind: 'MASTERMIND\n\nGuess the secret 5-digit code (digits 1-6).\n\nAfter each guess:\n* = Correct digit in correct position\n+ = Correct digit in wrong position\n\nYou have 10 guesses to crack the code!',
-            hamurabi: 'HAMURABI\n\nRule ancient Sumeria for 10 years.\n\nEach year decide:\n- Acres to buy/sell\n- Bushels to feed people\n- Acres to plant\n\nKeep your people fed and your city growing!\n1 person needs 20 bushels/year.\n1 acre needs 0.5 bushels seed + 10 people to farm.'
-        };
-
-        function showGameInstructions(game) {
-            if (gameInstructions[game]) {
-                showAlert(gameInstructions[game]);
-            }
         }
 
         function showAboutMac(e) {
