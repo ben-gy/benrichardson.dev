@@ -1106,10 +1106,17 @@
     <script>
         // ============ UTILITY FUNCTIONS ============
         function closeAllDropdowns() {
+            // Blur the currently focused element first (the clicked link)
+            if (document.activeElement) {
+                document.activeElement.blur();
+            }
+            // Remove menu-open class and blur all menu items
             document.querySelectorAll('ul[role="menu-bar"] > [role="menu-item"]').forEach(function(item) {
                 item.classList.remove('menu-open');
                 item.blur();
             });
+            // Move focus to body to ensure :focus-within doesn't keep menu open
+            document.body.focus();
         }
 
         // ============ AUDIO CONTROLLER (Web Audio API) ============
