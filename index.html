@@ -108,9 +108,31 @@
             justify-content: center;
             margin-top: 1rem;
         }
+        /* Date/Time Modal */
+        .date-modal-contents {
+            font-family: Chicago_12, 'ChiKareGo2', monospace;
+            min-width: 200px;
+        }
+        .date-modal-time {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0 0 0.5rem 0;
+            font-family: Chicago_12, 'ChiKareGo2', monospace;
+        }
+        .date-modal-date {
+            font-size: 1rem;
+            margin: 0 0 0.25rem 0;
+            font-family: Chicago_12, 'ChiKareGo2', monospace;
+        }
+        .date-modal-timezone {
+            font-size: 0.8rem;
+            color: #666;
+            margin: 0;
+            font-family: Chicago_12, 'ChiKareGo2', monospace;
+        }
         .calculator-window {
-            width: 180px;
-            min-width: 180px;
+            width: 220px;
+            min-width: 220px;
         }
         .calc-display {
             background: white;
@@ -124,11 +146,11 @@
         .calc-buttons {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 2px;
+            gap: 4px;
         }
         .calc-buttons button {
             padding: 0.5rem;
-            min-width: 0;
+            min-width: 40px;
             width: 100%;
         }
         @keyframes fadeIn {
@@ -388,22 +410,38 @@
         }
         /* Email window */
         .email-window {
-            width: 300px;
+            width: 320px;
         }
         .email-window .window-pane {
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 0.75rem;
+            font-family: Chicago_12, 'ChiKareGo2', monospace;
+        }
+        .email-window label {
+            font-family: Chicago_12, 'ChiKareGo2', monospace;
+            font-size: 14px;
+        }
+        .email-window .field-row {
+            align-items: center;
+        }
+        .email-window .field-row label {
+            min-width: 65px;
+            text-align: left;
         }
         .email-window textarea {
             width: 100%;
             height: 100px;
             border: 1px solid black;
-            font-family: 'Geneva', 'ChiKareGo2', monospace;
-            font-size: 12px;
+            font-family: Chicago_12, 'ChiKareGo2', monospace;
+            font-size: 14px;
             padding: 0.5rem;
             resize: none;
             box-sizing: border-box;
+        }
+        .email-window input {
+            font-family: Chicago_12, 'ChiKareGo2', monospace;
+            font-size: 14px;
         }
         .email-window input[readonly] {
             background: #eee;
@@ -1000,6 +1038,22 @@
         </div>
     </div>
 
+    <!-- Date/Time Modal -->
+    <div class="modal-overlay" id="date-modal">
+        <div class="alert-box outer-border">
+            <div class="inner-border">
+                <div class="alert-contents date-modal-contents">
+                    <p class="date-modal-time" id="date-modal-time">12:00:00 PM</p>
+                    <p class="date-modal-date" id="date-modal-date">Sunday, December 7, 2025</p>
+                    <p class="date-modal-timezone" id="date-modal-timezone">UTC+11:00</p>
+                    <div class="alert-buttons">
+                        <button class="btn btn-default" onclick="hideDateModal()">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Bomb Error Modal -->
     <div class="modal-overlay" id="bomb-modal">
         <div class="alert-box outer-border">
@@ -1050,6 +1104,14 @@
     </div>
 
     <script>
+        // ============ UTILITY FUNCTIONS ============
+        function closeAllDropdowns() {
+            document.querySelectorAll('ul[role="menu-bar"] > [role="menu-item"]').forEach(function(item) {
+                item.classList.remove('menu-open');
+                item.blur();
+            });
+        }
+
         // ============ AUDIO CONTROLLER (Web Audio API) ============
         let audioContext = null;
         const audioBuffers = {};
@@ -1116,6 +1178,7 @@
 
         // ============ EMAIL ============
         function toggleEmail() {
+            closeAllDropdowns();
             const email = document.getElementById('email-window');
             if (email.style.display === 'none') {
                 if (!checkMemory()) return;
@@ -1145,6 +1208,7 @@
 
         // ============ INTERNET SEARCH ============
         function toggleSearch() {
+            closeAllDropdowns();
             const search = document.getElementById('search-window');
             if (search.style.display === 'none') {
                 if (!checkMemory()) return;
@@ -2372,11 +2436,55 @@
         updateClock();
         setInterval(updateClock, 1000);
 
+        let dateModalInterval = null;
+
         function showDate() {
+            updateDateModal();
+            showModal('date-modal');
+            // Update every second for real-time clock
+            dateModalInterval = setInterval(updateDateModal, 1000);
+        }
+
+        function hideDateModal() {
+            hideModal('date-modal');
+            if (dateModalInterval) {
+                clearInterval(dateModalInterval);
+                dateModalInterval = null;
+            }
+        }
+
+        function updateDateModal() {
             const now = new Date();
+
+            // Format time with seconds
+            let hours = now.getHours();
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12 || 12;
+            const timeStr = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
+
+            // Format date
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             const dateStr = now.toLocaleDateString('en-US', options);
-            showAlert(dateStr);
+
+            // Get timezone
+            const tzOffset = -now.getTimezoneOffset();
+            const tzHours = Math.floor(Math.abs(tzOffset) / 60);
+            const tzMinutes = Math.abs(tzOffset) % 60;
+            const tzSign = tzOffset >= 0 ? '+' : '-';
+            const tzStr = 'UTC' + tzSign + tzHours.toString().padStart(2, '0') + ':' + tzMinutes.toString().padStart(2, '0');
+
+            // Try to get timezone name
+            let tzName = '';
+            try {
+                tzName = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                tzName = ' (' + tzName + ')';
+            } catch(e) {}
+
+            document.getElementById('date-modal-time').textContent = timeStr;
+            document.getElementById('date-modal-date').textContent = dateStr;
+            document.getElementById('date-modal-timezone').textContent = tzStr + tzName;
         }
 
         // ============ STARTUP ============
@@ -2800,6 +2908,7 @@
         let calcValue = '0';
 
         function toggleCalculator() {
+            closeAllDropdowns();
             const calc = document.getElementById('calculator-window');
             if (calc.style.display === 'none') {
                 if (!checkMemory()) return;
@@ -2935,6 +3044,7 @@
         let currentNotePage = 0;
 
         function toggleNotePad() {
+            closeAllDropdowns();
             const notepad = document.getElementById('notepad-window');
             if (notepad.style.display === 'none') {
                 if (!checkMemory()) return;
