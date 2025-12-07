@@ -265,6 +265,21 @@
             gap: 4px;
             justify-content: center;
         }
+        /* Mastermind */
+        .mastermind-window {
+            width: 280px;
+        }
+        .mastermind-output {
+            font-family: 'ChiKareGo2', monospace;
+            font-size: 11px;
+            border: 1px solid black;
+            padding: 0.5rem;
+            margin: 0 0 0.5rem 0;
+            height: 200px;
+            overflow-y: auto;
+            white-space: pre;
+            line-height: 1.3;
+        }
         /* Puzzle game */
         .puzzle-window {
             width: 200px;
@@ -606,6 +621,9 @@
                 <li role="menu-item">
                     <a href="#" onclick="toggleBlackjack(); return false;">Blackjack</a>
                 </li>
+                <li role="menu-item">
+                    <a href="#" onclick="toggleMastermind(); return false;">Mastermind</a>
+                </li>
             </ul>
         </li>
         <li class="menu-clock" id="menu-clock" onclick="showDate()"></li>
@@ -793,6 +811,24 @@
                 <button class="btn" onclick="bjStand()">Stand</button>
                 <button class="btn btn-default" onclick="bjNewGame()">Deal</button>
             </div>
+        </div>
+    </div>
+
+    <!-- Mastermind Window -->
+    <div class="window mastermind-window" id="mastermind-window" style="display: none;">
+        <div class="title-bar" id="mastermind-title-bar">
+            <button aria-label="Close" class="close" onclick="toggleMastermind()"></button>
+            <h1 class="title">Mastermind</h1>
+            <button aria-label="Resize" disabled class="hidden"></button>
+        </div>
+        <div class="separator"></div>
+        <div class="window-pane">
+            <pre class="mastermind-output" id="mastermind-output"></pre>
+            <section class="field-row" style="justify-content: flex-start">
+                <label class="modeless-text">GUESS:</label>
+                <input type="text" id="mastermind-input" maxlength="5" style="width: 80px; text-align: center;" placeholder="00000">
+                <button class="btn btn-default" onclick="mmGuess()">OK</button>
+            </section>
         </div>
     </div>
 
@@ -1722,6 +1758,162 @@
             }
         }
 
+        // ============ MASTERMIND GAME ============
+        let mm = null;
+
+        function initMastermind() {
+            mm = {
+                secret: '',
+                guesses: [],
+                gameOver: false,
+                won: false,
+                gamesPlayed: 0,
+                gamesWon: 0,
+                totalGuesses: 0
+            };
+            // Generate 5-digit secret using digits 0-7
+            mm.secret = '';
+            for (let i = 0; i < 5; i++) {
+                mm.secret += Math.floor(Math.random() * 8).toString();
+            }
+            mm.guesses = [];
+            mm.gameOver = false;
+            mm.won = false;
+        }
+
+        function mmGuess() {
+            if (!mm) initMastermind();
+
+            if (mm.gameOver) {
+                initMastermind();
+                mmUpdateDisplay();
+                document.getElementById('mastermind-input').value = '';
+                document.getElementById('mastermind-input').focus();
+                return;
+            }
+
+            const input = document.getElementById('mastermind-input').value.trim();
+            document.getElementById('mastermind-input').value = '';
+
+            // Validate input
+            if (input.length !== 5 || !/^[0-7]+$/.test(input)) {
+                mmUpdateDisplay('USE 5 DIGITS (0-7 ONLY)');
+                document.getElementById('mastermind-input').focus();
+                return;
+            }
+
+            // Calculate result
+            let exact = 0;  // + correct position
+            let close = 0;  // - wrong position
+            const secretArr = mm.secret.split('');
+            const guessArr = input.split('');
+            const secretUsed = [false, false, false, false, false];
+            const guessUsed = [false, false, false, false, false];
+
+            // First pass: find exact matches
+            for (let i = 0; i < 5; i++) {
+                if (guessArr[i] === secretArr[i]) {
+                    exact++;
+                    secretUsed[i] = true;
+                    guessUsed[i] = true;
+                }
+            }
+
+            // Second pass: find close matches
+            for (let i = 0; i < 5; i++) {
+                if (guessUsed[i]) continue;
+                for (let j = 0; j < 5; j++) {
+                    if (secretUsed[j]) continue;
+                    if (guessArr[i] === secretArr[j]) {
+                        close++;
+                        secretUsed[j] = true;
+                        break;
+                    }
+                }
+            }
+
+            // Build result string
+            let result = '+'.repeat(exact) + '-'.repeat(close);
+            if (result === '') result = '(none)';
+
+            mm.guesses.push({ guess: input, result: result, exact: exact, close: close });
+
+            // Check for win
+            if (exact === 5) {
+                mm.gameOver = true;
+                mm.won = true;
+                mm.gamesPlayed++;
+                mm.gamesWon++;
+                mm.totalGuesses += mm.guesses.length;
+                mmUpdateDisplay('*** YOU WIN! ***');
+            } else if (mm.guesses.length >= 10) {
+                mm.gameOver = true;
+                mm.gamesPlayed++;
+                mmUpdateDisplay('GAME OVER! Code: ' + mm.secret);
+            } else {
+                mmUpdateDisplay();
+                document.getElementById('mastermind-input').focus();
+            }
+        }
+
+        function mmUpdateDisplay(message) {
+            let out = '      MASTERMIND\n';
+            out += '  ====================\n';
+            out += '  GUESS A 5-DIGIT CODE\n';
+            out += '  USING DIGITS 0-7\n\n';
+            out += '  + = RIGHT PLACE\n';
+            out += '  - = WRONG PLACE\n\n';
+
+            if (mm.guesses.length > 0) {
+                out += '  # | GUESS | RESULT\n';
+                out += '  --+-------+-------\n';
+                for (let i = 0; i < mm.guesses.length; i++) {
+                    const g = mm.guesses[i];
+                    const num = (i + 1).toString().padStart(2, '0');
+                    out += '  ' + num + '| ' + g.guess + ' | ' + g.result + '\n';
+                }
+                out += '\n';
+            }
+
+            if (message) {
+                out += '  ' + message + '\n';
+            }
+
+            if (mm.gameOver) {
+                out += '\n  [OK] FOR NEW GAME';
+            }
+
+            if (mm.gamesPlayed > 0) {
+                const avg = (mm.totalGuesses / mm.gamesWon).toFixed(1);
+                out += '\n\n  WON: ' + mm.gamesWon + '/' + mm.gamesPlayed;
+                if (mm.gamesWon > 0) out += ' AVG: ' + avg;
+            }
+
+            document.getElementById('mastermind-output').textContent = out;
+        }
+
+        function toggleMastermind() {
+            const win = document.getElementById('mastermind-window');
+            if (win.style.display === 'none') {
+                win.style.display = 'block';
+                win.style.left = '100px';
+                win.style.top = '80px';
+                initMastermind();
+                mmUpdateDisplay();
+                document.getElementById('mastermind-input').value = '';
+                document.getElementById('mastermind-input').focus();
+            } else {
+                win.style.display = 'none';
+            }
+        }
+
+        // Enter key support for Mastermind
+        document.getElementById('mastermind-input').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                mmGuess();
+            }
+        });
+
         // ============ MENU BAR CLOCK ============
         function updateClock() {
             const now = new Date();
@@ -1827,6 +2019,7 @@
         makeDraggable(document.getElementById('lander-window'), document.getElementById('lander-title-bar'));
         makeDraggable(document.getElementById('startrek-window'), document.getElementById('startrek-title-bar'));
         makeDraggable(document.getElementById('blackjack-window'), document.getElementById('blackjack-title-bar'));
+        makeDraggable(document.getElementById('mastermind-window'), document.getElementById('mastermind-title-bar'));
 
         // Enter key support for search
         document.getElementById('search-input').addEventListener('keydown', function(e) {
@@ -1860,7 +2053,7 @@
         }
 
         function closeAllWindows() {
-            const windows = ['main-window', 'calculator-window', 'puzzle-window', 'notepad-window', 'email-window', 'search-window', 'lander-window', 'startrek-window', 'blackjack-window'];
+            const windows = ['main-window', 'calculator-window', 'puzzle-window', 'notepad-window', 'email-window', 'search-window', 'lander-window', 'startrek-window', 'blackjack-window', 'mastermind-window'];
             windows.forEach(function(id) {
                 document.getElementById(id).style.display = 'none';
             });
@@ -1942,7 +2135,7 @@
         // ============ SPECIAL MENU FUNCTIONS ============
         function cleanUp() {
             // Clean up windows
-            const windows = ['main-window', 'calculator-window', 'puzzle-window', 'notepad-window', 'email-window', 'search-window', 'lander-window', 'startrek-window', 'blackjack-window'];
+            const windows = ['main-window', 'calculator-window', 'puzzle-window', 'notepad-window', 'email-window', 'search-window', 'lander-window', 'startrek-window', 'blackjack-window', 'mastermind-window'];
             let offset = 0;
             windows.forEach(function(id) {
                 const win = document.getElementById(id);
