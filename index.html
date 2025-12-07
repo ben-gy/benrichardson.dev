@@ -222,9 +222,7 @@
             text-align: center;
             white-space: nowrap;
         }
-        .trash-icon.has-items img {
-            transform: scale(1.1);
-        }
+        /* Trash full state handled via JS changing img src */
         /* Lunar Lander */
         .lander-output {
             font-family: 'ChiKareGo2', monospace;
@@ -511,19 +509,19 @@
     <!-- Desktop Grid with Icons -->
     <div class="desktop-grid" id="desktop-grid">
         <div class="desktop-icon" id="hd-icon" style="right: 10px; top: 10px;" ondblclick="showMainWindow()">
-            <img src="icon/floppy.svg" alt="Floppy">
+            <img src="icon/Floppy.png" alt="Floppy">
             <span>Apple OS 2</span>
         </div>
         <div class="desktop-icon" id="email-icon" style="left: 10px; top: 10px;" ondblclick="toggleEmail()">
-            <img src="icon/email.svg" alt="Email">
+            <img src="icon/Mail.png" alt="Email">
             <span>Email</span>
         </div>
         <div class="desktop-icon" id="internet-icon" style="left: 10px; top: 90px;" ondblclick="toggleSearch()">
-            <img src="icon/internet.svg" alt="Internet">
+            <img src="icon/Safari.png" alt="Internet">
             <span>Internet</span>
         </div>
         <div class="desktop-icon trash-icon" id="trash-icon" style="right: 10px; bottom: 10px;" ondblclick="emptyTrash()">
-            <img src="icon/trash.svg" alt="Trash">
+            <img src="icon/Trash empty.png" alt="Trash" id="trash-img">
             <span>Trash</span>
         </div>
     </div>
@@ -2445,11 +2443,22 @@
 
         let trashHasItems = false;
 
+        function setTrashFull(isFull) {
+            trashHasItems = isFull;
+            const trashImg = document.getElementById('trash-img');
+            if (isFull) {
+                trashImg.src = 'icon/Trash full.png';
+                document.getElementById('trash-icon').classList.add('has-items');
+            } else {
+                trashImg.src = 'icon/Trash empty.png';
+                document.getElementById('trash-icon').classList.remove('has-items');
+            }
+        }
+
         function closeMainWindow() {
             const win = document.getElementById('main-window');
             win.style.display = 'none';
-            trashHasItems = true;
-            document.getElementById('trash-icon').classList.add('has-items');
+            setTrashFull(true);
         }
 
         function closeAllWindows() {
@@ -2461,8 +2470,7 @@
                 win.style.width = '';
                 win.style.height = '';
             });
-            trashHasItems = true;
-            document.getElementById('trash-icon').classList.add('has-items');
+            setTrashFull(true);
         }
 
         function showMainWindow() {
@@ -2480,8 +2488,7 @@
         function emptyTrash() {
             if (trashHasItems) {
                 showMainWindow();
-                trashHasItems = false;
-                document.getElementById('trash-icon').classList.remove('has-items');
+                setTrashFull(false);
             } else {
                 showAlert('The Trash is already empty.');
             }
@@ -2928,8 +2935,7 @@
                     // Hide the icon (move to trash)
                     playSound('click');
                     icon.style.display = 'none';
-                    trashHasItems = true;
-                    document.getElementById('trash-icon').classList.add('has-items');
+                    setTrashFull(true);
                     return true;
                 }
             }
