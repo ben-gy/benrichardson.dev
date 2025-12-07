@@ -511,8 +511,8 @@
     <!-- Desktop Grid with Icons -->
     <div class="desktop-grid" id="desktop-grid">
         <div class="desktop-icon" id="hd-icon" style="right: 10px; top: 10px;" ondblclick="showMainWindow()">
-            <img src="icon/mac-hd.svg" alt="HD">
-            <span>Macintosh HD</span>
+            <img src="icon/floppy.svg" alt="Floppy">
+            <span>Apple OS 2</span>
         </div>
         <div class="desktop-icon" id="email-icon" style="left: 10px; top: 10px;" ondblclick="toggleEmail()">
             <img src="icon/email.svg" alt="Email">
@@ -2837,6 +2837,38 @@
             return Math.round((value - GRID_PADDING) / GRID_SIZE) * GRID_SIZE + GRID_PADDING;
         }
 
+        function checkTrashCollision(icon) {
+            if (icon.id === 'trash-icon') return false;
+
+            const iconRect = icon.getBoundingClientRect();
+            const trashRect = document.getElementById('trash-icon').getBoundingClientRect();
+
+            // Check if rectangles overlap
+            const overlap = !(iconRect.right < trashRect.left ||
+                             iconRect.left > trashRect.right ||
+                             iconRect.bottom < trashRect.top ||
+                             iconRect.top > trashRect.bottom);
+
+            if (overlap) {
+                if (icon.id === 'hd-icon') {
+                    // Dragging system disk to trash causes crash
+                    playSound('beep');
+                    setTimeout(function() {
+                        showSadMac('0F0001');
+                    }, 300);
+                    return true;
+                } else if (icon.id === 'email-icon' || icon.id === 'internet-icon') {
+                    // Hide the icon (move to trash)
+                    playSound('click');
+                    icon.style.display = 'none';
+                    trashHasItems = true;
+                    document.getElementById('trash-icon').classList.add('has-items');
+                    return true;
+                }
+            }
+            return false;
+        }
+
         document.querySelectorAll('.desktop-icon').forEach(function(icon) {
             let isDragging = false;
             let hasMoved = false;
@@ -2907,6 +2939,9 @@
                 icon.classList.remove('dragging');
 
                 if (hasMoved) {
+                    // Check if dropped on trash
+                    if (checkTrashCollision(icon)) return;
+
                     // Snap to grid
                     const gridRect = document.getElementById('desktop-grid').getBoundingClientRect();
                     let currentX = parseFloat(icon.style.left);
@@ -2966,6 +3001,9 @@
                 icon.classList.remove('dragging');
 
                 if (hasMoved) {
+                    // Check if dropped on trash
+                    if (checkTrashCollision(icon)) return;
+
                     const gridRect = document.getElementById('desktop-grid').getBoundingClientRect();
                     let currentX = parseFloat(icon.style.left);
                     let currentY = parseFloat(icon.style.top);
