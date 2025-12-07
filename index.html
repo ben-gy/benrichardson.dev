@@ -2660,14 +2660,21 @@
         }
 
         // ============ SAD MAC ============
-        function showSadMac(errorCode) {
+        let sadMacIsMemoryError = false;
+
+        function showSadMac(errorCode, isMemoryError) {
             playSound('death');
+            sadMacIsMemoryError = isMemoryError || false;
             document.getElementById('sad-mac-error').textContent = 'Error Code: ' + (errorCode || '0F0004');
             document.getElementById('sad-mac-screen').classList.add('visible');
         }
 
         function hideSadMac() {
-            document.getElementById('sad-mac-screen').classList.remove('visible');
+            if (sadMacIsMemoryError) {
+                location.reload();
+            } else {
+                document.getElementById('sad-mac-screen').classList.remove('visible');
+            }
         }
 
         let maxZIndex = 10;
@@ -2684,7 +2691,7 @@
             });
 
             if (count >= 5) {
-                showSadMac('0F0004');
+                showSadMac('0F0004', true);
                 return false;
             }
             if (count === 4) {
@@ -2998,7 +3005,7 @@
                     setTrashFull(true);
                     playSound('beep');
                     setTimeout(function() {
-                        showSadMac('0F0001');
+                        showSadMac('0F0001', true);
                     }, 300);
                     return true;
                 } else if (icon.id === 'email-icon' || icon.id === 'internet-icon') {
