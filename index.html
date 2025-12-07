@@ -493,11 +493,11 @@
     </div>
 
     <!-- Sad Mac Screen -->
-    <div class="sad-mac-screen" id="sad-mac-screen" onclick="this.classList.remove('visible')">
+    <div class="sad-mac-screen" id="sad-mac-screen" onclick="hideSadMac()">
         <img src="icon/sad-mac.svg" alt="Sad Mac" style="width: 128px; height: 160px;">
         <div class="sad-mac-code">Sad Mac</div>
-        <div class="sad-mac-code">Error Code: 0F0003</div>
-        <div class="sad-mac-code" style="margin-top: 2rem; font-size: 12px;">(click to dismiss)</div>
+        <div class="sad-mac-code" id="sad-mac-error">Error Code: 0F0004</div>
+        <div class="sad-mac-code" style="margin-top: 2rem; font-size: 12px;">Press any key to restart</div>
     </div>
 
     <!-- Desktop Grid with Icons -->
@@ -527,6 +527,9 @@
             <ul role="menu">
                 <li role="menu-item">
                     <a href="#" onclick="showAboutMac(event)">About This Mac</a>
+                </li>
+                <li role="menu-item">
+                    <a href="#" onclick="showLicence(); return false;">Licence...</a>
                 </li>
                 <li class="divider"></li>
                 <li role="menu-item">
@@ -589,6 +592,10 @@
                 <li class="divider"></li>
                 <li role="menu-item">
                     <a href="#" onclick="cleanUp(); return false;">Clean Up</a>
+                </li>
+                <li class="divider"></li>
+                <li role="menu-item">
+                    <a href="#" onclick="toggleSound(); return false;"><span id="sound-check">✓</span> Sound</a>
                 </li>
             </ul>
         </li>
@@ -996,6 +1003,40 @@
     </div>
 
     <script>
+        // ============ AUDIO CONTROLLER ============
+        const sounds = {
+            startup: new Audio('sounds/startup.wav'),
+            click: new Audio('sounds/click.wav'),
+            beep: new Audio('sounds/beep.wav'),
+            dialup: new Audio('sounds/dialup.wav'),
+            death: new Audio('sounds/death.wav')
+        };
+
+        let soundEnabled = true;
+
+        function playSound(name) {
+            if (soundEnabled && sounds[name]) {
+                sounds[name].currentTime = 0;
+                sounds[name].play().catch(() => {});
+            }
+        }
+
+        function stopSound(name) {
+            if (sounds[name]) {
+                sounds[name].pause();
+                sounds[name].currentTime = 0;
+            }
+        }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            const check = document.getElementById('sound-check');
+            check.textContent = soundEnabled ? '✓' : '';
+            if (!soundEnabled) {
+                Object.values(sounds).forEach(s => { s.pause(); s.currentTime = 0; });
+            }
+        }
+
         // ============ EMAIL ============
         function toggleEmail() {
             const email = document.getElementById('email-window');
@@ -1027,12 +1068,14 @@
         function toggleSearch() {
             const search = document.getElementById('search-window');
             if (search.style.display === 'none') {
+                playSound('dialup');
                 search.style.display = 'block';
                 search.style.left = '100px';
                 search.style.top = '130px';
                 document.getElementById('search-input').value = '';
                 document.getElementById('search-input').focus();
             } else {
+                stopSound('dialup');
                 search.style.display = 'none';
             }
         }
@@ -2243,6 +2286,8 @@
 
         // ============ STARTUP ============
         window.addEventListener('load', function() {
+            // Play startup chime
+            playSound('startup');
             setTimeout(function() {
                 document.getElementById('startup-screen').classList.add('fade-out');
                 setTimeout(function() {
@@ -2402,6 +2447,7 @@
         }
 
         function showAlert(message) {
+            playSound('beep');
             document.getElementById('alert-text').textContent = message;
             showModal('alert-modal');
         }
@@ -2491,6 +2537,7 @@
         }
 
         function shutDown() {
+            playSound('click');
             const shutdownScreen = document.createElement('div');
             shutdownScreen.id = 'shutdown-screen';
             shutdownScreen.style.cssText = 'background:black;color:white;font-family:Chicago,ChiKareGo2,monospace;padding:2rem;text-align:center;position:fixed;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2rem;z-index:10001;cursor:pointer;';
@@ -2499,12 +2546,63 @@
             document.body.appendChild(shutdownScreen);
         }
 
+        // ============ SAD MAC ============
+        function showSadMac(errorCode) {
+            playSound('death');
+            document.getElementById('sad-mac-error').textContent = 'Error Code: ' + (errorCode || '0F0004');
+            document.getElementById('sad-mac-screen').classList.add('visible');
+        }
+
+        function hideSadMac() {
+            document.getElementById('sad-mac-screen').classList.remove('visible');
+        }
+
+        function checkMemory() {
+            const openWindows = document.querySelectorAll('.window').length;
+            let count = 0;
+            document.querySelectorAll('.window').forEach(function(w) {
+                if (w.style.display !== 'none') count++;
+            });
+
+            if (count >= 5) {
+                showSadMac('0F0004');
+                return false;
+            }
+            if (count === 4) {
+                showAlert('Memory is getting low.\nClose some windows to continue.');
+            }
+            return true;
+        }
+
+        // ============ LICENCE / STOLEN FROM APPLE ============
+        function showLicence() {
+            playSound('click');
+            const serial = prompt('Enter your Macintosh serial number:');
+            if (serial === '4188A4' || serial === '40E118') {
+                showAlert('Licence verified.\nThank you for your purchase!');
+            } else if (serial && serial.trim() !== '') {
+                showStolenFromApple();
+            }
+        }
+
+        function showStolenFromApple() {
+            playSound('death');
+            const stolen = document.createElement('div');
+            stolen.id = 'stolen-screen';
+            stolen.style.cssText = 'background:#000;color:#fff;font-family:Chicago,ChiKareGo2,monospace;padding:2rem;text-align:center;position:fixed;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem;z-index:10002;cursor:pointer;';
+            stolen.innerHTML = '<img src="icon/apple.svg" alt="Apple" style="width:64px;height:64px;filter:invert(1);"><div style="font-size:18px;margin-top:1rem;">STOLEN FROM</div><div style="font-size:18px;">APPLE COMPUTER</div><div style="font-size:12px;margin-top:2rem;">(click to dismiss)</div>';
+            stolen.onclick = function() { this.remove(); };
+            document.body.appendChild(stolen);
+        }
+
         // ============ CALCULATOR ============
         let calcValue = '0';
 
         function toggleCalculator() {
             const calc = document.getElementById('calculator-window');
             if (calc.style.display === 'none') {
+                if (!checkMemory()) return;
+                playSound('click');
                 calc.style.display = 'block';
                 calc.style.left = '50px';
                 calc.style.top = '100px';
@@ -2700,7 +2798,13 @@
             // Sad Mac trigger: Ctrl+Shift+S
             if (e.ctrlKey && e.shiftKey && e.code === 'KeyS') {
                 e.preventDefault();
-                document.getElementById('sad-mac-screen').classList.add('visible');
+                showSadMac('0F0003');
+            }
+
+            // Any key to restart from Sad Mac
+            if (document.getElementById('sad-mac-screen').classList.contains('visible')) {
+                e.preventDefault();
+                hideSadMac();
             }
         });
 
