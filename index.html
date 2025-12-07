@@ -2661,17 +2661,18 @@
             playSound('death');
             const stolen = document.createElement('div');
             stolen.id = 'stolen-screen';
-            stolen.style.cssText = 'background:#000;color:#fff;font-family:Chicago,ChiKareGo2,monospace;position:fixed;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;z-index:10002;cursor:pointer;';
-            // Layout: STOLEN on top, FROM [Apple] APPLE in middle, COMPUTER below
+            // Position in top-left corner where Apple menu is, not fullscreen
+            stolen.style.cssText = 'background:#000;color:#fff;font-family:Chicago,ChiKareGo2,monospace;position:fixed;top:0;left:0;padding:4px 8px;z-index:10002;cursor:pointer;font-size:12px;line-height:1.2;';
+            // Layout: STOLEN / FROM [Apple] / APPLE / COMPUTER - vertical stack with logo next to FROM
             stolen.innerHTML = `
-                <div style="display:flex;flex-direction:column;align-items:center;">
-                    <div style="font-size:24px;margin-bottom:0.5rem;">STOLEN</div>
-                    <div style="display:flex;align-items:center;gap:1rem;">
-                        <div style="font-size:24px;">FROM</div>
-                        <img src="icon/apple.svg" alt="Apple" style="width:64px;height:64px;filter:invert(1);">
-                        <div style="font-size:24px;">APPLE</div>
+                <div style="display:flex;align-items:flex-start;">
+                    <div style="display:flex;flex-direction:column;align-items:flex-start;">
+                        <div>STOLEN</div>
+                        <div>FROM</div>
+                        <div>APPLE</div>
+                        <div>COMPUTER</div>
                     </div>
-                    <div style="font-size:24px;margin-top:0.5rem;">COMPUTER</div>
+                    <img src="icon/apple.svg" alt="Apple" style="width:24px;height:30px;filter:invert(1);margin-left:2px;margin-top:12px;">
                 </div>
             `;
             stolen.onclick = function() { this.remove(); };
