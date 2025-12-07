@@ -1,10 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="black">
-  <!-- Classic envelope icon - Susan Kare style -->
-  <!-- Envelope body -->
-  <rect x="2" y="8" width="28" height="18" fill="none" stroke="black" stroke-width="2"/>
-  <!-- Envelope flap (V shape) -->
-  <path d="M2 8 L16 18 L30 8" fill="none" stroke="black" stroke-width="2"/>
-  <!-- Bottom fold lines -->
-  <line x1="2" y1="26" x2="10" y2="18" stroke="black" stroke-width="2"/>
-  <line x1="30" y1="26" x2="22" y2="18" stroke="black" stroke-width="2"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Pixel-art email icon with @ on letter in envelope -->
+  <!-- Document/letter -->
+  <path d="M6 2 H24 L28 6 V18 H6 V2 Z" fill="white" stroke="black" stroke-width="1.5"/>
+  <!-- Dog-ear fold -->
+  <path d="M24 2 V6 H28" fill="none" stroke="black" stroke-width="1.5"/>
+  <!-- @ symbol on document -->
+  <circle cx="17" cy="10" r="4" fill="none" stroke="black" stroke-width="1.5"/>
+  <path d="M21 10 A4 4 0 1 0 17 14 L17 8" fill="none" stroke="black" stroke-width="1.5"/>
+  <!-- Envelope bottom -->
+  <path d="M2 16 L2 30 L30 30 L30 16" fill="white" stroke="black" stroke-width="1.5"/>
+  <!-- Envelope flap (V going into envelope) -->
+  <path d="M2 16 L16 26 L30 16" fill="none" stroke="black" stroke-width="1.5"/>
+  <!-- Envelope side lines -->
+  <line x1="2" y1="30" x2="10" y2="22" stroke="black" stroke-width="1.5"/>
+  <line x1="30" y1="30" x2="22" y2="22" stroke="black" stroke-width="1.5"/>
 </svg>

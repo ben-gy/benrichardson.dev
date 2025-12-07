@@ -793,6 +793,24 @@
         </div>
     </div>
 
+    <!-- Licence Window -->
+    <div class="window" id="licence-window" style="display: none; width: 280px;">
+        <div class="title-bar" id="licence-title-bar">
+            <button aria-label="Close" class="close" onclick="toggleLicence()"></button>
+            <h1 class="title">Licence</h1>
+            <button aria-label="Resize" disabled class="hidden"></button>
+        </div>
+        <div class="separator"></div>
+        <div class="window-pane" style="text-align: center; padding: 1rem;">
+            <p style="margin-bottom: 1rem;">Enter your Macintosh serial number:</p>
+            <input type="text" id="licence-input" style="width: 120px; text-align: center;">
+            <section class="field-row" style="justify-content: center; margin-top: 1rem;">
+                <button class="btn" onclick="toggleLicence()">Cancel</button>
+                <button class="btn btn-default" onclick="submitLicence()">OK</button>
+            </section>
+        </div>
+    </div>
+
     <!-- Lunar Lander Window -->
     <div class="window" id="lander-window" style="display: none; width: 280px;">
         <div class="title-bar" id="lander-title-bar">
@@ -2381,6 +2399,7 @@
         makeDraggable(document.getElementById('notepad-window'), document.getElementById('notepad-title-bar'));
         makeDraggable(document.getElementById('email-window'), document.getElementById('email-title-bar'));
         makeDraggable(document.getElementById('search-window'), document.getElementById('search-title-bar'));
+        makeDraggable(document.getElementById('licence-window'), document.getElementById('licence-title-bar'));
         makeDraggable(document.getElementById('lander-window'), document.getElementById('lander-title-bar'));
         makeDraggable(document.getElementById('startrek-window'), document.getElementById('startrek-title-bar'));
         makeDraggable(document.getElementById('blackjack-window'), document.getElementById('blackjack-title-bar'));
@@ -2391,6 +2410,21 @@
         document.getElementById('search-input').addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 searchGoogle();
+            }
+        });
+
+        // Enter key support for licence
+        document.getElementById('licence-input').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                submitLicence();
+            }
+        });
+
+        // Global mouse click sound
+        document.addEventListener('mousedown', function(e) {
+            // Only play on interactive elements
+            if (e.target.closest('button, a, input, .desktop-icon, [role="menu-item"], .title-bar')) {
+                playSound('click');
             }
         });
 
@@ -2419,9 +2453,13 @@
         }
 
         function closeAllWindows() {
-            const windows = ['main-window', 'calculator-window', 'puzzle-window', 'notepad-window', 'email-window', 'search-window', 'lander-window', 'startrek-window', 'blackjack-window', 'mastermind-window', 'hamurabi-window'];
+            const windows = ['main-window', 'calculator-window', 'puzzle-window', 'notepad-window', 'email-window', 'search-window', 'licence-window', 'lander-window', 'startrek-window', 'blackjack-window', 'mastermind-window', 'hamurabi-window'];
             windows.forEach(function(id) {
-                document.getElementById(id).style.display = 'none';
+                const win = document.getElementById(id);
+                win.style.display = 'none';
+                // Reset custom resize
+                win.style.width = '';
+                win.style.height = '';
             });
             trashHasItems = true;
             document.getElementById('trash-icon').classList.add('has-items');
@@ -2502,7 +2540,7 @@
         // ============ SPECIAL MENU FUNCTIONS ============
         function cleanUp() {
             // Clean up windows
-            const windows = ['main-window', 'calculator-window', 'puzzle-window', 'notepad-window', 'email-window', 'search-window', 'lander-window', 'startrek-window', 'blackjack-window', 'mastermind-window', 'hamurabi-window'];
+            const windows = ['main-window', 'calculator-window', 'puzzle-window', 'notepad-window', 'email-window', 'search-window', 'licence-window', 'lander-window', 'startrek-window', 'blackjack-window', 'mastermind-window', 'hamurabi-window'];
             let offset = 0;
             windows.forEach(function(id) {
                 const win = document.getElementById(id);
@@ -2588,11 +2626,29 @@
 
         // ============ LICENCE / STOLEN FROM APPLE ============
         function showLicence() {
-            playSound('click');
-            const serial = prompt('Enter your Macintosh serial number:');
+            toggleLicence();
+        }
+
+        function toggleLicence() {
+            const licence = document.getElementById('licence-window');
+            if (licence.style.display === 'none') {
+                playSound('click');
+                licence.style.display = 'block';
+                licence.style.left = '100px';
+                licence.style.top = '80px';
+                document.getElementById('licence-input').value = '';
+                document.getElementById('licence-input').focus();
+            } else {
+                licence.style.display = 'none';
+            }
+        }
+
+        function submitLicence() {
+            const serial = document.getElementById('licence-input').value;
+            toggleLicence();
             if (serial === '4188A4' || serial === '40E118') {
                 showAlert('Licence verified.\nThank you for your purchase!');
-            } else if (serial && serial.trim() !== '') {
+            } else {
                 showStolenFromApple();
             }
         }
@@ -2601,8 +2657,19 @@
             playSound('death');
             const stolen = document.createElement('div');
             stolen.id = 'stolen-screen';
-            stolen.style.cssText = 'background:#000;color:#fff;font-family:Chicago,ChiKareGo2,monospace;padding:2rem;text-align:center;position:fixed;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem;z-index:10002;cursor:pointer;';
-            stolen.innerHTML = '<img src="icon/apple.svg" alt="Apple" style="width:64px;height:64px;filter:invert(1);"><div style="font-size:18px;margin-top:1rem;">STOLEN FROM</div><div style="font-size:18px;">APPLE COMPUTER</div><div style="font-size:12px;margin-top:2rem;">(click to dismiss)</div>';
+            stolen.style.cssText = 'background:#000;color:#fff;font-family:Chicago,ChiKareGo2,monospace;position:fixed;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;z-index:10002;cursor:pointer;';
+            // Layout: STOLEN on top, FROM [Apple] APPLE in middle, COMPUTER below
+            stolen.innerHTML = `
+                <div style="display:flex;flex-direction:column;align-items:center;">
+                    <div style="font-size:24px;margin-bottom:0.5rem;">STOLEN</div>
+                    <div style="display:flex;align-items:center;gap:1rem;">
+                        <div style="font-size:24px;">FROM</div>
+                        <img src="icon/apple.svg" alt="Apple" style="width:64px;height:64px;filter:invert(1);">
+                        <div style="font-size:24px;">APPLE</div>
+                    </div>
+                    <div style="font-size:24px;margin-top:0.5rem;">COMPUTER</div>
+                </div>
+            `;
             stolen.onclick = function() { this.remove(); };
             document.body.appendChild(stolen);
         }
@@ -3029,6 +3096,18 @@
                     item.classList.remove('menu-open');
                 });
             }
+
+            // Close menu when clicking any menu link (for desktop :focus-within)
+            document.querySelectorAll('ul[role="menu"] a').forEach(function(link) {
+                link.addEventListener('click', function() {
+                    // Blur the parent menu item to close the dropdown
+                    const parentMenuItem = this.closest('ul[role="menu-bar"] > [role="menu-item"]');
+                    if (parentMenuItem) {
+                        parentMenuItem.blur();
+                    }
+                    closeAllMenus();
+                });
+            });
 
             menuItems.forEach(function(menuItem) {
                 menuItem.addEventListener('click', function(e) {
