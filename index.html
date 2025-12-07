@@ -38,6 +38,7 @@
             cursor: pointer;
             vertical-align: middle;
         }
+        .apple-menu:hover .apple-logo,
         .apple-menu:focus .apple-logo,
         .apple-menu:active .apple-logo {
             filter: invert(1);
@@ -46,6 +47,10 @@
             position: absolute;
             cursor: default;
             z-index: 10;
+            resize: both;
+            overflow: auto;
+            min-width: 150px;
+            min-height: 100px;
         }
         .title-bar {
             cursor: grab;
@@ -423,6 +428,11 @@
             0% { top: 80px; }
             100% { top: -450px; }
         }
+        /* Base body styles for flush menu bar */
+        body {
+            margin: 0;
+            padding: 0;
+        }
         /* Mobile responsive styles */
         @media (max-width: 480px) {
             html {
@@ -430,8 +440,6 @@
                 height: 100%;
             }
             body {
-                margin: 0;
-                padding: 0;
                 overflow: hidden;
                 width: 100%;
                 height: 100%;
@@ -629,7 +637,7 @@
             </ul>
         </li>
         <li role="menu-item" tabindex="0" aria-haspopup="true">
-            Game
+            Games
             <ul role="menu">
                 <li role="menu-item">
                     <a href="#" onclick="toggleLander(); return false;">Lunar Lander</a>
@@ -1093,9 +1101,9 @@
 
         function initLander() {
             landerState = {
-                altitude: 120,
-                velocity: 1,
-                fuel: 1600,
+                altitude: 500,
+                velocity: 50,
+                fuel: 200,
                 gameOver: false,
                 message: ''
             };
@@ -1152,11 +1160,15 @@
                 burn = landerState.fuel;
             }
 
-            const thrustAcc = (burn * 1.8) / 33000;
-            const netAcc = 0.001 - thrustAcc;
-            landerState.velocity += netAcc * 10;
-            landerState.altitude -= landerState.velocity * 10;
+            // Gravity pulls down, thrust pushes up
+            const gravity = 1.6;  // Moon gravity
+            const thrust = burn * 0.1;  // Thrust per unit fuel
+            landerState.velocity += gravity - thrust;
+            landerState.altitude -= landerState.velocity;
             landerState.fuel -= burn;
+
+            // Prevent negative velocity (can't fall up)
+            if (landerState.velocity < 0) landerState.velocity = 0;
 
             if (landerState.altitude <= 0) {
                 landerState.altitude = 0;
