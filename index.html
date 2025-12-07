@@ -2650,7 +2650,6 @@
         function closeMainWindow() {
             const win = document.getElementById('main-window');
             win.style.display = 'none';
-            setTrashFull(true);
         }
 
         function closeAllWindows() {
@@ -2662,7 +2661,6 @@
                 win.style.width = '';
                 win.style.height = '';
             });
-            setTrashFull(true);
         }
 
         function showMainWindow() {
