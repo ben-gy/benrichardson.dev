@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Support</title>
+  <meta name="description" content="Get help and support for iOS applications by Ben Richardson.">
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="../legal.css">
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const params = new URLSearchParams(window.location.search);
+      const appName = params.get('app');
+
+      if (appName) {
+        document.title = appName + ' - Support';
+        document.getElementById('page-title').textContent = appName + ' Support';
+        document.getElementById('app-badge').textContent = appName;
+        document.getElementById('app-badge').style.display = 'inline-block';
+
+        // Update generic "the app" references to app name
+        document.querySelectorAll('.app-name').forEach(function(el) {
+          el.textContent = appName;
+        });
+      }
+    });
+  </script>
+</head>
+<body>
+  <div class="container">
+    <header class="page-header">
+      <span class="app-badge" id="app-badge" style="display: none;"></span>
+      <h1 id="page-title">Support</h1>
+      <p class="last-updated">How can I help?</p>
+    </header>
+
+    <main>
+      <section class="section">
+        <p class="intro">Need help with <span class="app-name">the app</span>? Check out the common questions below, or send me an email.</p>
+      </section>
+
+      <section class="contact-section">
+        <h2>Get in Touch</h2>
+        <p>Questions, bugs, or ideas:</p>
+        <a href="mailto:support@benrichardson.dev" class="contact-email">support@benrichardson.dev</a>
+        <p class="response-time">I'll do my best to get back to you, but it may take a few days</p>
+      </section>
+
+      <section class="section">
+        <h2>Common Questions</h2>
+
+        <div class="faq-item">
+          <h3>How does the app use AI?</h3>
+          <p><span class="app-name">The app</span> uses Apple Intelligence, which runs entirely on your device. All AI processing happens locally on your iPhone or iPad, so your data never leaves your device.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3>Is my data private?</h3>
+          <p>Yes. <span class="app-name">The app</span> doesn't collect any personal data. Everything stays on your device. No accounts, no tracking, no data sharing.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3>Does it need internet?</h3>
+          <p>No. <span class="app-name">The app</span> works completely offline since all processing happens on your device.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3>Found a bug?</h3>
+          <p>Please email <a href="mailto:support@benrichardson.dev">support@benrichardson.dev</a> with a description of what happened. If you can include your device model, iOS version, and steps to reproduce it, that helps a lot.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3>Have a feature idea?</h3>
+          <p>I'd love to hear it. Send it to <a href="mailto:support@benrichardson.dev">support@benrichardson.dev</a>. I can't promise to build everything, but I do read all suggestions.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3>How do I delete my data?</h3>
+          <p>Just uninstall <span class="app-name">the app</span>. Since everything is stored locally on your device, deleting the app removes all data.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3>Which devices work?</h3>
+          <p><span class="app-name">The app</span> runs on iPhone and iPad. Check the App Store listing for specific requirements.</p>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Quick Troubleshooting</h2>
+        <div class="highlight-box">
+          <p><strong>Before reaching out, try these:</strong></p>
+          <ul style="margin-bottom: 0;">
+            <li>Update to the latest version from the App Store</li>
+            <li>Restart <span class="app-name">the app</span></li>
+            <li>Make sure your device has enough storage</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Enjoying the app?</h2>
+        <p>An App Store review would be really appreciated. It helps others find the app.</p>
+        <p>If something's not working, please email me first so I can try to fix it.</p>
+      </section>
+    </main>
+
+    <footer class="page-footer">
+      <nav class="footer-links">
+        <a href="./">Support</a>
+        <a href="../privacy/">Privacy Policy</a>
+      </nav>
+      <a href="https://benrichardson.dev" class="retro-link">benrichardson.dev</a>
+      <p class="copyright">&copy; <script>document.write(new Date().getFullYear())</script> Ben Richardson. All rights reserved.</p>
+    </footer>
+  </div>
+</body>
+</html>

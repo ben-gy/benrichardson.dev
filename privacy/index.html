@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy</title>
+  <meta name="description" content="Privacy Policy for iOS applications by Ben Richardson. Your data stays on your device.">
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="../legal.css">
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const params = new URLSearchParams(window.location.search);
+      const appName = params.get('app');
+
+      if (appName) {
+        document.title = appName + ' - Privacy Policy';
+        document.getElementById('page-title').textContent = appName + ' Privacy Policy';
+        document.getElementById('app-badge').textContent = appName;
+        document.getElementById('app-badge').style.display = 'inline-block';
+
+        // Update generic "the app" references to app name
+        document.querySelectorAll('.app-name').forEach(function(el) {
+          el.textContent = appName;
+        });
+      }
+    });
+  </script>
+</head>
+<body>
+  <div class="container">
+    <header class="page-header">
+      <span class="app-badge" id="app-badge" style="display: none;"></span>
+      <h1 id="page-title">Privacy Policy</h1>
+      <p class="last-updated">Last updated: December 16, 2024</p>
+    </header>
+
+    <main>
+      <section class="section">
+        <p class="intro">This Privacy Policy explains how <span class="app-name">this application</span> handles your information. The short version: <strong>your data stays on your device</strong>.</p>
+
+        <div class="highlight-box">
+          <p><strong>Privacy at a Glance:</strong> <span class="app-name">This app</span> does not collect, store, or transmit your personal data. All processing happens locally on your device.</p>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Information Collection</h2>
+        <p><span class="app-name">This app</span> does not collect any personal information. It operates entirely on your device without requiring:</p>
+        <ul>
+          <li>User accounts or registration</li>
+          <li>Personal identification information</li>
+          <li>Location data</li>
+          <li>Contact information</li>
+          <li>Usage analytics or tracking</li>
+        </ul>
+        <p>Any data you create or input within <span class="app-name">the app</span> remains stored locally on your device and is never transmitted to external servers.</p>
+      </section>
+
+      <section class="section">
+        <h2>On-Device Processing</h2>
+        <p><span class="app-name">The app</span> uses Apple's on-device machine learning (Apple Intelligence) to provide its features. This means:</p>
+        <ul>
+          <li><strong>All AI processing happens locally</strong> on your iPhone or iPad</li>
+          <li>Your data never leaves your device for AI processing</li>
+          <li>No information is sent to external AI services or cloud servers</li>
+          <li>Processing uses Apple's secure, privacy-focused frameworks</li>
+        </ul>
+      </section>
+
+      <section class="section">
+        <h2>Data Storage</h2>
+        <p>All data created within <span class="app-name">the app</span> is stored locally on your device. This includes:</p>
+        <ul>
+          <li>Any content you create or save</li>
+          <li>App preferences and settings</li>
+          <li>Cache and temporary files</li>
+        </ul>
+        <p>You can delete all app data at any time by uninstalling <span class="app-name">the app</span> or clearing app data through iOS Settings.</p>
+      </section>
+
+      <section class="section">
+        <h2>Third-Party Services</h2>
+        <p><span class="app-name">The app</span> does not integrate with third-party analytics, advertising networks, or data brokers. There is:</p>
+        <ul>
+          <li>No data sharing with third parties</li>
+          <li>No advertisements</li>
+          <li>No tracking</li>
+        </ul>
+        <p>The only external services used are Apple's standard frameworks, which are subject to <a href="https://www.apple.com/legal/privacy/" target="_blank" rel="noopener">Apple's Privacy Policy</a>.</p>
+      </section>
+
+      <section class="section">
+        <h2>Children's Privacy</h2>
+        <p>Because <span class="app-name">the app</span> does not collect any personal information, it is safe for users of all ages and complies with COPPA by design.</p>
+      </section>
+
+      <section class="section">
+        <h2>Your Rights</h2>
+        <p>You have complete control over your data:</p>
+        <ul>
+          <li><strong>Access:</strong> All your data is stored locally and accessible only to you</li>
+          <li><strong>Deletion:</strong> Remove all data by uninstalling the app</li>
+          <li><strong>Portability:</strong> Your data exists only on your device under your control</li>
+        </ul>
+        <p>For users in the EU, California, or other regions with privacy regulations: because no personal data is collected or stored, data subject rights are inherently satisfied.</p>
+      </section>
+
+      <section class="section">
+        <h2>Changes to This Policy</h2>
+        <p>This Privacy Policy may be updated from time to time. Changes will be reflected on this page with an updated date. Material changes will be noted in App Store update notes.</p>
+      </section>
+
+      <section class="section">
+        <h2>Contact</h2>
+        <p>Questions about this Privacy Policy:</p>
+        <p><a href="mailto:support@benrichardson.dev">support@benrichardson.dev</a></p>
+      </section>
+    </main>
+
+    <footer class="page-footer">
+      <nav class="footer-links">
+        <a href="../support/">Support</a>
+        <a href="./">Privacy Policy</a>
+      </nav>
+      <a href="https://benrichardson.dev" class="retro-link">benrichardson.dev</a>
+      <p class="copyright">&copy; <script>document.write(new Date().getFullYear())</script> Ben Richardson. All rights reserved.</p>
+    </footer>
+  </div>
+</body>
+</html>
