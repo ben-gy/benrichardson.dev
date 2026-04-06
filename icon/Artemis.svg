@@ -1,22 +1,47 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <defs>
-    <radialGradient id="earth" cx="40%" cy="40%">
-      <stop offset="0%" stop-color="#3b82f6"/>
-      <stop offset="100%" stop-color="#0b3d91"/>
-    </radialGradient>
-    <radialGradient id="moon" cx="40%" cy="40%">
-      <stop offset="0%" stop-color="#d1d5db"/>
-      <stop offset="100%" stop-color="#6b7280"/>
-    </radialGradient>
-  </defs>
-  <!-- Background -->
-  <rect width="64" height="64" rx="12" fill="#0a0e17"/>
-  <!-- Earth -->
-  <circle cx="22" cy="32" r="12" fill="url(#earth)"/>
-  <!-- Moon -->
-  <circle cx="50" cy="18" r="6" fill="url(#moon)"/>
-  <!-- Trajectory arc -->
-  <path d="M 34 32 Q 52 38, 50 24" stroke="#f59e0b" stroke-width="1.5" fill="none" stroke-dasharray="3,2"/>
-  <!-- Spacecraft dot -->
-  <circle cx="48" cy="28" r="2.5" fill="#f59e0b"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" shape-rendering="crispEdges">
+  <!-- Orion/Artemis spacecraft - pixel art, classic Mac OS style -->
+  <g transform="rotate(45, 16, 16)">
+    <!-- Capsule nose cone (filled black) -->
+    <rect x="15" y="3" width="2" height="1" fill="black"/>
+    <rect x="14" y="4" width="4" height="1" fill="black"/>
+    <rect x="13" y="5" width="6" height="1" fill="black"/>
+    <rect x="12" y="6" width="8" height="1" fill="black"/>
+
+    <!-- Capsule body walls (1px thick) -->
+    <rect x="11" y="7" width="1" height="4" fill="black"/>
+    <rect x="20" y="7" width="1" height="4" fill="black"/>
+    <!-- Porthole window -->
+    <rect x="15" y="8" width="2" height="2" fill="black"/>
+
+    <!-- Heat shield (1px tall, wider than capsule) -->
+    <rect x="10" y="11" width="12" height="1" fill="black"/>
+
+    <!-- Service module walls (1px thick) -->
+    <rect x="12" y="12" width="1" height="7" fill="black"/>
+    <rect x="19" y="12" width="1" height="7" fill="black"/>
+    <!-- Service module bottom -->
+    <rect x="13" y="19" width="6" height="1" fill="black"/>
+
+    <!-- Solar panel LEFT -->
+    <rect x="1" y="15" width="12" height="1" fill="black"/>
+    <rect x="1" y="16" width="1" height="2" fill="black"/>
+    <rect x="6" y="16" width="1" height="2" fill="black"/>
+    <rect x="1" y="18" width="12" height="1" fill="black"/>
+
+    <!-- Solar panel RIGHT -->
+    <rect x="19" y="15" width="12" height="1" fill="black"/>
+    <rect x="25" y="16" width="1" height="2" fill="black"/>
+    <rect x="30" y="16" width="1" height="2" fill="black"/>
+    <rect x="19" y="18" width="12" height="1" fill="black"/>
+
+    <!-- Engine nozzle -->
+    <rect x="14" y="20" width="4" height="1" fill="black"/>
+    <rect x="14" y="21" width="1" height="2" fill="black"/>
+    <rect x="17" y="21" width="1" height="2" fill="black"/>
+    <rect x="13" y="23" width="6" height="1" fill="black"/>
+
+    <!-- Exhaust -->
+    <rect x="15" y="24" width="2" height="1" fill="black"/>
+    <rect x="15" y="26" width="2" height="1" fill="black"/>
+  </g>
 </svg>
