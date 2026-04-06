@@ -1,12 +1,98 @@
 // ============ DARK MODE TOGGLE ============
-// Adds a sun/moon icon to the menu bar for toggling dark mode.
-// Dark mode inverts the classic Mac aesthetic.
+// Sets CSS custom properties directly on documentElement to override system.css.
 
 let darkMode = false;
 
+// Inject dark mode styles that need to override system.css
+const styleEl = document.createElement('style');
+styleEl.textContent = `
+    .dark-mode body {
+        background: linear-gradient(90deg, #000 21px, transparent 1%) center,
+                    linear-gradient(#000 21px, transparent 1%) center, #222;
+        background-size: 22px 22px;
+        background-attachment: fixed;
+        color: #ccc;
+    }
+    .dark-mode .window-pane,
+    .dark-mode .window-pane p,
+    .dark-mode .window-pane strong,
+    .dark-mode .title-bar .title,
+    .dark-mode .modal-contents,
+    .dark-mode .modal-contents p,
+    .dark-mode .alert-contents,
+    .dark-mode .alert-text {
+        color: #ccc !important;
+    }
+    .dark-mode .window-pane a {
+        color: #999 !important;
+    }
+    .dark-mode .desktop-icon img {
+        filter: invert(1);
+    }
+    .dark-mode .desktop-icon span {
+        color: #ccc;
+    }
+    .dark-mode .desktop-icon:hover {
+        background: rgba(255,255,255,0.1);
+    }
+    .dark-mode .desktop-icon.selected {
+        background: #ccc;
+        color: #000;
+    }
+    .dark-mode .desktop-icon.selected img {
+        filter: none;
+    }
+    .dark-mode .menu-sound img,
+    .dark-mode .apple-logo {
+        filter: invert(1);
+    }
+    .dark-mode .about-mac-bar-fill {
+        background: repeating-linear-gradient(90deg, #ccc 0px, #ccc 2px, #000 2px, #000 4px);
+    }
+    .dark-mode .about-mac-credits {
+        color: #888;
+    }
+`;
+document.head.appendChild(styleEl);
+
+const darkVars = {
+    '--sys-color-white': '#000',
+    '--sys-color-black': '#ccc',
+    '--sys-color-grey': '#444',
+    '--sys-color-darkgrey': '#333',
+    '--primary': '#000',
+    '--secondary': '#ccc',
+    '--tertiary': '#444',
+    '--disabled': '#333',
+};
+
+const lightVars = {
+    '--sys-color-white': '#FFFFFF',
+    '--sys-color-black': '#000000',
+    '--sys-color-grey': '#A5A5A5',
+    '--sys-color-darkgrey': '#B6B7B8',
+    '--primary': '',
+    '--secondary': '',
+    '--tertiary': '',
+    '--disabled': '',
+};
+
+function applyTheme(isDark) {
+    const vars = isDark ? darkVars : lightVars;
+    const el = document.documentElement;
+    for (const [key, value] of Object.entries(vars)) {
+        if (value) {
+            el.style.setProperty(key, value);
+        } else {
+            el.style.removeProperty(key);
+        }
+    }
+    el.classList.toggle('dark-mode', isDark);
+}
+
 export function toggleDarkMode() {
     darkMode = !darkMode;
-    document.body.classList.toggle('dark-mode', darkMode);
+    applyTheme(darkMode);
 
     const icon = document.getElementById('darkmode-icon');
     if (icon) {
@@ -14,56 +100,16 @@ export function toggleDarkMode() {
         icon.title = darkMode ? 'Light Mode' : 'Dark Mode';
     }
 
-    // Persist preference
     localStorage.setItem('darkMode', darkMode ? '1' : '0');
 }
 
 export function initDarkMode() {
-    // Inject dark mode styles
-    const style = document.createElement('style');
-    style.id = 'dark-mode-styles';
-    style.textContent = `
-        .menu-darkmode {
-            padding: 4px 6px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            font-size: 16px;
-            line-height: 1;
-            image-rendering: pixelated;
-        }
-
-        body.dark-mode {
-            background-color: #1a1a1a;
-            filter: invert(1);
-        }
-
-        /* Un-invert images and icons so they look correct */
-        body.dark-mode img,
-        body.dark-mode .desktop-icon img,
-        body.dark-mode .startup-icon,
-        body.dark-mode .about-mac-icon,
-        body.dark-mode .sad-mac-screen img,
-        body.dark-mode #crt-overlay,
-        body.dark-mode .about-mac-bar-fill {
-            filter: invert(1);
-        }
-
-        /* Keep screensaver correct */
-        body.dark-mode #screensaver {
-            filter: invert(1);
-        }
-    `;
-    document.head.appendChild(style);
-
-    // Restore saved preference
     const saved = localStorage.getItem('darkMode');
     if (saved === '1') {
         darkMode = true;
-        document.body.classList.add('dark-mode');
+        applyTheme(true);
     }
 
-    // Update icon to match state
     const icon = document.getElementById('darkmode-icon');
     if (icon) {
         icon.textContent = darkMode ? '\u263e' : '\u2600';

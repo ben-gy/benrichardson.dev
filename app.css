@@ -546,6 +546,81 @@ body {
     margin: 0;
     padding: 0;
 }
+/* Dark mode toggle icon */
+.menu-darkmode {
+    padding: 4px 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    line-height: 1;
+}
+/* ============ DARK MODE ============ */
+/* Swap system.css theme tokens — everything else follows automatically */
+html.dark-mode {
+    --sys-color-white: #000 !important;
+    --sys-color-black: #ccc !important;
+    --sys-color-grey: #444 !important;
+    --sys-color-darkgrey: #333 !important;
+    --primary: #000 !important;
+    --secondary: #ccc !important;
+    --tertiary: #444 !important;
+    --disabled: #333 !important;
+}
+.dark-mode body {
+    background: linear-gradient(90deg, #000 21px, transparent 1%) center,
+                linear-gradient(#000 21px, transparent 1%) center, #222;
+    background-size: 22px 22px;
+    background-attachment: fixed;
+    color: #ccc;
+}
+.dark-mode .desktop-icon img {
+    filter: invert(1);
+}
+.dark-mode .desktop-icon span {
+    color: #ccc;
+}
+.dark-mode .desktop-icon:hover {
+    background: rgba(255,255,255,0.1);
+}
+.dark-mode .desktop-icon.selected {
+    background: #ccc;
+    color: #000;
+}
+.dark-mode .desktop-icon.selected img {
+    filter: none;
+}
+.dark-mode .menu-sound img {
+    filter: invert(1);
+}
+.dark-mode .apple-logo {
+    filter: invert(1);
+}
+.dark-mode .about-mac-bar-fill {
+    background: repeating-linear-gradient(
+        90deg,
+        #ccc 0px,
+        #ccc 2px,
+        #000 2px,
+        #000 4px
+    );
+}
+.dark-mode .about-mac-credits {
+    color: #888;
+}
+.dark-mode .window-pane,
+.dark-mode .window-pane p,
+.dark-mode .window-pane strong,
+.dark-mode .title-bar .title,
+.dark-mode .modal-contents,
+.dark-mode .modal-contents p,
+.dark-mode .alert-contents,
+.dark-mode .alert-text {
+    color: #ccc;
+}
+.dark-mode .window-pane a {
+    color: #999;
+}
 /* Mobile responsive styles */
 @media (max-width: 480px) {
     html {
