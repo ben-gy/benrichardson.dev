@@ -1,6 +1,6 @@
 // ============ SCREENSAVER (Page Visibility API + Canvas) ============
-// When the user switches tabs for 60+ seconds, a classic bouncing "hello"
-// screensaver activates. On return: brief phosphor-decay green fade.
+// Classic Mac-style bouncing "hello" screensaver in black and white.
+// Activates after 60s tab-away, or manually via View > Screensaver.
 
 let screensaverTimeout = null;
 let screensaverCanvas = null;
@@ -17,33 +17,9 @@ function createScreensaver() {
         z-index: 9990; display: none; cursor: none; background: #000;
     `;
     document.body.appendChild(screensaverCanvas);
-
-    // Phosphor decay overlay
-    const decay = document.createElement('div');
-    decay.id = 'phosphor-decay';
-    decay.style.cssText = `
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        z-index: 9991; display: none; pointer-events: none;
-        background: #00ff00; opacity: 0; transition: opacity 0.8s ease-out;
-    `;
-    document.body.appendChild(decay);
-
-    // Inject styles
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes phosphor-fade {
-            0% { opacity: 0.3; }
-            100% { opacity: 0; }
-        }
-        #phosphor-decay.active {
-            display: block;
-            animation: phosphor-fade 0.8s ease-out forwards;
-        }
-    `;
-    document.head.appendChild(style);
 }
 
-function startScreensaver() {
+export function startScreensaver() {
     if (screensaverActive || !screensaverCanvas) return;
     screensaverActive = true;
     screensaverCanvas.style.display = 'block';
@@ -51,11 +27,9 @@ function startScreensaver() {
     const canvas = screensaverCanvas;
     const ctx = canvas.getContext('2d');
 
-    // Size canvas to window
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    // Bouncing text state
     const text = 'hello';
     const fontSize = Math.max(48, Math.floor(canvas.width / 12));
     ctx.font = fontSize + 'px ChicagoFLF, ChiKareGo2, monospace';
@@ -66,27 +40,13 @@ function startScreensaver() {
     let dx = 1.5;
     let dy = 1;
 
-    // Trail effect - array of previous positions with fading
-    const trails = [];
-    const MAX_TRAILS = 12;
-
     function animate() {
+        // Fade trail — black with slight transparency for ghosting
         ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // Draw trail
-        trails.push({ x, y });
-        if (trails.length > MAX_TRAILS) trails.shift();
-
-        trails.forEach((t, i) => {
-            const alpha = (i / trails.length) * 0.4;
-            ctx.fillStyle = `rgba(0, 255, 0, ${alpha})`;
-            ctx.font = fontSize + 'px ChicagoFLF, ChiKareGo2, monospace';
-            ctx.fillText(text, t.x, t.y);
-        });
-
-        // Draw main text
-        ctx.fillStyle = '#00ff00';
+        // Draw text in white (classic Mac style)
+        ctx.fillStyle = '#ffffff';
         ctx.font = fontSize + 'px ChicagoFLF, ChiKareGo2, monospace';
         ctx.fillText(text, x, y);
 
@@ -103,10 +63,8 @@ function startScreensaver() {
         }
     }
 
-    // Clear canvas fully first
     ctx.fillStyle = '#000';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-
     animate();
 }
 
@@ -114,15 +72,7 @@ function stopScreensaver() {
     if (!screensaverActive) return;
     screensaverActive = false;
     if (animFrame) cancelAnimationFrame(animFrame);
-
     screensaverCanvas.style.display = 'none';
-
-    // Phosphor decay effect
-    const decay = document.getElementById('phosphor-decay');
-    if (decay) {
-        decay.classList.add('active');
-        setTimeout(() => decay.classList.remove('active'), 1000);
-    }
 }
 
 export function initScreensaver() {
@@ -130,10 +80,8 @@ export function initScreensaver() {
 
     document.addEventListener('visibilitychange', function() {
         if (document.hidden) {
-            // Start timer when tab becomes hidden
             screensaverTimeout = setTimeout(startScreensaver, IDLE_TIME);
         } else {
-            // Cancel timer and stop screensaver when tab becomes visible
             if (screensaverTimeout) {
                 clearTimeout(screensaverTimeout);
                 screensaverTimeout = null;
@@ -142,7 +90,7 @@ export function initScreensaver() {
         }
     });
 
-    // Also dismiss screensaver on any interaction
+    // Dismiss screensaver on any interaction
     ['click', 'keydown', 'mousemove', 'touchstart'].forEach(event => {
         document.addEventListener(event, function() {
             if (screensaverActive) stopScreensaver();

@@ -89,14 +89,17 @@ window.hamSubmit = hamSubmit;
 
 // Enhancements (Browser API features)
 import { initCRTFullscreen, toggleFullscreen } from './enhancements/crt-fullscreen.js';
-import { initScreensaver } from './enhancements/screensaver.js';
+import { initScreensaver, startScreensaver } from './enhancements/screensaver.js';
 import { initSystemProfiler } from './enhancements/system-profiler.js';
 import { initFileDrop } from './enhancements/file-drop.js';
 import { initAmbientGlow } from './enhancements/ambient-glow.js';
 import { initImageWriterPrint, printWindow } from './enhancements/print-imagewriter.js';
+import { initDarkMode, toggleDarkMode } from './enhancements/dark-mode.js';
 
 window.toggleFullscreen = toggleFullscreen;
 window.printWindow = printWindow;
+window.toggleDarkMode = toggleDarkMode;
+window.startScreensaver = startScreensaver;
 
 // ============ INITIALIZATION ============
 
@@ -126,6 +129,7 @@ initScreensaver();
 initSystemProfiler();
 initFileDrop();
 initAmbientGlow();
+initDarkMode();
 initImageWriterPrint();
 
 // Startup sequence
