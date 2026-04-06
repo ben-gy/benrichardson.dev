@@ -3,9 +3,19 @@
 
 let darkMode = false;
 
-// Inject dark mode styles that need to override system.css
+// Inject all dark mode styles via JS to avoid CSS caching issues
 const styleEl = document.createElement('style');
 styleEl.textContent = `
+    /* Base dark mode toggle icon */
+    .menu-darkmode {
+        padding: 4px 8px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        line-height: 1;
+    }
+    /* Dark mode theme */
     .dark-mode body {
         background: linear-gradient(90deg, #000 21px, transparent 1%) center,
                     linear-gradient(#000 21px, transparent 1%) center, #222;
