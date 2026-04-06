@@ -1,48 +1,23 @@
-// ============ CRT FULLSCREEN MODE (Fullscreen API + CSS) ============
-// Enter fullscreen to transform the browser into a 1984 Macintosh CRT monitor
-// with scanlines, vignette, rounded corners, and beige casing.
+// ============ CRT EFFECT + FULLSCREEN MODE ============
+// CRT scanlines and vignette are always active.
+// Fullscreen mode just goes edge-to-edge (no browser chrome).
 
 let isFullscreen = false;
-let crtOverlay = null;
 
 function createCRTOverlay() {
-    if (crtOverlay) return;
-
-    crtOverlay = document.createElement('div');
-    crtOverlay.id = 'crt-overlay';
-    crtOverlay.innerHTML = `
+    const overlay = document.createElement('div');
+    overlay.id = 'crt-overlay';
+    overlay.innerHTML = `
         <div class="crt-scanlines"></div>
         <div class="crt-vignette"></div>
     `;
-    document.body.appendChild(crtOverlay);
+    document.body.appendChild(overlay);
 
-    // Inject CRT styles
     const style = document.createElement('style');
     style.id = 'crt-styles';
     style.textContent = `
-        body.crt-mode {
-            background: #c0b090;
-            border: 24px solid #c0b090;
-            border-radius: 16px;
-            box-sizing: border-box;
-            overflow: hidden;
-        }
-
-        body.crt-mode::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            border-radius: 12px;
-            pointer-events: none;
-            z-index: 9998;
-            box-shadow: inset 0 0 80px rgba(0,0,0,0.3);
-        }
-
+        /* CRT overlay — always visible */
         #crt-overlay {
-            display: none;
             position: fixed;
             top: 0;
             left: 0;
@@ -50,10 +25,6 @@ function createCRTOverlay() {
             height: 100%;
             pointer-events: none;
             z-index: 9997;
-        }
-
-        body.crt-mode #crt-overlay {
-            display: block;
         }
 
         .crt-scanlines {
@@ -86,7 +57,7 @@ function createCRTOverlay() {
             pointer-events: none;
         }
 
-        /* CRT power-on flicker */
+        /* CRT power-on flicker on page load */
         @keyframes crt-flicker {
             0% { opacity: 0; }
             10% { opacity: 1; }
@@ -117,18 +88,15 @@ export function toggleFullscreen() {
 
 function onFullscreenChange() {
     isFullscreen = !!(document.fullscreenElement || document.webkitFullscreenElement);
-
-    if (isFullscreen) {
-        createCRTOverlay();
-        document.body.classList.add('crt-mode', 'crt-enter');
-        setTimeout(() => document.body.classList.remove('crt-enter'), 500);
-    } else {
-        document.body.classList.remove('crt-mode', 'crt-enter');
-    }
 }
 
 export function initCRTFullscreen() {
+    createCRTOverlay();
+
+    // Flicker on load
+    document.body.classList.add('crt-enter');
+    setTimeout(() => document.body.classList.remove('crt-enter'), 500);
+
     document.addEventListener('fullscreenchange', onFullscreenChange);
     document.addEventListener('webkitfullscreenchange', onFullscreenChange);
-    createCRTOverlay();
 }
