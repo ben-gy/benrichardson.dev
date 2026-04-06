@@ -62,6 +62,94 @@ styleEl.textContent = `
     .dark-mode .about-mac-credits {
         color: #888;
     }
+
+    /* Form inputs and textareas */
+    .dark-mode input,
+    .dark-mode textarea,
+    .dark-mode .calc-display,
+    .dark-mode .notepad-textarea {
+        background: #222 !important;
+        color: #ccc !important;
+        border-color: #555 !important;
+    }
+    .dark-mode .email-window input[readonly] {
+        background: #333 !important;
+    }
+
+    /* Modal dialogs and alerts */
+    .dark-mode .modal-dialog,
+    .dark-mode .alert-box {
+        background: #111 !important;
+        color: #ccc !important;
+    }
+    .dark-mode .inner-border,
+    .dark-mode .outer-border {
+        border-color: #555 !important;
+    }
+    .dark-mode .about-mac-contents {
+        color: #ccc;
+    }
+    .dark-mode .about-mac-header {
+        border-bottom-color: #555;
+    }
+    .dark-mode .about-mac-icon {
+        filter: invert(1);
+    }
+    .dark-mode .about-mac-divider {
+        border-top-color: #555;
+    }
+    .dark-mode .about-mac-bar {
+        border-color: #555;
+        background: #222;
+    }
+    .dark-mode .about-mac-row span {
+        color: #ccc;
+    }
+    .dark-mode .about-mac-credits a {
+        color: #888 !important;
+    }
+
+    /* Puzzle tiles */
+    .dark-mode .puzzle-grid {
+        background: #555;
+    }
+    .dark-mode .puzzle-tile {
+        background: #222 !important;
+        color: #ccc !important;
+        border-color: #555 !important;
+    }
+    .dark-mode .puzzle-tile:hover {
+        background: #333 !important;
+    }
+    .dark-mode .puzzle-tile.empty {
+        background: #111 !important;
+    }
+
+    /* Game outputs */
+    .dark-mode .lander-output,
+    .dark-mode .startrek-output,
+    .dark-mode .blackjack-output,
+    .dark-mode .mastermind-output,
+    .dark-mode .hamurabi-output {
+        background: #111 !important;
+        color: #ccc !important;
+        border-color: #555 !important;
+    }
+
+    /* Scrollbar in dark mode */
+    .dark-mode .credits-container {
+        border-color: #555;
+    }
+
+    /* Page number text */
+    .dark-mode .notepad-page-num {
+        color: #ccc;
+    }
+
+    /* Menu dropdowns */
+    .dark-mode ul[role="menu"] li.divider {
+        border-color: #555;
+    }
 `;
 document.head.appendChild(styleEl);
 
