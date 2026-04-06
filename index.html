@@ -132,6 +132,9 @@
                 </li>
                 <li class="divider"></li>
                 <li role="menu-item">
+                    <a href="#" onclick="startScreensaver(); return false;">Screensaver</a>
+                </li>
+                <li role="menu-item">
                     <a href="#" onclick="toggleFullscreen(); return false;">Full Screen</a>
                 </li>
             </ul>
@@ -187,6 +190,9 @@
                     <a href="#" onclick="toggleHamurabi(); return false;">Hamurabi</a>
                 </li>
             </ul>
+        </li>
+        <li class="menu-darkmode" onclick="toggleDarkMode()" title="Dark Mode">
+            <span id="darkmode-icon">&#9728;</span>
         </li>
         <li class="menu-sound" id="menu-sound" onclick="toggleSound()" title="Sound">
             <img src="icon/sound-off.svg" alt="Sound" id="sound-icon">
