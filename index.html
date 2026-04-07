@@ -328,7 +328,7 @@
         <div class="window-pane">
             <div class="notepad-content">
                 <textarea class="notepad-textarea" id="notepad-textarea" placeholder="Type your notes here..."></textarea>
-                <div class="notepad-corner" onclick="nextNotePage()">📄</div>
+                <div class="notepad-corner" onclick="nextNotePage()">+</div>
             </div>
             <div class="notepad-page-num">Page <span id="notepad-page-num">1</span> of <span id="notepad-total-pages">8</span></div>
         </div>
@@ -857,32 +857,12 @@
         </div>
     </div>
 
-    <!-- Bomb Error Modal -->
-    <div class="modal-overlay" id="bomb-modal">
-        <div class="alert-box outer-border">
-            <div class="inner-border">
-                <div class="alert-contents">
-                    <span class="alert-icon">💣</span>
-                    <div class="alert-text-container">
-                        <p class="alert-text">Sorry, a system error occurred.</p>
-                        <p style="font-size: 0.8rem; margin: 0.5rem 0;">"Ben Richardson"</p>
-                        <p style="font-size: 0.7rem; margin: 0;">unimplemented trap</p>
-                        <div class="alert-buttons">
-                            <button class="btn" onclick="restartSystem()">Restart</button>
-                            <button class="btn btn-default" onclick="hideModal('bomb-modal')">Resume</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Konami Code Success Modal -->
     <div class="modal-overlay" id="konami-modal">
         <div class="modal-dialog outer-border">
             <div class="inner-border">
                 <div class="modal-contents">
-                    <p style="font-size: 2rem; margin: 0;">🎉</p>
+                    <p style="font-size: 1.5rem; margin: 0;">* * *</p>
                     <h2 style="margin: 0.5rem 0;">Secret Unlocked!</h2>
                     <p>You found the Konami Code easter egg!</p>
                     <p style="font-size: 0.8rem;">↑↑↓↓←→←→BA</p>
@@ -897,7 +877,7 @@
         <div class="modal-dialog outer-border">
             <div class="inner-border">
                 <div class="modal-contents">
-                    <p style="font-size: 2rem; margin: 0;">🎊</p>
+                    <p style="font-size: 1.5rem; margin: 0;">* * *</p>
                     <h2 style="margin: 0.5rem 0;">You Win!</h2>
                     <p>Congratulations, you solved the puzzle!</p>
                     <button class="btn btn-default" onclick="hideModal('puzzle-win-modal')" style="margin-top: 1rem;">OK</button>
@@ -911,10 +891,10 @@
         <div class="modal-dialog outer-border">
             <div class="inner-border">
                 <div class="modal-contents">
-                    <p style="font-size: 2rem; margin: 0;">💀</p>
+                    <p style="font-size: 1.5rem; margin: 0;">- ! -</p>
                     <h2 style="margin: 0.5rem 0;">Hacker Detected</h2>
                     <p>You solved it backwards.<br>Only a true hacker would do this.</p>
-                    <button class="btn btn-default" onclick="hideModal('puzzle-reverse-modal')" style="margin-top: 1rem;">😎</button>
+                    <button class="btn btn-default" onclick="hideModal('puzzle-reverse-modal')" style="margin-top: 1rem;">Cool</button>
                 </div>
             </div>
         </div>
@@ -925,7 +905,7 @@
         <div class="modal-dialog outer-border">
             <div class="inner-border">
                 <div class="modal-contents">
-                    <p style="font-size: 2rem; margin: 0;">🔔</p>
+                    <p style="font-size: 1.5rem; margin: 0;">( ( o ) )</p>
                     <h2 style="margin: 0.5rem 0;">Sosumi</h2>
                     <p>The legendary alert sound.<br>"So Sue Me" — Apple Legal, 1991</p>
                     <button class="btn btn-default" onclick="hideModal('sosumi-modal')" style="margin-top: 1rem;">OK</button>

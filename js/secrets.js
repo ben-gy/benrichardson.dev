@@ -58,7 +58,6 @@ function addSecretsMenu() {
 
 const ALL_SECRETS = [
     { id: 'konami', name: 'Konami Code', hint: 'A famous cheat code from the NES era' },
-    { id: 'bomb', name: 'Bomb Dialog', hint: 'Ctrl+Shift+B triggers a system error' },
     { id: 'sadmac', name: 'Sad Mac', hint: 'Ctrl+Shift+S crashes the system' },
     { id: 'stolen', name: 'Stolen From Apple', hint: 'Enter the wrong serial in Licence...' },
     { id: 'diskcrash', name: 'System Disk Crash', hint: 'Drag the floppy to the Trash' },
@@ -74,7 +73,7 @@ const ALL_SECRETS = [
     { id: 'notepadcmds', name: 'Notepad Commands', hint: 'Type HELP on a blank notepad page' },
     { id: 'triplecredits', name: 'Secret Credits', hint: 'Triple-click the Apple logo' },
     { id: 'hellopaint', name: 'MacPaint', hint: 'Type "hello" on the desktop' },
-    { id: 'dtmf', name: 'Modem Dialing', hint: 'Search for a phone number on the Internet' },
+    { id: 'dtmf', name: 'Modem Dialing', hint: 'Browse the site with sound enabled' },
     { id: 'friday13', name: 'Friday the 13th', hint: 'Visit on a Friday the 13th' },
     { id: 'burnin', name: 'Screen Burn-In', hint: 'Leave the page open for 5+ minutes' },
     { id: 'iconarrange', name: 'Debug Mode', hint: 'Arrange all 4 icons in a 2x2 square' },
@@ -272,6 +271,19 @@ function playDTMF(digits) {
     }
 
     playNextTone();
+}
+
+// ============ SOUND DISCOVERY ============
+
+function initSoundDiscovery() {
+    var origPlaySound = window.playSound;
+    if (!origPlaySound) return;
+    window.playSound = function() {
+        if (isSoundEnabled()) {
+            discoverEgg('dtmf');
+        }
+        origPlaySound.apply(this, arguments);
+    };
 }
 
 // ============ CALCULATOR OVERFLOW ============
@@ -777,8 +789,6 @@ function hookExistingEggs() {
     var origShowModal = window.showModal;
     if (origShowModal) {
         window.showModal = function(id) {
-            if (id === 'bomb-modal') discoverEgg('bomb');
-            // credits egg removed from tracked list
             origShowModal(id);
         };
     }
@@ -891,6 +901,7 @@ export function initSecrets() {
     initHelloEasterEgg();
     initSosumiTyping();
     initDTMF();
+    initSoundDiscovery();
     initCalcOverflow();
     initPuzzleReverse();
     initKobayashi();

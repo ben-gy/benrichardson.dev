@@ -226,6 +226,39 @@ let konamiIndex = 0;
 
 export function initEasterEggs() {
     document.addEventListener('keydown', function(e) {
+        // Any key to restart from Sad Mac (must return early to avoid triggering other shortcuts)
+        if (document.getElementById('sad-mac-screen').classList.contains('visible')) {
+            e.preventDefault();
+            hideSadMac();
+            return;
+        }
+
+        // ESC to close the topmost open window or modal
+        if (e.code === 'Escape') {
+            // First check for visible modals
+            var visibleModal = document.querySelector('.modal-overlay.visible');
+            if (visibleModal) {
+                visibleModal.classList.remove('visible');
+                return;
+            }
+            // Then close the topmost visible window
+            var topWindow = null;
+            var topZ = -1;
+            document.querySelectorAll('.window').forEach(function(win) {
+                if (win.style.display !== 'none') {
+                    var z = parseInt(win.style.zIndex) || 0;
+                    if (z > topZ) {
+                        topZ = z;
+                        topWindow = win;
+                    }
+                }
+            });
+            if (topWindow) {
+                topWindow.style.display = 'none';
+            }
+            return;
+        }
+
         // Konami code
         if (e.code === konamiCode[konamiIndex]) {
             konamiIndex++;
@@ -237,21 +270,10 @@ export function initEasterEggs() {
             konamiIndex = 0;
         }
 
-        // Secret bomb trigger: Ctrl+Shift+B
-        if (e.ctrlKey && e.shiftKey && e.code === 'KeyB') {
-            showModal('bomb-modal');
-        }
-
         // Sad Mac trigger: Ctrl+Shift+S
         if (e.ctrlKey && e.shiftKey && e.code === 'KeyS') {
             e.preventDefault();
             showSadMac('0F0003');
-        }
-
-        // Any key to restart from Sad Mac
-        if (document.getElementById('sad-mac-screen').classList.contains('visible')) {
-            e.preventDefault();
-            hideSadMac();
         }
     });
 

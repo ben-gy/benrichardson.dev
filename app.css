@@ -909,12 +909,19 @@ html.dark-mode {
 .secrets-window {
     width: 440px;
     min-width: 340px;
+    max-height: 70vh;
+}
+
+.secrets-window .window-pane {
+    overflow-y: auto;
+    max-height: calc(70vh - 40px);
 }
 
 .secrets-list {
     font-family: Chicago_12, 'ChiKareGo2', monospace;
-    font-size: 14px;
+    font-size: 16px;
     padding: 0.75rem;
+    padding-bottom: 1rem;
 }
 
 .secrets-header {
@@ -950,11 +957,11 @@ html.dark-mode {
 
 .secret-name {
     font-weight: bold;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .secret-hint {
-    font-size: 12px;
+    font-size: 13px;
     color: #666;
     margin-top: 2px;
 }
