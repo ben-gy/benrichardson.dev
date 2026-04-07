@@ -748,6 +748,96 @@ html.dark-mode {
 .dark-mode .window-pane a {
     color: #999;
 }
+/* Dropdown menus */
+.dark-mode ul[role="menu"] {
+    background: #111 !important;
+    color: #ccc !important;
+    border-color: #555 !important;
+    box-shadow: 2px 2px #333 !important;
+}
+.dark-mode ul[role="menu"]::before {
+    box-shadow: inset 1px 0 rgba(255,255,255,0.1), inset -1px 0 #111 !important;
+}
+.dark-mode ul[role="menu"] > [role="menu-item"] > a,
+.dark-mode ul[role="menu"] > [role="menu-item"] > button {
+    color: #ccc !important;
+}
+.dark-mode ul[role="menu"] > [role="menu-item"] > a:hover,
+.dark-mode ul[role="menu"] > [role="menu-item"] > a:focus {
+    background: #ccc !important;
+    color: #000 !important;
+}
+.dark-mode [role="menu-item"].divider::after {
+    border-top-color: #555 !important;
+}
+/* Menu bar */
+.dark-mode ul[role="menu-bar"] {
+    background: #111;
+    color: #ccc;
+    border-bottom: 1px solid #555;
+}
+.dark-mode ul[role="menu-bar"] > [role="menu-item"]:focus,
+.dark-mode ul[role="menu-bar"] > [role="menu-item"]:focus-within,
+.dark-mode ul[role="menu-bar"] > [role="menu-item"]:hover {
+    background: #ccc;
+    color: #000;
+}
+/* Buttons */
+.dark-mode .btn,
+.dark-mode .btn-default {
+    border-image: none;
+    border: 1px solid #888;
+    background: #222;
+    color: #ccc;
+    box-shadow: 1px 1px 0 #555;
+}
+.dark-mode .btn-default {
+    border-width: 2px;
+    border-color: #aaa;
+}
+.dark-mode .btn:active {
+    background: #444;
+}
+.dark-mode .btn:disabled {
+    color: #555;
+    border-color: #444;
+}
+/* Window borders */
+.dark-mode .window {
+    border-color: #555;
+}
+.dark-mode .separator {
+    border-color: #555;
+}
+/* Inputs */
+.dark-mode input[type="text"],
+.dark-mode input[type="number"],
+.dark-mode input[type="time"],
+.dark-mode textarea,
+.dark-mode select {
+    background: #111;
+    color: #ccc;
+    border-color: #555;
+}
+.dark-mode input::placeholder {
+    color: #666;
+}
+/* Modal overlays */
+.dark-mode .modal-dialog,
+.dark-mode .alert-box {
+    background: #111;
+    border-color: #555;
+}
+.dark-mode .outer-border {
+    border-color: #555;
+}
+.dark-mode .inner-border {
+    border-color: #444;
+}
+/* Selected desktop icon */
+.dark-mode .desktop-icon.selected span {
+    color: #000;
+}
 /* Mobile responsive styles */
 @media (max-width: 480px) {
     html {
