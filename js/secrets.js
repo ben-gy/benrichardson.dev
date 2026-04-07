@@ -22,42 +22,62 @@ export function discoverEgg(id) {
     }
 }
 
+let secretsMenuAdded = false;
+
 function updateSecretsAccess() {
     const discovered = getDiscoveredEggs();
     if (discovered.length > 0) {
         document.getElementById('secrets-menu-item').style.display = '';
+        addSecretsMenu();
+    }
+}
+
+function addSecretsMenu() {
+    if (secretsMenuAdded) return;
+    secretsMenuAdded = true;
+
+    var menuBar = document.querySelector('ul[role="menu-bar"]');
+    var secretsItem = document.createElement('li');
+    secretsItem.setAttribute('role', 'menu-item');
+    secretsItem.setAttribute('tabindex', '0');
+    secretsItem.innerHTML = '<u>Secrets</u>';
+    secretsItem.style.cursor = 'pointer';
+    secretsItem.addEventListener('click', function() {
+        toggleSecrets();
+    });
+
+    var soundItem = document.getElementById('menu-sound');
+    if (soundItem) {
+        menuBar.insertBefore(secretsItem, soundItem);
+    } else {
+        menuBar.appendChild(secretsItem);
     }
 }
 
 // ============ ALL SECRETS DEFINITION ============
 
 const ALL_SECRETS = [
-    { id: 'konami', name: 'Konami Code', hint: 'A famous cheat code from the NES era', trigger: function() { showSecretsWindow(); } },
-    { id: 'bomb', name: 'Bomb Dialog', hint: 'Ctrl+Shift+B triggers a system error', trigger: function() { showModal('bomb-modal'); } },
-    { id: 'sadmac', name: 'Sad Mac', hint: 'Ctrl+Shift+S crashes the system', trigger: function() { showSadMac('0F0003'); } },
-    { id: 'stolen', name: 'Stolen From Apple', hint: 'Enter the wrong serial in Licence...', trigger: null },
-    { id: 'diskcrash', name: 'System Disk Crash', hint: 'Drag the floppy to the Trash', trigger: null },
-    { id: 'memoverflow', name: 'Memory Overflow', hint: 'Open too many windows at once', trigger: null },
-    { id: 'shutdown', name: 'Shut Down', hint: 'Apple menu > Shut Down', trigger: function() { shutDown(); } },
-    { id: 'credits', name: 'Scrolling Credits', hint: 'Apple menu > About This Mac', trigger: function() { showModal('about-mac-modal'); } },
-    { id: 'jan24', name: 'Macintosh Birthday', hint: 'Visit on January 24th', trigger: null },
-    { id: 'afterhours', name: 'After Hours', hint: 'Visit late at night or use dark mode', trigger: null },
-    { id: 'calcoverflow', name: 'Calculator Overflow', hint: 'Calculate a very large number', trigger: function() { window.toggleCalculator(); setTimeout(function() { document.querySelector('.calc-display').textContent = 'E'; }, 300); } },
-    { id: 'puzzlereverse', name: 'Reverse Puzzle', hint: 'Solve the 15-puzzle backwards (15 to 1)', trigger: null },
-    { id: 'sosumi', name: 'Sosumi', hint: 'Click the Apple logo rapidly 7 times', trigger: function() { playSosumi(); } },
-    { id: 'kobayashi', name: 'Kobayashi Maru', hint: 'Type a famous Star Trek command', trigger: null },
-    { id: 'pitboss', name: 'Pit Boss', hint: 'Win 5 Blackjack hands in a row', trigger: null },
-    { id: 'revolution', name: 'Revolution', hint: 'Be a terrible ruler in Hamurabi', trigger: null },
-    { id: 'notepadcmds', name: 'Notepad Commands', hint: 'Type HELP on a blank notepad page', trigger: function() { window.toggleNotePad(); } },
-    { id: 'triplecredits', name: 'Secret Credits', hint: 'Triple-click the Apple logo', trigger: function() { showSecretCredits(); } },
-    { id: 'hellopaint', name: 'MacPaint', hint: 'Type "hello" on the desktop', trigger: function() { window.toggleMacpaint(); } },
-    { id: 'floppyeject', name: 'Floppy Eject', hint: 'Drag the floppy to the bottom edge', trigger: null },
-    { id: 'dtmf', name: 'Modem Dialing', hint: 'Search for a phone number on the Internet', trigger: null },
-    { id: 'friday13', name: 'Friday the 13th', hint: 'Visit on a Friday the 13th', trigger: null },
-    { id: 'burnin', name: 'Screen Burn-In', hint: 'Leave the page open for 30+ minutes', trigger: null },
-    { id: 'iconarrange', name: 'Debug Mode', hint: 'Arrange all 4 icons in a 2x2 square', trigger: null },
-    { id: 'viewsource', name: 'View Source', hint: 'View the page source code', trigger: null },
-    { id: 'consolegreet', name: 'Console Greeting', hint: 'Open the browser developer tools', trigger: null },
+    { id: 'konami', name: 'Konami Code', hint: 'A famous cheat code from the NES era' },
+    { id: 'bomb', name: 'Bomb Dialog', hint: 'Ctrl+Shift+B triggers a system error' },
+    { id: 'sadmac', name: 'Sad Mac', hint: 'Ctrl+Shift+S crashes the system' },
+    { id: 'stolen', name: 'Stolen From Apple', hint: 'Enter the wrong serial in Licence...' },
+    { id: 'diskcrash', name: 'System Disk Crash', hint: 'Drag the floppy to the Trash' },
+    { id: 'memoverflow', name: 'Memory Overflow', hint: 'Open too many windows at once' },
+    { id: 'shutdown', name: 'Shut Down', hint: 'Apple menu > Shut Down' },
+    { id: 'jan24', name: 'Macintosh Birthday', hint: 'Visit on January 24th' },
+    { id: 'calcoverflow', name: 'Calculator Overflow', hint: 'Calculate a very large number' },
+    { id: 'puzzlereverse', name: 'Reverse Puzzle', hint: 'Solve the 15-puzzle backwards (15 to 1)' },
+    { id: 'sosumi', name: 'Sosumi', hint: 'Type a legendary sound name on the desktop' },
+    { id: 'kobayashi', name: 'Kobayashi Maru', hint: 'Type a famous Star Trek command' },
+    { id: 'pitboss', name: 'Pit Boss', hint: 'Win 5 Blackjack hands in a row' },
+    { id: 'revolution', name: 'Revolution', hint: 'Be a terrible ruler in Hamurabi' },
+    { id: 'notepadcmds', name: 'Notepad Commands', hint: 'Type HELP on a blank notepad page' },
+    { id: 'triplecredits', name: 'Secret Credits', hint: 'Triple-click the Apple logo' },
+    { id: 'hellopaint', name: 'MacPaint', hint: 'Type "hello" on the desktop' },
+    { id: 'dtmf', name: 'Modem Dialing', hint: 'Search for a phone number on the Internet' },
+    { id: 'friday13', name: 'Friday the 13th', hint: 'Visit on a Friday the 13th' },
+    { id: 'burnin', name: 'Screen Burn-In', hint: 'Leave the page open for 5+ minutes' },
+    { id: 'iconarrange', name: 'Debug Mode', hint: 'Arrange all 4 icons in a 2x2 square' },
 ];
 
 // ============ SECRETS WINDOW ============
@@ -73,26 +93,15 @@ function renderSecretsList() {
     ALL_SECRETS.forEach(function(secret) {
         const found = discovered.includes(secret.id);
         html += '<div class="secret-item">';
-        html += '<span class="secret-check">' + (found ? '✓' : '○') + '</span>';
+        html += '<span class="secret-check">' + (found ? '[x]' : '[ ]') + '</span>';
         html += '<div class="secret-info">';
         html += '<div class="secret-name">' + secret.name + '</div>';
         html += '<div class="secret-hint">' + secret.hint + '</div>';
         html += '</div>';
-        if (secret.trigger) {
-            html += '<button class="secret-try" onclick="triggerSecret(\'' + secret.id + '\')">Try It</button>';
-        }
         html += '</div>';
     });
 
     list.innerHTML = html;
-}
-
-export function triggerSecret(id) {
-    const secret = ALL_SECRETS.find(function(s) { return s.id === id; });
-    if (secret && secret.trigger) {
-        toggleSecrets();
-        setTimeout(function() { secret.trigger(); }, 300);
-    }
 }
 
 export function toggleSecrets() {
@@ -125,9 +134,9 @@ export function showSecretCredits() {
     var scroll = document.getElementById('secret-credits-scroll');
     scroll.style.animation = 'none';
     scroll.offsetHeight; // Trigger reflow
-    scroll.style.animation = 'scrollSecretCredits 20s linear forwards';
+    scroll.style.animation = 'scrollSecretCredits 45s linear forwards';
     overlay.classList.add('visible');
-    setTimeout(function() { hideSecretCredits(); }, 20000);
+    setTimeout(function() { hideSecretCredits(); }, 45000);
 }
 
 export function hideSecretCredits() {
@@ -136,8 +145,19 @@ export function hideSecretCredits() {
 
 // ============ SOSUMI ============
 
-let appleClickCount = 0;
-let appleClickTimer = null;
+let sosumiTyped = '';
+
+function initSosumiTyping() {
+    document.addEventListener('keydown', function(e) {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+        sosumiTyped += e.key.toLowerCase();
+        if (sosumiTyped.length > 12) sosumiTyped = sosumiTyped.slice(-12);
+        if (sosumiTyped.includes('sosumi')) {
+            sosumiTyped = '';
+            playSosumi();
+        }
+    });
+}
 
 function playSosumi() {
     discoverEgg('sosumi');
@@ -474,39 +494,6 @@ function initNotepadCommands() {
     });
 }
 
-// ============ FLOPPY EJECT ============
-
-function initFloppyEject() {
-    document.addEventListener('mouseup', function() {
-        var hdIcon = document.getElementById('hd-icon');
-        if (!hdIcon || hdIcon.style.display === 'none') return;
-        var iconRect = hdIcon.getBoundingClientRect();
-        var gridRect = document.getElementById('desktop-grid').getBoundingClientRect();
-
-        if (iconRect.bottom >= gridRect.bottom - 20 && iconRect.top > gridRect.top + 100) {
-            var topPos = parseFloat(hdIcon.style.top);
-            if (topPos > gridRect.height - 120) {
-                discoverEgg('floppyeject');
-                hdIcon.style.transition = 'top 0.5s ease-in, opacity 0.5s ease-in';
-                hdIcon.style.top = (gridRect.height + 100) + 'px';
-                hdIcon.style.opacity = '0';
-                playSound('beep');
-
-                setTimeout(function() {
-                    hdIcon.style.display = 'none';
-                    hdIcon.style.transition = '';
-                    hdIcon.style.opacity = '';
-                    var prompt = document.createElement('div');
-                    prompt.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-family:Chicago_12,ChiKareGo2,monospace;font-size:14px;text-align:center;z-index:100;';
-                    prompt.innerHTML = '<img src="icon/Floppy.png" style="width:48px;height:48px;opacity:0.5;"><br><br>Please insert a disk.<br><br><span style="font-size:11px;">(click to restart)</span>';
-                    prompt.onclick = function() { location.reload(); };
-                    document.body.appendChild(prompt);
-                }, 600);
-            }
-        }
-    });
-}
-
 // ============ DATE-BASED EGGS ============
 
 function initDateEggs() {
@@ -521,13 +508,7 @@ function initDateEggs() {
         }
     }
 
-    // After Hours (late night or dark mode)
-    var hour = now.getHours();
-    var isLateNight = hour < 5;
-    var isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    if (isLateNight || isDarkMode) {
-        discoverEgg('afterhours');
-    }
+    // After Hours (late night or dark mode) - kept as ambient effect, not tracked
 
     // Friday the 13th
     if (now.getDay() === 5 && now.getDate() === 13) {
@@ -554,7 +535,7 @@ function initBurnIn() {
         if (document.visibilityState === 'visible') {
             pageOpenTime++;
         }
-        if (pageOpenTime >= 1800 && !burnInShown) {
+        if (pageOpenTime >= 300 && !burnInShown) {
             burnInShown = true;
             discoverEgg('burnin');
             showBurnIn();
@@ -637,6 +618,11 @@ function addDebugMenu() {
     debugItem.innerHTML = '<u>Debug</u>' +
         '<ul role="menu">' +
         '<li role="menu-item"><a href="#" onclick="showDebugInfo(); return false;">System Info</a></li>' +
+        '<li role="menu-item"><a href="#" onclick="showHeapDisplay(); return false;">Heap Display</a></li>' +
+        '<li role="menu-item"><a href="#" onclick="showClipboardViewer(); return false;">Clipboard</a></li>' +
+        '<li role="menu-item"><a href="#" onclick="showMacsBug(); return false;">MacsBug</a></li>' +
+        '<li role="menu-item"><a href="#" onclick="playBeepCodes(); return false;">Beep Codes</a></li>' +
+        '<li class="divider"></li>' +
         '<li role="menu-item"><a href="#" onclick="localStorage.clear(); showAlert(\'Storage cleared.\'); return false;">Reset Storage</a></li>' +
         '<li role="menu-item"><a href="#" onclick="showSadMac(\'0FDEAD\'); return false;">Force Crash</a></li>' +
         '</ul>';
@@ -651,6 +637,126 @@ function addDebugMenu() {
     menuBar.style.background = 'black';
     setTimeout(function() { menuBar.style.background = ''; }, 200);
     playSound('beep');
+}
+
+// ============ DEBUG FEATURES ============
+
+export function showHeapDisplay() {
+    var windowCount = 0;
+    document.querySelectorAll('.window').forEach(function(w) {
+        if (w.style.display !== 'none') windowCount++;
+    });
+    var discovered = getDiscoveredEggs();
+    var used = 42 + (windowCount * 6) + (discovered.length * 2);
+    var total = 128;
+    var free = total - used;
+    var barLen = 20;
+    var filledLen = Math.round((used / total) * barLen);
+    var bar = '';
+    for (var i = 0; i < barLen; i++) {
+        bar += i < filledLen ? '#' : '.';
+    }
+
+    showAlert(
+        'HEAP DISPLAY\n\n' +
+        'Total:  ' + total + 'K\n' +
+        'Used:   ' + used + 'K\n' +
+        'Free:   ' + free + 'K\n\n' +
+        '[' + bar + ']\n\n' +
+        'Windows: ' + windowCount + ' x 6K\n' +
+        'Secrets: ' + discovered.length + ' x 2K\n' +
+        'System:  42K'
+    );
+}
+
+export function showClipboardViewer() {
+    if (navigator.clipboard && navigator.clipboard.readText) {
+        navigator.clipboard.readText().then(function(text) {
+            if (!text) text = '<empty>';
+            if (text.length > 200) text = text.substring(0, 200) + '...';
+            showAlert(
+                'CLIPBOARD VIEWER\n\n' +
+                'Type: TEXT\n' +
+                'Size: ' + text.length + ' bytes\n\n' +
+                '------------------------\n' +
+                text + '\n' +
+                '------------------------'
+            );
+        }).catch(function() {
+            showAlert(
+                'CLIPBOARD VIEWER\n\n' +
+                'Error: Cannot read clipboard.\n' +
+                'Permission denied.'
+            );
+        });
+    } else {
+        showAlert(
+            'CLIPBOARD VIEWER\n\n' +
+            'Error: Clipboard API\n' +
+            'not available.'
+        );
+    }
+}
+
+export function showMacsBug() {
+    var pc = Math.floor(Math.random() * 0xFFFFFF);
+    var sp = Math.floor(Math.random() * 0xFFFF) + 0x1000;
+    var lines = '';
+    for (var i = 0; i < 8; i++) {
+        var addr = (pc + i * 16).toString(16).toUpperCase().padStart(6, '0');
+        var hex = '';
+        for (var j = 0; j < 8; j++) {
+            hex += Math.floor(Math.random() * 0xFFFF).toString(16).toUpperCase().padStart(4, '0') + ' ';
+        }
+        lines += addr + '  ' + hex.trim() + '\n';
+    }
+
+    showAlert(
+        'MacsBug 6.5.4a6\n' +
+        '========================\n\n' +
+        'Bus Error at ' + pc.toString(16).toUpperCase().padStart(8, '0') + '\n' +
+        'PC = ' + pc.toString(16).toUpperCase().padStart(8, '0') +
+        '  SP = 00' + sp.toString(16).toUpperCase().padStart(4, '0') + '\n\n' +
+        lines + '\n' +
+        'Type G to continue'
+    );
+}
+
+export function playBeepCodes() {
+    initAudioContext();
+    if (!isSoundEnabled()) {
+        showAlert('BEEP CODES\n\nSound is off.\nEnable sound to hear\ndiagnostic beeps.');
+        return;
+    }
+
+    var patterns = [
+        { name: 'RAM OK', seq: [200] },
+        { name: 'ROM Test', seq: [100, 100, 300] },
+        { name: 'Bus Error', seq: [300, 100, 100, 100] },
+        { name: 'All Clear', seq: [150, 150, 150, 400] },
+    ];
+    var pattern = patterns[Math.floor(Math.random() * patterns.length)];
+
+    showAlert('BEEP CODES\n\nRunning: ' + pattern.name + '\n\nListening...');
+
+    var offset = 0;
+    pattern.seq.forEach(function(duration) {
+        setTimeout(function() {
+            try {
+                var ctx = new (window.AudioContext || window.webkitAudioContext)();
+                var osc = ctx.createOscillator();
+                var gain = ctx.createGain();
+                osc.type = 'square';
+                osc.frequency.value = 800;
+                gain.gain.value = 0.12;
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + duration / 1000);
+            } catch(e) {}
+        }, offset);
+        offset += duration + 100;
+    });
 }
 
 // ============ HOOK EXISTING FUNCTIONS FOR DISCOVERY ============
@@ -672,7 +778,7 @@ function hookExistingEggs() {
     if (origShowModal) {
         window.showModal = function(id) {
             if (id === 'bomb-modal') discoverEgg('bomb');
-            if (id === 'about-mac-modal') discoverEgg('credits');
+            // credits egg removed from tracked list
             origShowModal(id);
         };
     }
@@ -711,20 +817,10 @@ function hookExistingEggs() {
         }
     }
 
-    // Apple logo rapid clicks (7x = Sosumi)
+    // Apple logo triple-click for secret credits
     var appleLogo = document.querySelector('.apple-logo');
     if (appleLogo) {
         appleLogo.addEventListener('click', function(e) {
-            appleClickCount++;
-            if (appleClickTimer) clearTimeout(appleClickTimer);
-            appleClickTimer = setTimeout(function() { appleClickCount = 0; }, 3000);
-
-            if (appleClickCount >= 7) {
-                appleClickCount = 0;
-                playSosumi();
-            }
-
-            // Triple-click for secret credits
             if (e.detail === 3) {
                 discoverEgg('triplecredits');
                 showSecretCredits();
@@ -758,19 +854,6 @@ function initConsoleGreeting() {
     console.log('%cWelcome to Ben Richardson OS 1.0', 'font-family: monospace; font-size: 16px; font-weight: bold;');
     console.log('%cBuilt with vanilla HTML, CSS & JS. No frameworks were harmed.', 'font-family: monospace; font-size: 11px; color: #666;');
     console.log('%chi@benrichardson.dev', 'font-family: monospace; font-size: 11px; color: blue; text-decoration: underline;');
-    discoverEgg('consolegreet');
-}
-
-// ============ VIEW SOURCE EGG ============
-
-function initViewSourceEgg() {
-    // Discover when View Source link is clicked
-    var viewSourceLink = document.querySelector('a[href*="github.com/ben-gy/benrichardson.dev"]');
-    if (viewSourceLink) {
-        viewSourceLink.addEventListener('click', function() {
-            discoverEgg('viewsource');
-        });
-    }
 }
 
 // ============ INIT ============
@@ -806,6 +889,7 @@ export function initSecrets() {
     // Init all easter egg hooks
     hookExistingEggs();
     initHelloEasterEgg();
+    initSosumiTyping();
     initDTMF();
     initCalcOverflow();
     initPuzzleReverse();
@@ -813,9 +897,7 @@ export function initSecrets() {
     initPitBoss();
     initRevolution();
     initNotepadCommands();
-    initFloppyEject();
     initDateEggs();
     initBurnIn();
     initConsoleGreeting();
-    initViewSourceEgg();
 }

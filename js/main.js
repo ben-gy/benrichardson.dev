@@ -149,7 +149,7 @@ import { initImageWriterPrint, printWindow } from './enhancements/print-imagewri
 import { initDarkMode, toggleDarkMode } from './enhancements/dark-mode.js';
 
 // Secrets / Easter Egg Directory
-import { initSecrets, toggleSecrets, triggerSecret, discoverEgg, showSecretCredits, hideSecretCredits, showDebugInfo } from './secrets.js';
+import { initSecrets, toggleSecrets, discoverEgg, showSecretCredits, hideSecretCredits, showDebugInfo, showHeapDisplay, showClipboardViewer, showMacsBug, playBeepCodes } from './secrets.js';
 
 window.toggleFullscreen = toggleFullscreen;
 window.printWindow = printWindow;
@@ -158,11 +158,14 @@ window.startScreensaver = startScreensaver;
 
 // Secrets
 window.toggleSecrets = toggleSecrets;
-window.triggerSecret = triggerSecret;
 window.discoverEgg = discoverEgg;
 window.showSecretCredits = showSecretCredits;
 window.hideSecretCredits = hideSecretCredits;
 window.showDebugInfo = showDebugInfo;
+window.showHeapDisplay = showHeapDisplay;
+window.showClipboardViewer = showClipboardViewer;
+window.showMacsBug = showMacsBug;
+window.playBeepCodes = playBeepCodes;
 
 // ============ INITIALIZATION ============
 
