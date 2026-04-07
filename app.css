@@ -782,10 +782,21 @@ html.dark-mode {
     background: #ccc;
     color: #000;
 }
-/* Buttons — invert to keep SVG border-image shape */
+/* Buttons */
 .dark-mode .btn,
 .dark-mode .btn-default {
-    filter: invert(1);
+    border-image: none !important;
+    border: 2px solid #ccc !important;
+    border-radius: 6px;
+    background: #000 !important;
+    color: #ccc !important;
+    box-shadow: none !important;
+}
+.dark-mode .btn-default {
+    border-width: 3px !important;
+}
+.dark-mode .btn:active {
+    background: #333 !important;
 }
 /* Window borders */
 .dark-mode .window {
