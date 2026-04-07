@@ -195,6 +195,19 @@ export function initDraggable() {
         ['blackjack-window', 'blackjack-title-bar'],
         ['mastermind-window', 'mastermind-title-bar'],
         ['hamurabi-window', 'hamurabi-title-bar'],
+        ['macpaint-window', 'macpaint-title-bar'],
+        ['eliza-window', 'eliza-title-bar'],
+        ['alarmclock-window', 'alarmclock-title-bar'],
+        ['scrapbook-window', 'scrapbook-title-bar'],
+        ['keycaps-window', 'keycaps-title-bar'],
+        ['oregon-window', 'oregon-title-bar'],
+        ['breakout-window', 'breakout-title-bar'],
+        ['snake-window', 'snake-title-bar'],
+        ['hangman-window', 'hangman-title-bar'],
+        ['adventure-window', 'adventure-title-bar'],
+        ['minesweeper-window', 'minesweeper-title-bar'],
+        ['reversi-window', 'reversi-title-bar'],
+        ['munchers-window', 'munchers-title-bar'],
     ];
     pairs.forEach(function([winId, barId]) {
         const win = document.getElementById(winId);

@@ -555,6 +555,133 @@ body {
     font-size: 14px;
     line-height: 1;
 }
+/* ============ NEW APPS & GAMES ============ */
+/* MacPaint */
+.macpaint-window { width:420px; min-width:420px; min-height:382px; }
+.macpaint-window .window-pane { overflow:hidden; padding:8px; }
+.macpaint-container { display:flex; border:1px solid black; }
+.macpaint-toolbar { display:flex; flex-direction:column; gap:2px; padding:4px; border-right:1px solid black; }
+.macpaint-tool { width:28px; height:28px; border:1px solid black; background:white; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:14px; font-family:'ChiKareGo2',monospace; padding:0; }
+.macpaint-tool.active { background:black; color:white; }
+.macpaint-tool:hover:not(.active) { background:#ccc; }
+.macpaint-canvas-wrap { flex:1; display:flex; flex-direction:column; }
+.macpaint-canvas { display:block; width:100%; cursor:crosshair; image-rendering:pixelated; background:white; }
+.macpaint-bottom { display:flex; gap:8px; padding:6px; justify-content:center; align-items:center; }
+.macpaint-sizes { display:flex; gap:2px; }
+.macpaint-size { width:22px; height:22px; border:1px solid black; background:white; cursor:pointer; display:flex; align-items:center; justify-content:center; padding:0; }
+.macpaint-size.active { background:black; color:white; }
+.macpaint-size-dot { background:black; border-radius:50%; }
+.macpaint-size.active .macpaint-size-dot { background:white; }
+/* Eliza */
+.eliza-window { width:340px; min-width:340px; min-height:350px; }
+.eliza-window .window-pane { overflow:hidden; }
+.eliza-output { font-family:'ChiKareGo2',monospace; font-size:11px; border:1px solid black; padding:0.5rem; margin:0 0 0.5rem 0; height:220px; overflow-y:auto; line-height:1.4; }
+.eliza-msg { margin:4px 0; }
+.eliza-msg.eliza { font-weight:bold; }
+.eliza-msg.user { color:#444; }
+/* Alarm Clock */
+.alarmclock-window { width:240px; min-width:240px; min-height:200px; }
+.alarmclock-window .window-pane { overflow:hidden; }
+.alarmclock-display { font-family:'ChiKareGo2',monospace; font-size:28px; text-align:center; border:1px solid black; padding:0.75rem; margin-bottom:0.5rem; }
+.alarmclock-date { font-family:'ChiKareGo2',monospace; font-size:12px; text-align:center; margin-bottom:0.5rem; }
+.alarmclock-alarm { font-family:'ChiKareGo2',monospace; font-size:11px; text-align:center; padding:4px 0; }
+.alarmclock-controls { display:flex; gap:4px; justify-content:center; align-items:center; margin-top:0.5rem; }
+/* Scrapbook */
+.scrapbook-window { width:300px; min-width:300px; min-height:280px; }
+.scrapbook-window .window-pane { overflow:hidden; }
+.scrapbook-content { border:1px solid black; height:160px; padding:0.5rem; overflow-y:auto; font-family:'ChiKareGo2',monospace; font-size:11px; margin-bottom:0.5rem; }
+.scrapbook-nav { display:flex; justify-content:space-between; align-items:center; font-family:'ChiKareGo2',monospace; font-size:11px; }
+.scrapbook-controls { display:flex; gap:4px; justify-content:center; margin-top:0.5rem; }
+/* Key Caps */
+.keycaps-window { width:360px; min-width:360px; min-height:240px; }
+.keycaps-window .window-pane { overflow:hidden; padding:8px; }
+.keycaps-output { font-family:'ChiKareGo2',monospace; font-size:14px; border:1px solid black; padding:4px 8px; margin-bottom:6px; min-height:24px; }
+.keycaps-grid { display:flex; flex-direction:column; gap:2px; align-items:center; }
+.keycaps-row { display:flex; gap:2px; }
+.keycaps-key { width:24px; height:24px; border:1px solid black; background:white; display:flex; align-items:center; justify-content:center; cursor:pointer; font-family:'ChiKareGo2',monospace; font-size:11px; padding:0; }
+.keycaps-key:hover { background:#ccc; }
+.keycaps-key:active { background:black; color:white; }
+.keycaps-key.wide { width:120px; }
+/* Oregon Trail */
+.oregon-window { width:380px; min-width:380px; min-height:390px; }
+.oregon-window .window-pane { overflow:hidden; }
+.oregon-output { font-family:'ChiKareGo2',monospace; font-size:11px; border:1px solid black; padding:0.5rem; margin:0 0 0.5rem 0; height:260px; overflow-y:auto; white-space:pre; line-height:1.3; }
+/* Breakout */
+.breakout-window { width:370px; min-width:370px; min-height:332px; }
+.breakout-window .window-pane { overflow:hidden; padding:8px; }
+.breakout-canvas { border:1px solid black; display:block; margin:0 auto; background:white; }
+.breakout-info { font-family:'ChiKareGo2',monospace; font-size:11px; display:flex; justify-content:space-between; padding:4px 0; }
+.breakout-controls { display:flex; gap:4px; justify-content:center; margin-top:4px; }
+/* Snake */
+.snake-window { width:320px; min-width:320px; min-height:340px; }
+.snake-window .window-pane { overflow:hidden; padding:8px; }
+.snake-canvas { display:block; border:1px solid black; margin:0 auto; background:white; }
+.snake-info { font-family:'ChiKareGo2',monospace; font-size:11px; text-align:center; padding:4px 0; }
+.snake-controls { display:flex; gap:4px; justify-content:center; margin-top:4px; }
+/* Hangman */
+.hangman-window { width:280px; min-width:280px; min-height:360px; }
+.hangman-window .window-pane { overflow:hidden; }
+.hangman-canvas { display:block; border:1px solid black; margin:0 auto 0.5rem auto; background:white; }
+.hangman-word { font-family:'ChiKareGo2',monospace; font-size:16px; text-align:center; letter-spacing:4px; margin:0.5rem 0; }
+.hangman-used { font-family:'ChiKareGo2',monospace; font-size:10px; text-align:center; margin:0.25rem 0; color:#666; }
+.hangman-msg { font-family:'ChiKareGo2',monospace; font-size:11px; text-align:center; margin:0.25rem 0; font-weight:bold; }
+/* Adventure */
+.adventure-window { width:400px; min-width:400px; min-height:400px; }
+.adventure-window .window-pane { overflow:hidden; }
+.adventure-output { font-family:'ChiKareGo2',monospace; font-size:11px; border:1px solid black; padding:0.5rem; margin:0 0 0.5rem 0; height:260px; overflow-y:auto; white-space:pre-wrap; line-height:1.3; }
+/* Minesweeper */
+.minesweeper-window { min-width:220px; min-height:300px; }
+.minesweeper-window .window-pane { overflow:hidden; padding:8px; }
+.mines-info { font-family:'ChiKareGo2',monospace; font-size:11px; display:flex; justify-content:space-between; padding:4px 0; }
+.mines-grid { display:grid; grid-template-columns:repeat(9,1fr); gap:0; border:1px solid black; margin:0 auto; }
+.mines-cell { width:20px; height:20px; border:1px solid #999; background:#ccc; display:flex; align-items:center; justify-content:center; cursor:pointer; font-family:'ChiKareGo2',monospace; font-size:11px; font-weight:bold; padding:0; }
+.mines-cell.revealed { background:white; cursor:default; }
+.mines-cell.flagged { background:#ccc; }
+.mines-cell.mine { background:black; color:white; }
+.mines-controls { display:flex; gap:4px; justify-content:center; margin-top:6px; }
+/* Reversi */
+.reversi-window { width:300px; min-width:300px; min-height:360px; }
+.reversi-window .window-pane { overflow:hidden; padding:8px; }
+.reversi-info { font-family:'ChiKareGo2',monospace; font-size:11px; text-align:center; padding:4px 0; }
+.reversi-grid { display:grid; grid-template-columns:repeat(8,1fr); gap:0; border:1px solid black; margin:0 auto; width:fit-content; }
+.reversi-cell { width:28px; height:28px; border:1px solid #666; background:white; display:flex; align-items:center; justify-content:center; cursor:pointer; padding:0; }
+.reversi-cell:hover { background:#eee; }
+.reversi-piece { width:20px; height:20px; border-radius:50%; }
+.reversi-piece.black { background:black; }
+.reversi-piece.white { background:white; border:1px solid black; }
+.reversi-controls { display:flex; gap:4px; justify-content:center; margin-top:6px; }
+/* Number Munchers */
+.munchers-window { width:360px; min-width:360px; min-height:340px; }
+.munchers-window .window-pane { overflow:hidden; padding:8px; }
+.munchers-info { font-family:'ChiKareGo2',monospace; font-size:11px; display:flex; justify-content:space-between; padding:4px 0; }
+.munchers-prompt { font-family:'ChiKareGo2',monospace; font-size:12px; text-align:center; padding:4px 0; font-weight:bold; }
+.munchers-grid { display:grid; grid-template-columns:repeat(6,1fr); gap:0; border:1px solid black; }
+.munchers-cell { height:32px; border:1px solid #999; background:white; display:flex; align-items:center; justify-content:center; font-family:'ChiKareGo2',monospace; font-size:14px; padding:0; }
+.munchers-cell.player { background:black; color:white; }
+.munchers-msg { font-family:'ChiKareGo2',monospace; font-size:11px; text-align:center; padding:4px 0; }
+/* Dark mode overrides for new apps */
+.dark-mode .eliza-msg.user { color:#888; }
+.dark-mode .hangman-used { color:#888; }
+.dark-mode .mines-cell { background:#333; border-color:#555; color:#ccc; }
+.dark-mode .mines-cell.revealed { background:#000; }
+.dark-mode .mines-cell.mine { background:#ccc; color:#000; }
+.dark-mode .reversi-cell { background:#000; border-color:#555; }
+.dark-mode .reversi-cell:hover { background:#222; }
+.dark-mode .reversi-piece.black { background:#ccc; }
+.dark-mode .reversi-piece.white { background:#000; border-color:#ccc; }
+.dark-mode .munchers-cell { background:#000; border-color:#555; color:#ccc; }
+.dark-mode .munchers-cell.player { background:#ccc; color:#000; }
+.dark-mode .keycaps-key { background:#000; color:#ccc; border-color:#555; }
+.dark-mode .keycaps-key:hover { background:#333; }
+.dark-mode .keycaps-key:active { background:#ccc; color:#000; }
+.dark-mode .macpaint-tool { background:#000; color:#ccc; border-color:#555; }
+.dark-mode .macpaint-tool.active { background:#ccc; color:#000; }
+.dark-mode .macpaint-size { background:#000; border-color:#555; }
+.dark-mode .macpaint-size.active { background:#ccc; }
+.dark-mode .macpaint-size-dot { background:#ccc; }
+.dark-mode .macpaint-size.active .macpaint-size-dot { background:#000; }
+.dark-mode .macpaint-container { border-color:#555; }
+.dark-mode canvas { border-color:#555 !important; }
 /* ============ DARK MODE ============ */
 /* Swap system.css theme tokens — everything else follows automatically */
 html.dark-mode {

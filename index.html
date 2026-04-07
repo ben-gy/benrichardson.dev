@@ -173,6 +173,23 @@
                 <li role="menu-item">
                     <a href="#" onclick="toggleSearch(); return false;">Internet</a>
                 </li>
+                <li class="divider"></li>
+                <li role="menu-item">
+                    <a href="#" onclick="toggleMacpaint(); return false;">MacPaint</a>
+                </li>
+                <li role="menu-item">
+                    <a href="#" onclick="toggleEliza(); return false;">Eliza</a>
+                </li>
+                <li class="divider"></li>
+                <li role="menu-item">
+                    <a href="#" onclick="toggleAlarmClock(); return false;">Alarm Clock</a>
+                </li>
+                <li role="menu-item">
+                    <a href="#" onclick="toggleScrapbook(); return false;">Scrapbook</a>
+                </li>
+                <li role="menu-item">
+                    <a href="#" onclick="toggleKeyCaps(); return false;">Key Caps</a>
+                </li>
             </ul>
         </li>
         <li role="menu-item" tabindex="0" aria-haspopup="true">
@@ -195,6 +212,32 @@
                 </li>
                 <li role="menu-item">
                     <a href="#" onclick="toggleHamurabi(); return false;">Hamurabi</a>
+                </li>
+                <li class="divider"></li>
+                <li role="menu-item">
+                    <a href="#" onclick="toggleOregon(); return false;">Oregon Trail</a>
+                </li>
+                <li role="menu-item">
+                    <a href="#" onclick="toggleBreakout(); return false;">Breakout</a>
+                </li>
+                <li role="menu-item">
+                    <a href="#" onclick="toggleSnake(); return false;">Snake</a>
+                </li>
+                <li role="menu-item">
+                    <a href="#" onclick="toggleHangman(); return false;">Hangman</a>
+                </li>
+                <li class="divider"></li>
+                <li role="menu-item">
+                    <a href="#" onclick="toggleAdventure(); return false;">Adventure</a>
+                </li>
+                <li role="menu-item">
+                    <a href="#" onclick="toggleMinesweeper(); return false;">Minesweeper</a>
+                </li>
+                <li role="menu-item">
+                    <a href="#" onclick="toggleReversi(); return false;">Reversi</a>
+                </li>
+                <li role="menu-item">
+                    <a href="#" onclick="toggleMunchers(); return false;">Number Munchers</a>
                 </li>
             </ul>
         </li>
@@ -443,6 +486,265 @@
                 <input type="number" id="hamurabi-input" style="width: 80px; text-align: center;">
                 <button class="btn btn-default" onclick="hamSubmit()">OK</button>
             </section>
+        </div>
+    </div>
+
+    <!-- MacPaint Window -->
+    <div class="window macpaint-window" id="macpaint-window" style="display: none;">
+        <div class="title-bar" id="macpaint-title-bar">
+            <button aria-label="Close" class="close" onclick="toggleMacpaint()"></button>
+            <h1 class="title">MacPaint</h1>
+            <button aria-label="Resize" disabled class="hidden"></button>
+        </div>
+        <div class="separator"></div>
+        <div class="window-pane">
+            <div class="macpaint-container">
+                <div class="macpaint-toolbar">
+                    <button class="macpaint-tool active" id="mp-tool-pencil" onclick="mpSetTool('pencil')" title="Pencil">&#9999;</button>
+                    <button class="macpaint-tool" id="mp-tool-line" onclick="mpSetTool('line')" title="Line">&#9586;</button>
+                    <button class="macpaint-tool" id="mp-tool-rect" onclick="mpSetTool('rect')" title="Rectangle">&#9645;</button>
+                    <button class="macpaint-tool" id="mp-tool-oval" onclick="mpSetTool('oval')" title="Oval">&#9711;</button>
+                    <button class="macpaint-tool" id="mp-tool-eraser" onclick="mpSetTool('eraser')" title="Eraser">&#9723;</button>
+                    <button class="macpaint-tool" id="mp-tool-fill" onclick="mpSetTool('fill')" title="Fill">&#9635;</button>
+                </div>
+                <div class="macpaint-canvas-wrap">
+                    <canvas class="macpaint-canvas" id="macpaint-canvas" width="340" height="240"></canvas>
+                </div>
+            </div>
+            <div class="macpaint-bottom">
+                <div class="macpaint-sizes">
+                    <button class="macpaint-size active" id="mp-size-1" onclick="mpSetSize(1)" title="1px"><span class="macpaint-size-dot" style="width:3px;height:3px;"></span></button>
+                    <button class="macpaint-size" id="mp-size-2" onclick="mpSetSize(2)" title="2px"><span class="macpaint-size-dot" style="width:5px;height:5px;"></span></button>
+                    <button class="macpaint-size" id="mp-size-4" onclick="mpSetSize(4)" title="4px"><span class="macpaint-size-dot" style="width:8px;height:8px;"></span></button>
+                </div>
+                <button class="btn" onclick="mpClear()">Clear</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Eliza Window -->
+    <div class="window eliza-window" id="eliza-window" style="display: none;">
+        <div class="title-bar" id="eliza-title-bar">
+            <button aria-label="Close" class="close" onclick="toggleEliza()"></button>
+            <h1 class="title">Eliza</h1>
+            <button aria-label="Resize" disabled class="hidden"></button>
+        </div>
+        <div class="separator"></div>
+        <div class="window-pane">
+            <div class="eliza-output" id="eliza-output"></div>
+            <section class="field-row" style="justify-content: flex-start">
+                <label class="modeless-text">You:</label>
+                <input type="text" id="eliza-input" style="flex: 1;" placeholder="Type here...">
+                <button class="btn btn-default" onclick="elizaSend()">OK</button>
+            </section>
+        </div>
+    </div>
+
+    <!-- Alarm Clock Window -->
+    <div class="window alarmclock-window" id="alarmclock-window" style="display: none;">
+        <div class="title-bar" id="alarmclock-title-bar">
+            <button aria-label="Close" class="close" onclick="toggleAlarmClock()"></button>
+            <h1 class="title">Alarm Clock</h1>
+            <button aria-label="Resize" disabled class="hidden"></button>
+        </div>
+        <div class="separator"></div>
+        <div class="window-pane">
+            <div class="alarmclock-display" id="alarmclock-display">12:00:00</div>
+            <div class="alarmclock-date" id="alarmclock-date"></div>
+            <div class="alarmclock-alarm" id="alarmclock-alarm-display">Alarm: OFF</div>
+            <div class="alarmclock-controls">
+                <label class="modeless-text">Set:</label>
+                <input type="time" id="alarmclock-time" style="width: 90px;">
+                <button class="btn" onclick="alarmToggle()">Set</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scrapbook Window -->
+    <div class="window scrapbook-window" id="scrapbook-window" style="display: none;">
+        <div class="title-bar" id="scrapbook-title-bar">
+            <button aria-label="Close" class="close" onclick="toggleScrapbook()"></button>
+            <h1 class="title">Scrapbook</h1>
+            <button aria-label="Resize" disabled class="hidden"></button>
+        </div>
+        <div class="separator"></div>
+        <div class="window-pane">
+            <div class="scrapbook-content" id="scrapbook-content"></div>
+            <div class="scrapbook-nav">
+                <button class="btn" onclick="scrapbookPrev()">&lt;</button>
+                <span id="scrapbook-page">1 of 1</span>
+                <button class="btn" onclick="scrapbookNext()">&gt;</button>
+            </div>
+            <div class="scrapbook-controls">
+                <button class="btn" onclick="scrapbookAdd()">Paste</button>
+                <button class="btn" onclick="scrapbookCopy()">Copy</button>
+                <button class="btn" onclick="scrapbookClear()">Clear</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Key Caps Window -->
+    <div class="window keycaps-window" id="keycaps-window" style="display: none;">
+        <div class="title-bar" id="keycaps-title-bar">
+            <button aria-label="Close" class="close" onclick="toggleKeyCaps()"></button>
+            <h1 class="title">Key Caps</h1>
+            <button aria-label="Resize" disabled class="hidden"></button>
+        </div>
+        <div class="separator"></div>
+        <div class="window-pane">
+            <div class="keycaps-output" id="keycaps-output"></div>
+            <div class="keycaps-grid" id="keycaps-grid"></div>
+        </div>
+    </div>
+
+    <!-- Oregon Trail Window -->
+    <div class="window oregon-window" id="oregon-window" style="display: none;">
+        <div class="title-bar" id="oregon-title-bar">
+            <button aria-label="Close" class="close" onclick="toggleOregon()"></button>
+            <h1 class="title">Oregon Trail</h1>
+            <button aria-label="Resize" disabled class="hidden"></button>
+        </div>
+        <div class="separator"></div>
+        <div class="window-pane">
+            <pre class="oregon-output" id="oregon-output"></pre>
+            <section class="field-row" style="justify-content: flex-start">
+                <label class="modeless-text" id="oregon-label">Choice:</label>
+                <input type="text" id="oregon-input" style="width: 80px; text-align: center;">
+                <button class="btn btn-default" onclick="oregonSubmit()">OK</button>
+            </section>
+        </div>
+    </div>
+
+    <!-- Breakout Window -->
+    <div class="window breakout-window" id="breakout-window" style="display: none;">
+        <div class="title-bar" id="breakout-title-bar">
+            <button aria-label="Close" class="close" onclick="toggleBreakout()"></button>
+            <h1 class="title">Breakout</h1>
+            <button aria-label="Resize" disabled class="hidden"></button>
+        </div>
+        <div class="separator"></div>
+        <div class="window-pane">
+            <div class="breakout-info">
+                <span>Score: <span id="breakout-score">0</span></span>
+                <span>Lives: <span id="breakout-lives">3</span></span>
+            </div>
+            <canvas class="breakout-canvas" id="breakout-canvas" width="300" height="200"></canvas>
+            <div class="breakout-controls">
+                <button class="btn btn-default" onclick="breakoutStart()">Start</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Snake Window -->
+    <div class="window snake-window" id="snake-window" style="display: none;">
+        <div class="title-bar" id="snake-title-bar">
+            <button aria-label="Close" class="close" onclick="toggleSnake()"></button>
+            <h1 class="title">Snake</h1>
+            <button aria-label="Resize" disabled class="hidden"></button>
+        </div>
+        <div class="separator"></div>
+        <div class="window-pane">
+            <div class="snake-info">Score: <span id="snake-score">0</span></div>
+            <canvas class="snake-canvas" id="snake-canvas" width="280" height="200"></canvas>
+            <div class="snake-controls">
+                <button class="btn btn-default" onclick="snakeStart()">Start</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hangman Window -->
+    <div class="window hangman-window" id="hangman-window" style="display: none;">
+        <div class="title-bar" id="hangman-title-bar">
+            <button aria-label="Close" class="close" onclick="toggleHangman()"></button>
+            <h1 class="title">Hangman</h1>
+            <button aria-label="Resize" disabled class="hidden"></button>
+        </div>
+        <div class="separator"></div>
+        <div class="window-pane">
+            <canvas class="hangman-canvas" id="hangman-canvas" width="150" height="120"></canvas>
+            <div class="hangman-word" id="hangman-word"></div>
+            <div class="hangman-used" id="hangman-used"></div>
+            <div class="hangman-msg" id="hangman-msg"></div>
+            <section class="field-row" style="justify-content: center">
+                <label class="modeless-text">Letter:</label>
+                <input type="text" id="hangman-input" maxlength="1" style="width: 40px; text-align: center;">
+                <button class="btn btn-default" onclick="hangmanGuess()">OK</button>
+                <button class="btn" onclick="hangmanNew()">New</button>
+            </section>
+        </div>
+    </div>
+
+    <!-- Adventure Window -->
+    <div class="window adventure-window" id="adventure-window" style="display: none;">
+        <div class="title-bar" id="adventure-title-bar">
+            <button aria-label="Close" class="close" onclick="toggleAdventure()"></button>
+            <h1 class="title">Adventure</h1>
+            <button aria-label="Resize" disabled class="hidden"></button>
+        </div>
+        <div class="separator"></div>
+        <div class="window-pane">
+            <pre class="adventure-output" id="adventure-output"></pre>
+            <section class="field-row" style="justify-content: flex-start">
+                <label class="modeless-text">&gt;</label>
+                <input type="text" id="adventure-input" style="flex: 1;" placeholder="What do you do?">
+                <button class="btn btn-default" onclick="advCmd()">OK</button>
+            </section>
+        </div>
+    </div>
+
+    <!-- Minesweeper Window -->
+    <div class="window minesweeper-window" id="minesweeper-window" style="display: none;">
+        <div class="title-bar" id="minesweeper-title-bar">
+            <button aria-label="Close" class="close" onclick="toggleMinesweeper()"></button>
+            <h1 class="title">Minesweeper</h1>
+            <button aria-label="Resize" disabled class="hidden"></button>
+        </div>
+        <div class="separator"></div>
+        <div class="window-pane">
+            <div class="mines-info">
+                <span>Mines: <span id="mines-count">10</span></span>
+                <span>Flags: <span id="mines-flags">0</span></span>
+            </div>
+            <div class="mines-grid" id="mines-grid"></div>
+            <div class="mines-controls">
+                <button class="btn btn-default" onclick="minesNew()">New Game</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reversi Window -->
+    <div class="window reversi-window" id="reversi-window" style="display: none;">
+        <div class="title-bar" id="reversi-title-bar">
+            <button aria-label="Close" class="close" onclick="toggleReversi()"></button>
+            <h1 class="title">Reversi</h1>
+            <button aria-label="Resize" disabled class="hidden"></button>
+        </div>
+        <div class="separator"></div>
+        <div class="window-pane">
+            <div class="reversi-info" id="reversi-info">Black: 2 | White: 2 | Turn: Black</div>
+            <div class="reversi-grid" id="reversi-grid"></div>
+            <div class="reversi-controls">
+                <button class="btn btn-default" onclick="reversiNew()">New Game</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Number Munchers Window -->
+    <div class="window munchers-window" id="munchers-window" style="display: none;">
+        <div class="title-bar" id="munchers-title-bar">
+            <button aria-label="Close" class="close" onclick="toggleMunchers()"></button>
+            <h1 class="title">Number Munchers</h1>
+            <button aria-label="Resize" disabled class="hidden"></button>
+        </div>
+        <div class="separator"></div>
+        <div class="window-pane">
+            <div class="munchers-info">
+                <span>Score: <span id="munchers-score">0</span></span>
+                <span>Lives: <span id="munchers-lives">3</span></span>
+            </div>
+            <div class="munchers-prompt" id="munchers-prompt"></div>
+            <div class="munchers-grid" id="munchers-grid"></div>
+            <div class="munchers-msg" id="munchers-msg">Arrow keys to move, Space to munch!</div>
         </div>
     </div>
 

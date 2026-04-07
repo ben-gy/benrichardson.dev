@@ -21,6 +21,23 @@ import { initBlackjackApp, toggleBlackjack, bjNewGame, bjHit, bjStand } from './
 import { initMastermindApp, toggleMastermind, mmGuess } from './games/mastermind.js';
 import { initHamurabiApp, toggleHamurabi, hamSubmit } from './games/hamurabi.js';
 
+// New Apps
+import { initMacpaintApp, toggleMacpaint, mpSetTool, mpSetSize, mpClear } from './apps/macpaint.js';
+import { initElizaApp, toggleEliza, elizaSend } from './apps/eliza.js';
+import { initAlarmClockApp, toggleAlarmClock, alarmToggle } from './apps/alarmclock.js';
+import { initScrapbookApp, toggleScrapbook, scrapbookPrev, scrapbookNext, scrapbookAdd, scrapbookCopy, scrapbookClear } from './apps/scrapbook.js';
+import { initKeyCapsApp, toggleKeyCaps } from './apps/keycaps.js';
+
+// New Games
+import { initOregonApp, toggleOregon, oregonSubmit } from './games/oregon.js';
+import { initBreakoutApp, toggleBreakout, breakoutStart } from './games/breakout.js';
+import { initSnakeApp, toggleSnake, snakeStart } from './games/snake.js';
+import { initHangmanApp, toggleHangman, hangmanGuess, hangmanNew } from './games/hangman.js';
+import { initAdventureApp, toggleAdventure, advCmd } from './games/adventure.js';
+import { initMinesweeperApp, toggleMinesweeper, minesNew } from './games/minesweeper.js';
+import { initReversiApp, toggleReversi, reversiNew } from './games/reversi.js';
+import { initMunchersApp, toggleMunchers } from './games/munchers.js';
+
 // ============ EXPOSE TO WINDOW (for onclick handlers in HTML) ============
 
 // Provide system functions to window-manager for circular dep resolution
@@ -87,6 +104,41 @@ window.mmGuess = mmGuess;
 window.toggleHamurabi = toggleHamurabi;
 window.hamSubmit = hamSubmit;
 
+// New Apps
+window.toggleMacpaint = toggleMacpaint;
+window.mpSetTool = mpSetTool;
+window.mpSetSize = mpSetSize;
+window.mpClear = mpClear;
+window.toggleEliza = toggleEliza;
+window.elizaSend = elizaSend;
+window.toggleAlarmClock = toggleAlarmClock;
+window.alarmToggle = alarmToggle;
+window.toggleScrapbook = toggleScrapbook;
+window.scrapbookPrev = scrapbookPrev;
+window.scrapbookNext = scrapbookNext;
+window.scrapbookAdd = scrapbookAdd;
+window.scrapbookCopy = scrapbookCopy;
+window.scrapbookClear = scrapbookClear;
+window.toggleKeyCaps = toggleKeyCaps;
+
+// New Games
+window.toggleOregon = toggleOregon;
+window.oregonSubmit = oregonSubmit;
+window.toggleBreakout = toggleBreakout;
+window.breakoutStart = breakoutStart;
+window.toggleSnake = toggleSnake;
+window.snakeStart = snakeStart;
+window.toggleHangman = toggleHangman;
+window.hangmanGuess = hangmanGuess;
+window.hangmanNew = hangmanNew;
+window.toggleAdventure = toggleAdventure;
+window.advCmd = advCmd;
+window.toggleMinesweeper = toggleMinesweeper;
+window.minesNew = minesNew;
+window.toggleReversi = toggleReversi;
+window.reversiNew = reversiNew;
+window.toggleMunchers = toggleMunchers;
+
 // Enhancements (Browser API features)
 import { initCRTFullscreen, toggleFullscreen } from './enhancements/crt-fullscreen.js';
 import { initScreensaver, startScreensaver } from './enhancements/screensaver.js';
@@ -120,6 +172,19 @@ initPuzzleApp();
 initBlackjackApp();
 initMastermindApp();
 initHamurabiApp();
+initMacpaintApp();
+initElizaApp();
+initAlarmClockApp();
+initScrapbookApp();
+initKeyCapsApp();
+initOregonApp();
+initBreakoutApp();
+initSnakeApp();
+initHangmanApp();
+initAdventureApp();
+initMinesweeperApp();
+initReversiApp();
+initMunchersApp();
 initDraggable();
 initDesktop();
 
