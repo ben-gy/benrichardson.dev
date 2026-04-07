@@ -556,6 +556,10 @@ body {
     line-height: 1;
 }
 /* ============ NEW APPS & GAMES ============ */
+/* Global: align inputs and buttons consistently in field-rows */
+.field-row { align-items: center; }
+
+
 /* MacPaint */
 .macpaint-window { width:420px; min-width:420px; min-height:382px; }
 .macpaint-window .window-pane { overflow:hidden; padding:8px; }
@@ -619,12 +623,13 @@ body {
 .snake-info { font-family:'ChiKareGo2',monospace; font-size:11px; text-align:center; padding:4px 0; }
 .snake-controls { display:flex; gap:4px; justify-content:center; margin-top:4px; }
 /* Hangman */
-.hangman-window { width:280px; min-width:280px; min-height:360px; }
+.hangman-window { width:320px; min-width:320px; min-height:360px; }
 .hangman-window .window-pane { overflow:hidden; }
 .hangman-canvas { display:block; border:1px solid black; margin:0 auto 0.5rem auto; background:white; }
-.hangman-word { font-family:'ChiKareGo2',monospace; font-size:16px; text-align:center; letter-spacing:4px; margin:0.5rem 0; }
-.hangman-used { font-family:'ChiKareGo2',monospace; font-size:10px; text-align:center; margin:0.25rem 0; color:#666; }
-.hangman-msg { font-family:'ChiKareGo2',monospace; font-size:11px; text-align:center; margin:0.25rem 0; font-weight:bold; }
+.hangman-word { font-family:'ChiKareGo2',monospace; font-size:18px; text-align:center; letter-spacing:6px; margin:0.75rem 0 0.25rem 0; }
+.hangman-used { font-family:'ChiKareGo2',monospace; font-size:10px; text-align:center; margin:0.25rem 0 0.5rem 0; color:#666; min-height:14px; }
+.hangman-msg { font-family:'ChiKareGo2',monospace; font-size:11px; text-align:center; margin:0 0 0.5rem 0; font-weight:bold; min-height:14px; }
+.hangman-window .field-row { justify-content:center; gap:6px; }
 /* Adventure */
 .adventure-window { width:400px; min-width:400px; min-height:400px; }
 .adventure-window .window-pane { overflow:hidden; }
