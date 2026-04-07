@@ -148,10 +148,21 @@ import { initAmbientGlow } from './enhancements/ambient-glow.js';
 import { initImageWriterPrint, printWindow } from './enhancements/print-imagewriter.js';
 import { initDarkMode, toggleDarkMode } from './enhancements/dark-mode.js';
 
+// Secrets / Easter Egg Directory
+import { initSecrets, toggleSecrets, triggerSecret, discoverEgg, showSecretCredits, hideSecretCredits, showDebugInfo } from './secrets.js';
+
 window.toggleFullscreen = toggleFullscreen;
 window.printWindow = printWindow;
 window.toggleDarkMode = toggleDarkMode;
 window.startScreensaver = startScreensaver;
+
+// Secrets
+window.toggleSecrets = toggleSecrets;
+window.triggerSecret = triggerSecret;
+window.discoverEgg = discoverEgg;
+window.showSecretCredits = showSecretCredits;
+window.hideSecretCredits = hideSecretCredits;
+window.showDebugInfo = showDebugInfo;
 
 // ============ INITIALIZATION ============
 
@@ -196,6 +207,9 @@ initFileDrop();
 initAmbientGlow();
 initDarkMode();
 initImageWriterPrint();
+
+// Secrets (must be last - hooks into other modules)
+initSecrets();
 
 // Startup sequence
 window.addEventListener('load', function() {

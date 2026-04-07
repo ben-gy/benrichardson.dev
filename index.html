@@ -72,6 +72,9 @@
                 <li role="menu-item">
                     <a href="#" onclick="showLicence(); return false;">Licence...</a>
                 </li>
+                <li role="menu-item" id="secrets-menu-item" style="display: none;">
+                    <a href="#" onclick="toggleSecrets(); return false;">Secrets...</a>
+                </li>
                 <li class="divider"></li>
                 <li role="menu-item">
                     <a href="#" onclick="restartSystem(); return false;">Restart</a>
@@ -118,6 +121,9 @@
             <ul role="menu">
                 <li role="menu-item">
                     <a href="https://github.com/ben-gy/benrichardson.dev" target="_blank">View Source</a>
+                </li>
+                <li role="menu-item">
+                    <a href="#" onclick="toggleSecrets(); return false;">Read Me</a>
                 </li>
                 <li class="divider"></li>
                 <li role="menu-item">
@@ -906,6 +912,94 @@
             </div>
         </div>
     </div>
+
+    <!-- Puzzle Reverse Win Modal -->
+    <div class="modal-overlay" id="puzzle-reverse-modal">
+        <div class="modal-dialog outer-border">
+            <div class="inner-border">
+                <div class="modal-contents">
+                    <p style="font-size: 2rem; margin: 0;">💀</p>
+                    <h2 style="margin: 0.5rem 0;">Hacker Detected</h2>
+                    <p>You solved it backwards.<br>Only a true hacker would do this.</p>
+                    <button class="btn btn-default" onclick="hideModal('puzzle-reverse-modal')" style="margin-top: 1rem;">😎</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sosumi Modal -->
+    <div class="modal-overlay" id="sosumi-modal">
+        <div class="modal-dialog outer-border">
+            <div class="inner-border">
+                <div class="modal-contents">
+                    <p style="font-size: 2rem; margin: 0;">🔔</p>
+                    <h2 style="margin: 0.5rem 0;">Sosumi</h2>
+                    <p>The legendary alert sound.<br>"So Sue Me" — Apple Legal, 1991</p>
+                    <button class="btn btn-default" onclick="hideModal('sosumi-modal')" style="margin-top: 1rem;">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Secret Credits Overlay -->
+    <div class="secret-credits-overlay" id="secret-credits-overlay" onclick="hideSecretCredits()">
+        <div class="secret-credits-box">
+            <div class="secret-credits-scroll" id="secret-credits-scroll">
+                <br><br>
+                <div style="font-size: 14px; font-weight: bold;">Ben Richardson OS 1.0</div>
+                <br>
+                <div>Engineering Team</div>
+                <br>
+                <div>Chief Pixel Wrangler</div>
+                <div style="font-size: 13px;">Ben Richardson</div>
+                <br>
+                <div>Director of Nostalgia</div>
+                <div style="font-size: 13px;">Ben Richardson</div>
+                <br>
+                <div>VP of Floppy Disks</div>
+                <div style="font-size: 13px;">Ben Richardson</div>
+                <br>
+                <div>Senior 1-Bit Artist</div>
+                <div style="font-size: 13px;">Ben Richardson</div>
+                <br>
+                <div>Head of Beep Sounds</div>
+                <div style="font-size: 13px;">Ben Richardson</div>
+                <br>
+                <div>Manager of Window Dragging</div>
+                <div style="font-size: 13px;">Ben Richardson</div>
+                <br>
+                <div>Chief Modem Whisperer</div>
+                <div style="font-size: 13px;">Ben Richardson</div>
+                <br><br>
+                <div>Special Thanks</div>
+                <br>
+                <div>Susan Kare</div>
+                <div>Bill Atkinson</div>
+                <div>Andy Hertzfeld</div>
+                <div>Steve Jobs</div>
+                <br><br>
+                <div style="font-size: 9px;">© 2025 Ben Richardson</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Secrets Window -->
+    <div class="window secrets-window" id="secrets-window" style="display: none;">
+        <div class="title-bar" id="secrets-title-bar">
+            <button aria-label="Close" class="close" onclick="toggleSecrets()"></button>
+            <h1 class="title">Secrets</h1>
+            <button aria-label="Resize" disabled class="hidden"></button>
+        </div>
+        <div class="separator"></div>
+        <div class="window-pane">
+            <div class="secrets-list" id="secrets-list">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen Burn-In Overlay -->
+    <div id="burn-in-overlay"></div>
 
     <script type="module" src="js/main.js"></script>
 </body>
