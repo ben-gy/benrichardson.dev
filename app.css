@@ -558,6 +558,12 @@ body {
 /* ============ NEW APPS & GAMES ============ */
 /* Global: align inputs and buttons consistently in field-rows */
 .field-row { align-items: center; }
+/* Fix button text centering — system.css border-image + padding misaligns text */
+.btn, .btn-default {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+}
 
 
 /* MacPaint */
