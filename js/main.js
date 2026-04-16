@@ -148,6 +148,9 @@ import { initAmbientGlow } from './enhancements/ambient-glow.js';
 import { initImageWriterPrint, printWindow } from './enhancements/print-imagewriter.js';
 import { initDarkMode, toggleDarkMode } from './enhancements/dark-mode.js';
 
+// Dynamic Sites Loader
+import { initSitesLoader } from './sites-loader.js';
+
 // Secrets / Easter Egg Directory
 import { initSecrets, toggleSecrets, discoverEgg, showSecretCredits, hideSecretCredits, showDebugInfo, showHeapDisplay, showClipboardViewer, showMacsBug, playBeepCodes } from './secrets.js';
 
@@ -210,6 +213,9 @@ initFileDrop();
 initAmbientGlow();
 initDarkMode();
 initImageWriterPrint();
+
+// Dynamic sites menu
+initSitesLoader();
 
 // Secrets (must be last - hooks into other modules)
 initSecrets();
