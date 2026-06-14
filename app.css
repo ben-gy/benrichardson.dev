@@ -894,6 +894,27 @@ html.dark-mode {
     ul[role="menu-bar"] > [role="menu-item"].menu-open > ul[role="menu"] {
         display: block;
     }
+    /* Nested submenus expand inline (no hover on touch); tap the label to toggle */
+    ul[role="menu"] [role="menu-item"].has-submenu > ul[role="menu"] {
+        position: static;
+        min-width: 0;
+        border: none;
+        box-shadow: none;
+    }
+    ul[role="menu"] [role="menu-item"].has-submenu:hover > ul[role="menu"],
+    ul[role="menu"] [role="menu-item"].has-submenu:focus-within > ul[role="menu"] {
+        display: none;
+    }
+    ul[role="menu"] [role="menu-item"].has-submenu.submenu-open > ul[role="menu"] {
+        display: block;
+    }
+    /* Indent nested items and swap the caret to indicate expansion */
+    ul[role="menu"] [role="menu-item"].has-submenu > ul[role="menu"] > [role="menu-item"] > a {
+        padding-left: 36px;
+    }
+    .has-submenu.submenu-open > .submenu-label::after {
+        content: "\25BE"; /* ▾ */
+    }
     .calculator-window,
     .puzzle-window,
     .notepad-window,
