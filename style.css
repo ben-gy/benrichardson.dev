@@ -692,6 +692,28 @@ ul [role="menu-item"].divider::after {
   border-top: 1.5px dotted var(--secondary);
 }
 
+/* ---- Nested submenu (e.g. Sites > Data) ---- */
+/* The label row matches a normal menu item; the trailing caret marks the flyout. */
+.has-submenu > .submenu-label {
+  display: block;
+}
+.has-submenu > .submenu-label::after {
+  content: "\25B8"; /* ▸ */
+  position: absolute;
+  right: 8px;
+}
+/* Nested list flies out to the right instead of dropping below. */
+ul[role="menu"] [role="menu-item"].has-submenu > ul[role="menu"] {
+  left: 100%;
+  top: -1px;
+}
+/* Reveal on hover, keyboard focus, or tap-toggle (mobile). */
+ul[role="menu"] [role="menu-item"].has-submenu:hover > ul[role="menu"],
+ul[role="menu"] [role="menu-item"].has-submenu:focus-within > ul[role="menu"],
+ul[role="menu"] [role="menu-item"].has-submenu.submenu-open > ul[role="menu"] {
+  display: block;
+}
+
 /* styles specific to demo page */
 .menu-items > li {
   margin-bottom: 1rem;
