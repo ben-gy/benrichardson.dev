@@ -52,7 +52,18 @@ styleEl.textContent = `
     .dark-mode .desktop-icon.selected img {
         filter: none;
     }
+    .dark-mode .trash-item img {
+        filter: invert(1);
+    }
+    .dark-mode .trash-item span,
+    .dark-mode .trash-status {
+        color: #ccc;
+    }
+    .dark-mode .trash-item:hover {
+        background: rgba(255,255,255,0.1);
+    }
     .dark-mode .menu-sound img,
+    .dark-mode .menu-darkmode img,
     .dark-mode .apple-logo {
         filter: invert(1);
     }
@@ -188,16 +199,18 @@ function applyTheme(isDark) {
     el.classList.toggle('dark-mode', isDark);
 }
 
+function updateToggleIcon() {
+    const icon = document.getElementById('darkmode-icon');
+    if (icon) {
+        icon.src = darkMode ? 'icon/moon.svg' : 'icon/sun.svg';
+        icon.title = darkMode ? 'Light Mode' : 'Dark Mode';
+    }
+}
+
 export function toggleDarkMode() {
     darkMode = !darkMode;
     applyTheme(darkMode);
-
-    const icon = document.getElementById('darkmode-icon');
-    if (icon) {
-        icon.textContent = darkMode ? '\u263e' : '\u2600';
-        icon.title = darkMode ? 'Light Mode' : 'Dark Mode';
-    }
-
+    updateToggleIcon();
     localStorage.setItem('darkMode', darkMode ? '1' : '0');
 }
 
@@ -207,10 +220,5 @@ export function initDarkMode() {
         darkMode = true;
         applyTheme(true);
     }
-
-    const icon = document.getElementById('darkmode-icon');
-    if (icon) {
-        icon.textContent = darkMode ? '\u263e' : '\u2600';
-        icon.title = darkMode ? 'Light Mode' : 'Dark Mode';
-    }
+    updateToggleIcon();
 }

@@ -15,3 +15,6 @@ node_modules/
 # Build
 dist/
 build/
+
+# Claude Code local (preview server config, worktrees)
+.claude/

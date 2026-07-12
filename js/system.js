@@ -25,11 +25,26 @@ export function hideSadMac() {
 
 // ============ TRASH ============
 
-let trashHasItems = false;
+// Artemis lives in the Trash permanently, so the can is never empty.
+// Desktop icons dragged onto the Trash join it and can be put back
+// by double-clicking them in the Trash window.
+const TRASH_RESIDENTS = [
+    { id: 'artemis', name: 'Artemis', img: 'icon/Artemis.png', url: 'https://artemistracker.benrichardson.dev' }
+];
+
+const DESKTOP_ICON_POSITIONS = {
+    'hd-icon': { right: '10px', top: '10px', left: '', bottom: '' },
+    'email-icon': { left: '10px', top: '10px', right: '', bottom: '' },
+    'internet-icon': { left: '10px', top: '90px', right: '', bottom: '' },
+    'tools-icon': { left: '10px', top: '170px', right: '', bottom: '' },
+    'sites-icon': { left: '10px', top: '250px', right: '', bottom: '' },
+    'linkedin-icon': { left: '10px', top: '330px', right: '', bottom: '' },
+    'github-icon': { left: '10px', top: '410px', right: '', bottom: '' }
+};
+
 let trashedIcons = [];
 
 export function setTrashFull(isFull) {
-    trashHasItems = isFull;
     const trashImg = document.getElementById('trash-img');
     if (isFull) {
         trashImg.src = 'icon/Trash full.png';
@@ -45,36 +60,73 @@ export function addToTrash(iconId) {
         trashedIcons.push(iconId);
     }
     setTrashFull(true);
+    renderTrash();
 }
 
-export function emptyTrash() {
-    if (trashHasItems) {
-        const iconPositions = {
-            'hd-icon': { right: '10px', top: '10px', left: '', bottom: '' },
-            'email-icon': { left: '10px', top: '10px', right: '', bottom: '' },
-            'internet-icon': { left: '10px', top: '90px', right: '', bottom: '' }
-        };
-        trashedIcons.forEach(function(iconId) {
-            const icon = document.getElementById(iconId);
-            if (icon && iconPositions[iconId]) {
-                icon.style.display = '';
-                icon.style.transition = 'all 0.3s ease';
-                Object.keys(iconPositions[iconId]).forEach(function(key) {
-                    icon.style[key] = iconPositions[iconId][key];
-                });
-                setTimeout(function() {
-                    icon.style.transition = '';
-                }, 300);
-            }
+function restoreFromTrash(iconId) {
+    trashedIcons = trashedIcons.filter(function(id) { return id !== iconId; });
+    const icon = document.getElementById(iconId);
+    const pos = DESKTOP_ICON_POSITIONS[iconId];
+    if (icon && pos) {
+        icon.style.display = '';
+        icon.style.transition = 'all 0.3s ease';
+        Object.keys(pos).forEach(function(key) {
+            icon.style[key] = pos[key];
         });
-        if (trashedIcons.includes('hd-icon')) {
-            showMainWindow();
-        }
-        trashedIcons = [];
-        setTrashFull(false);
-    } else {
-        showAlert('The Trash is already empty.');
+        setTimeout(function() {
+            icon.style.transition = '';
+        }, 300);
     }
+    playSound('click');
+    renderTrash();
+}
+
+function makeTrashItem(name, imgSrc, onOpen) {
+    const item = document.createElement('div');
+    item.className = 'trash-item';
+    const img = document.createElement('img');
+    img.src = imgSrc;
+    img.alt = name;
+    const label = document.createElement('span');
+    label.textContent = name;
+    item.appendChild(img);
+    item.appendChild(label);
+    item.addEventListener('dblclick', onOpen);
+    return item;
+}
+
+function renderTrash() {
+    const container = document.getElementById('trash-items');
+    if (!container) return;
+    container.innerHTML = '';
+
+    TRASH_RESIDENTS.forEach(function(resident) {
+        container.appendChild(makeTrashItem(resident.name, resident.img, function() {
+            window.open(resident.url, '_blank');
+        }));
+    });
+
+    trashedIcons.forEach(function(iconId) {
+        const icon = document.getElementById(iconId);
+        if (!icon) return;
+        const img = icon.querySelector('img');
+        const label = icon.querySelector('span');
+        container.appendChild(makeTrashItem(
+            label ? label.textContent : iconId,
+            img ? img.getAttribute('src') : 'icon/document.svg',
+            function() { restoreFromTrash(iconId); }
+        ));
+    });
+
+    const count = TRASH_RESIDENTS.length + trashedIcons.length;
+    const status = document.getElementById('trash-status');
+    if (status) {
+        status.textContent = count + (count === 1 ? ' item' : ' items');
+    }
+}
+
+export function toggleTrash() {
+    toggleWindow('trash-window');
 }
 
 // ============ MAIN WINDOW ============
@@ -319,6 +371,16 @@ export function initSystem() {
             document.getElementById('licence-input').focus();
         }
     });
+
+    registerWindow('trash-window', {
+        x: 120, y: 100,
+        onOpen: function() {
+            renderTrash();
+        }
+    });
+
+    // Artemis is already in the Trash, so the can starts full
+    setTrashFull(true);
 
     // Licence enter key
     document.getElementById('licence-input').addEventListener('keydown', function(e) {

@@ -590,7 +590,7 @@ let debugMenuAdded = false;
 function checkIconArrangement() {
     if (debugMenuAdded) return;
 
-    var icons = ['hd-icon', 'email-icon', 'internet-icon', 'artemis-icon'];
+    var icons = ['hd-icon', 'email-icon', 'internet-icon', 'tools-icon'];
     var positions = [];
     var GRID_SIZE = 80;
 

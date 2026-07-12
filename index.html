@@ -51,12 +51,24 @@
             <img src="icon/Safari.png" alt="Internet">
             <span>Internet</span>
         </div>
-        <div class="desktop-icon" id="artemis-icon" style="left: 10px; top: 170px;" ondblclick="window.open('https://artemistracker.benrichardson.dev', '_blank')">
-            <img src="icon/Artemis.png" alt="Artemis">
-            <span>Artemis</span>
+        <div class="desktop-icon" id="tools-icon" style="left: 10px; top: 170px;" ondblclick="window.open('https://hub.benrichardson.dev/?type=tool', '_blank')">
+            <img src="icon/Tools.png" alt="Tools">
+            <span>Tools</span>
         </div>
-        <div class="desktop-icon trash-icon" id="trash-icon" style="right: 10px; bottom: 10px;" ondblclick="emptyTrash()">
-            <img src="icon/Trash empty.png" alt="Trash" id="trash-img">
+        <div class="desktop-icon" id="sites-icon" style="left: 10px; top: 250px;" ondblclick="window.open('https://hub.benrichardson.dev/?type=web', '_blank')">
+            <img src="icon/Sites.png" alt="Sites">
+            <span>Sites</span>
+        </div>
+        <div class="desktop-icon" id="linkedin-icon" style="left: 10px; top: 330px;" ondblclick="window.open('https://www.linkedin.com/in/benrichardsonco/', '_blank')">
+            <img src="icon/LinkedIn.png" alt="LinkedIn">
+            <span>LinkedIn</span>
+        </div>
+        <div class="desktop-icon" id="github-icon" style="left: 10px; top: 410px;" ondblclick="window.open('https://github.com/ben-gy', '_blank')">
+            <img src="icon/GitHub.png" alt="GitHub">
+            <span>GitHub</span>
+        </div>
+        <div class="desktop-icon trash-icon" id="trash-icon" style="right: 10px; bottom: 10px;" ondblclick="toggleTrash()">
+            <img src="icon/Trash full.png" alt="Trash" id="trash-img">
             <span>Trash</span>
         </div>
     </div>
@@ -153,7 +165,10 @@
                 </li>
                 <li class="divider"></li>
                 <li role="menu-item">
-                    <a href="https://hub.benrichardson.dev" target="_blank">All Tools &amp; Sites</a>
+                    <a href="https://hub.benrichardson.dev/?type=tool" target="_blank">Tools</a>
+                </li>
+                <li role="menu-item">
+                    <a href="https://hub.benrichardson.dev/?type=web" target="_blank">Sites</a>
                 </li>
             </ul>
         </li>
@@ -245,7 +260,7 @@
             <img src="icon/sound-off.svg" alt="Sound" id="sound-icon">
         </li>
         <li class="menu-darkmode" onclick="toggleDarkMode()" title="Dark Mode">
-            <span id="darkmode-icon">&#9728;</span>
+            <img src="icon/sun.svg" alt="Toggle dark mode" id="darkmode-icon">
         </li>
         <li class="menu-clock" id="menu-clock" onclick="showDate()"></li>
     </ul>
@@ -381,6 +396,21 @@
         </div>
     </div>
 
+    <!-- Trash Window -->
+    <div class="window trash-window" id="trash-window" style="display: none;">
+        <div class="title-bar" id="trash-title-bar">
+            <button aria-label="Close" class="close" onclick="toggleTrash()"></button>
+            <h1 class="title">Trash</h1>
+            <button aria-label="Resize" disabled class="hidden"></button>
+        </div>
+        <div class="separator"></div>
+        <div class="trash-status" id="trash-status">1 item</div>
+        <div class="separator"></div>
+        <div class="window-pane">
+            <div class="trash-items" id="trash-items"></div>
+        </div>
+    </div>
+
     <!-- Licence Window -->
     <div class="window" id="licence-window" style="display: none; width: 280px;">
         <div class="title-bar" id="licence-title-bar">
@@ -500,11 +530,11 @@
         <div class="window-pane">
             <div class="macpaint-container">
                 <div class="macpaint-toolbar">
-                    <button class="macpaint-tool active" id="mp-tool-pencil" onclick="mpSetTool('pencil')" title="Pencil">&#9999;</button>
+                    <button class="macpaint-tool active" id="mp-tool-pencil" onclick="mpSetTool('pencil')" title="Pencil">&#9999;&#xFE0E;</button>
                     <button class="macpaint-tool" id="mp-tool-line" onclick="mpSetTool('line')" title="Line">&#9586;</button>
                     <button class="macpaint-tool" id="mp-tool-rect" onclick="mpSetTool('rect')" title="Rectangle">&#9645;</button>
                     <button class="macpaint-tool" id="mp-tool-oval" onclick="mpSetTool('oval')" title="Oval">&#9711;</button>
-                    <button class="macpaint-tool" id="mp-tool-eraser" onclick="mpSetTool('eraser')" title="Eraser">&#9723;</button>
+                    <button class="macpaint-tool" id="mp-tool-eraser" onclick="mpSetTool('eraser')" title="Eraser">&#9723;&#xFE0E;</button>
                     <button class="macpaint-tool" id="mp-tool-fill" onclick="mpSetTool('fill')" title="Fill">&#9635;</button>
                 </div>
                 <div class="macpaint-canvas-wrap">

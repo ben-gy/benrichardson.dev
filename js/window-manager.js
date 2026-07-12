@@ -97,6 +97,10 @@ export function cleanUp() {
         'hd-icon': { right: '10px', top: '10px', left: '', bottom: '' },
         'email-icon': { left: '10px', top: '10px', right: '', bottom: '' },
         'internet-icon': { left: '10px', top: '90px', right: '', bottom: '' },
+        'tools-icon': { left: '10px', top: '170px', right: '', bottom: '' },
+        'sites-icon': { left: '10px', top: '250px', right: '', bottom: '' },
+        'linkedin-icon': { left: '10px', top: '330px', right: '', bottom: '' },
+        'github-icon': { left: '10px', top: '410px', right: '', bottom: '' },
         'trash-icon': { right: '10px', bottom: '10px', left: '', top: '' }
     };
     Object.keys(iconPositions).forEach(function(id) {
@@ -190,6 +194,7 @@ export function initDraggable() {
         ['email-window', 'email-title-bar'],
         ['search-window', 'search-title-bar'],
         ['licence-window', 'licence-title-bar'],
+        ['trash-window', 'trash-title-bar'],
         ['lander-window', 'lander-title-bar'],
         ['startrek-window', 'startrek-title-bar'],
         ['blackjack-window', 'blackjack-title-bar'],
