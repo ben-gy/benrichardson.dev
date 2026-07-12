@@ -30,12 +30,11 @@ function checkTrashCollision(icon) {
                 showSadMac('0F0001', true);
             }, 300);
             return true;
-        } else if (icon.id === 'email-icon' || icon.id === 'internet-icon') {
-            playSound('beep');
-            icon.style.display = 'none';
-            addToTrash(icon.id);
-            return true;
         }
+        playSound('beep');
+        icon.style.display = 'none';
+        addToTrash(icon.id);
+        return true;
     }
     return false;
 }

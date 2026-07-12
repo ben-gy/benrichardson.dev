@@ -4,7 +4,7 @@
 import { initAudioContext, toggleSound, playSound, stopSound } from './sound-manager.js';
 import { initDraggable, closeAllWindows, cleanUp } from './window-manager.js';
 import { closeAllDropdowns, showModal, hideModal, showAlert, showAboutMac, showFindDialog, doFind, zoomIn, zoomOut } from './utils.js';
-import { initSystem, initStartup, showSadMac, hideSadMac, restartSystem, shutDown, showDate, hideDateModal, showMainWindow, showAboutBen, closeMainWindow, showLicence, toggleLicence, submitLicence, emptyTrash, updateClock } from './system.js';
+import { initSystem, initStartup, showSadMac, hideSadMac, restartSystem, shutDown, showDate, hideDateModal, showMainWindow, showAboutBen, closeMainWindow, showLicence, toggleLicence, submitLicence, toggleTrash, updateClock } from './system.js';
 import { initDesktop } from './desktop.js';
 
 // Apps
@@ -67,7 +67,7 @@ window.closeMainWindow = closeMainWindow;
 window.showLicence = showLicence;
 window.toggleLicence = toggleLicence;
 window.submitLicence = submitLicence;
-window.emptyTrash = emptyTrash;
+window.toggleTrash = toggleTrash;
 window.closeAllWindows = closeAllWindows;
 window.cleanUp = cleanUp;
 

@@ -20,6 +20,11 @@
 .apple-menu:active .apple-logo {
     filter: invert(1);
 }
+/* Menu bar (and its dropdowns) always sits above windows, below modals */
+ul[role="menu-bar"] {
+    position: relative;
+    z-index: 1900;
+}
 .window {
     position: absolute;
     cursor: default;
@@ -254,6 +259,12 @@
     height: 16px;
     image-rendering: pixelated;
 }
+.menu-darkmode img {
+    width: 16px;
+    height: 16px;
+    image-rendering: pixelated;
+    display: block;
+}
 /* Desktop grid system */
 .desktop-grid {
     position: fixed;
@@ -298,6 +309,48 @@
     image-rendering: pixelated;
 }
 .desktop-icon span {
+    font-family: 'ChicagoFLF', 'ChiKareGo2', monospace;
+    font-size: 12px;
+    margin-top: 4px;
+    text-align: center;
+    white-space: nowrap;
+}
+/* Trash window */
+.trash-window {
+    width: 300px;
+}
+.trash-status {
+    font-family: 'ChicagoFLF', 'ChiKareGo2', monospace;
+    font-size: 12px;
+    text-align: center;
+    padding: 3px 0;
+}
+.trash-items {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    gap: 4px;
+    min-height: 110px;
+}
+.trash-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80px;
+    padding: 0.5rem;
+    cursor: pointer;
+    user-select: none;
+    box-sizing: border-box;
+}
+.trash-item:hover {
+    background: rgba(0,0,0,0.1);
+}
+.trash-item img {
+    width: 48px;
+    height: 48px;
+    image-rendering: pixelated;
+}
+.trash-item span {
     font-family: 'ChicagoFLF', 'ChiKareGo2', monospace;
     font-size: 12px;
     margin-top: 4px;

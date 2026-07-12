@@ -37,10 +37,13 @@ The menu bar also includes a sound toggle, dark mode toggle, and a real-time clo
 | Floppy disk | Apple OS 2 | Opens main window (personal info and links) |
 | Envelope | Email | Opens email compose window |
 | Globe | Internet | Opens Internet search window |
-| Satellite | Artemis | Opens [Artemis Tracker](https://artemis.benrichardson.dev) in a new tab |
-| Trash can | Trash | Drag desktop icons here to delete them (shows full/empty state) |
+| Wrench | Tools | Opens the [hub tools directory](https://hub.benrichardson.dev/?type=tool) in a new tab |
+| Windows | Sites | Opens the [hub sites directory](https://hub.benrichardson.dev/?type=web) in a new tab |
+| "in" tile | LinkedIn | Opens LinkedIn profile in a new tab |
+| Octocat | GitHub | Opens GitHub profile in a new tab |
+| Trash can | Trash | Double-click to open the Trash window; drag desktop icons here to delete them |
 
-All icons are draggable and snap to an 80x80 grid. Drag an icon over the Trash to remove it from the desktop.
+All icons are draggable and snap to an 80x80 grid. Drag an icon over the Trash to remove it from the desktop. The Trash window lists what's inside — Artemis (the satellite) lives there permanently and double-clicking it opens [Artemis Tracker](https://artemistracker.benrichardson.dev); double-click any other trashed icon to put it back on the desktop.
 
 ## Apps (Desk Accessories)
 
@@ -217,11 +220,16 @@ benrichardson.dev/
 │   ├── Floppy.png              # Floppy disk (desktop)
 │   ├── Mail.png                # Email (desktop)
 │   ├── Safari.png              # Internet (desktop)
-│   ├── Artemis.svg/.png        # Artemis satellite (desktop)
+│   ├── Artemis.svg/.png        # Artemis satellite (lives in the Trash)
+│   ├── Tools.png               # Tools wrench (desktop)
+│   ├── Sites.png               # Sites windows (desktop)
+│   ├── LinkedIn.png            # LinkedIn tile (desktop)
+│   ├── GitHub.png              # GitHub octocat (desktop)
 │   ├── Trash empty.png         # Empty trash
 │   ├── Trash full.png          # Full trash
 │   ├── sad-mac.svg             # Sad Mac easter egg
 │   ├── sound-on/off.svg        # Sound toggle icons
+│   ├── sun.svg / moon.svg      # Dark mode toggle icons
 │   ├── mac-hd.svg              # Hard drive icon
 │   ├── button*.svg             # Button border images
 │   └── (+ document, email, floppy, internet, person, trash SVGs)
