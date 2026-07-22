@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+// Copyright (C) 2026 Ben Richardson — https://benrichardson.dev
+// Additional terms under AGPL-3.0 section 7(b) apply; see ADDITIONAL-TERMS.md.
 // ============ SYSTEM PROFILER (Battery API + Navigator APIs) ============
 // Updates the "About This Mac" memory bars in real-time based on actual
 // open windows and system state. Bars animate to reflect current usage.

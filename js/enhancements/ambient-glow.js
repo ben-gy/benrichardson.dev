@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+// Copyright (C) 2026 Ben Richardson — https://benrichardson.dev
+// Additional terms under AGPL-3.0 section 7(b) apply; see ADDITIONAL-TERMS.md.
 // ============ AMBIENT CRT GLOW (prefers-color-scheme) ============
 // In dark mode, adds a subtle CRT monitor glow that simulates
 // the way a real CRT illuminates a dark room.
