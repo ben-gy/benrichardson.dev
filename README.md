@@ -207,7 +207,7 @@ benrichardson.dev/
 ├── app.css                     # Application styles (windows, games, enhancements)
 ├── legal.css                   # Shared styles for privacy and support pages
 ├── CNAME                       # GitHub Pages custom domain
-├── LICENSE                     # MIT License
+├── LICENSE                     # GNU AGPL v3.0 or later
 ├── favicon.ico / favicon.svg   # Browser favicons
 ├── apple-touch-icon.png/.svg   # iOS home screen icons
 ├── fonts/
