@@ -31,7 +31,7 @@
     <header class="page-header">
       <span class="app-badge" id="app-badge" style="display: none;"></span>
       <h1 id="page-title">Privacy Policy</h1>
-      <p class="last-updated">Last updated: October 3, 2026</p>
+      <p class="last-updated">Last updated: October 5, 2026</p>
     </header>
 
     <main>
@@ -84,9 +84,10 @@
           <li>The app sends only what the feature needs, and never your name, contacts, location or any identifier for you or your device.</li>
           <li>Like any connection on the internet, the server that answers sees your device's public IP address while it responds.</li>
         </ul>
-        <p>Some of these features use small servers we run on <strong>Cloudflare Workers</strong>. For example, a server may tell an app which public IP address, internet provider and approximate location your connection appears to come from, so the app can show you where your traffic leaves the network. Our servers:</p>
+        <p>Some of these features use small servers we run on <strong>Cloudflare Workers</strong>. For example, a server may tell an app which public IP address, internet provider and approximate location your connection appears to come from, so the app can show you where your traffic leaves the network. Another fetches public data on a schedule and passes the same copy to every user, such as road closures published by state transport agencies for Fire Watch Australia, so the app doesn't need its own keys to those services. When your device asks for that copy, the app sends nothing about you: no location, saved places or identifier. Our servers:</p>
         <ul>
           <li>Answer the request and keep nothing: no logs, IP addresses or identifiers are stored</li>
+          <li>Where a server limits floods of requests, it only ever sees a scrambled one-way code made from your IP address, never the address itself, and forgets it within a minute</li>
           <li>Send the answer only to your device</li>
           <li>Are hosted by Cloudflare, which processes the traffic under <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener">Cloudflare's Privacy Policy</a></li>
         </ul>
@@ -100,7 +101,7 @@
           <li>No advertisements</li>
           <li>No tracking across apps or websites</li>
         </ul>
-        <p>Some features contact public services directly to do their job, such as well-known websites, public DNS resolvers or IP lookup services. These services see your IP address and the request, and handle it under their own privacy policies. The app does not send them anything that identifies you.</p>
+        <p>Some features contact public services directly to do their job, such as well-known websites, public DNS resolvers, IP lookup services, or the fire agencies, weather services and map providers that publish the information an app shows. These services see your IP address and the request (for a map, which area is being downloaded), and handle it under their own privacy policies. The app does not send them anything that identifies you, and never your location or saved places.</p>
         <p>Where an app lets you choose an encrypted DNS provider (such as Cloudflare, Quad9, AdGuard, Mullvad or NextDNS), your device sends its DNS lookups directly to the provider you choose, under that provider's privacy policy. We never see your lookups.</p>
         <p>Apple's standard frameworks and services are subject to <a href="https://www.apple.com/legal/privacy/" target="_blank" rel="noopener">Apple's Privacy Policy</a>.</p>
       </section>
@@ -109,7 +110,7 @@
         <h2>Permissions</h2>
         <p>Apps only ask for permissions a feature needs, and you can change them at any time in iOS Settings:</p>
         <ul>
-          <li><strong>Location:</strong> iOS requires location permission to read the name of the Wi-Fi network you're connected to. Where an app asks for it for that reason, your location is never stored or sent anywhere.</li>
+          <li><strong>Location:</strong> iOS requires location permission to read the name of the Wi-Fi network you're connected to, and some apps use your location to show what's near you, such as fire warnings and how far away they are. Either way your location is used on your device only: it is never stored on our servers or sent to anyone.</li>
           <li><strong>Local Network:</strong> used to find devices and services on your network, for example to check it for security problems. Nothing found is sent off your device.</li>
           <li><strong>Notifications:</strong> created on your device, for example to tell you the result of a check.</li>
           <li><strong>Calendars, Photos and other personal data:</strong> where an app asks for access, it uses that data on your device to provide the feature. We do not collect it.</li>
