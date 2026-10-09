@@ -31,7 +31,7 @@
     <header class="page-header">
       <span class="app-badge" id="app-badge" style="display: none;"></span>
       <h1 id="page-title">Privacy Policy</h1>
-      <p class="last-updated">Last updated: October 5, 2026</p>
+      <p class="last-updated">Last updated: October 9, 2026</p>
     </header>
 
     <main>
@@ -84,11 +84,12 @@
           <li>The app sends only what the feature needs, and never your name, contacts, location or any identifier for you or your device.</li>
           <li>Like any connection on the internet, the server that answers sees your device's public IP address while it responds.</li>
         </ul>
-        <p>Some of these features use small servers we run on <strong>Cloudflare Workers</strong>. For example, a server may tell an app which public IP address, internet provider and approximate location your connection appears to come from, so the app can show you where your traffic leaves the network. Another fetches public data on a schedule and passes the same copy to every user, such as road closures published by state transport agencies for Fire Watch Australia, so the app doesn't need its own keys to those services. When your device asks for that copy, the app sends nothing about you: no location, saved places or identifier. Our servers:</p>
+        <p>Some of these features use small servers we run on <strong>Cloudflare Workers</strong>. For example, a server may tell an app which public IP address, internet provider and approximate location your connection appears to come from, so the app can show you where your traffic leaves the network. Another gets public data and passes the same copy to every user: for FireWatch AU, the official warnings, fire danger, road closures, weather and other map information the app shows, asked of each publisher once for everyone. FireWatch AU sends it no identifier, and never your location or saved places. It asks for the weather at fixed points across Australia and at fires and heat detections, for map data around fires and for the part of the map on screen, for what a burnt area map shows where you tap, and, while rain radar is on, for the images of the radars that cover the map on screen. Our servers:</p>
         <ul>
-          <li>Answer the request and keep nothing: no logs, IP addresses or identifiers are stored</li>
-          <li>Where a server limits floods of requests, it only ever sees a scrambled one-way code made from your IP address, never the address itself, and forgets it within a minute</li>
+          <li>Don't store or log your IP address, and keep no record of who asked for what</li>
+          <li>Where a server limits floods of requests, it only ever sees a scrambled one-way code made from your IP address, never the address itself. The flood limit forgets it within a minute. FireWatch AU's map limit (for fire history, vegetation and burnt area maps) keeps it in memory with a count until the end of the hour, and its weather limit keeps it with a count until midnight UTC; then each is deleted</li>
           <li>Send the answer only to your device</li>
+          <li>Keep the public data and weather they fetch (FireWatch AU's also in a data library for research), but nothing about who asked for it</li>
           <li>Are hosted by Cloudflare, which processes the traffic under <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener">Cloudflare's Privacy Policy</a></li>
         </ul>
       </section>
@@ -135,7 +136,7 @@
           <li><strong>Deletion:</strong> Remove all data by uninstalling the app</li>
           <li><strong>Portability:</strong> Your data exists only on your devices, under your control</li>
         </ul>
-        <p>For users in the EU, UK, Australia, California or other regions with privacy regulations: because we keep no personal data on our servers, there is nothing for us to access, correct or delete. If you have any questions, contact us below.</p>
+        <p>For users in the EU, UK, Australia, California or other regions with privacy regulations: because we keep no personal data on our servers beyond the short-lived scrambled codes described above, there is nothing for us to access, correct or delete. If you have any questions, contact us below.</p>
       </section>
 
       <section class="section">
