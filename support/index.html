@@ -23,6 +23,18 @@
           el.textContent = appName;
         });
       }
+
+      // Some answers are true only of some apps: data-hide-for and data-only-for list the apps they
+      // leave out or are only for, separated by "|".
+      function lists(el, attribute) {
+        return el.getAttribute(attribute).split('|').indexOf(appName || '') !== -1;
+      }
+      document.querySelectorAll('[data-hide-for]').forEach(function(el) {
+        if (lists(el, 'data-hide-for')) { el.style.display = 'none'; }
+      });
+      document.querySelectorAll('[data-only-for]').forEach(function(el) {
+        el.style.display = lists(el, 'data-only-for') ? '' : 'none';
+      });
     });
   </script>
 </head>
@@ -49,19 +61,39 @@
       <section class="section">
         <h2>Common Questions</h2>
 
-        <div class="faq-item">
+        <div class="faq-item" data-only-for="FireWatch AU" style="display: none;">
+          <h3>Is FireWatch AU an official warning service?</h3>
+          <p>No. FireWatch AU is unofficial and not affiliated with any agency. Information may be delayed or incomplete. Always follow the directions of your emergency services, and in an emergency call Triple Zero (000).</p>
+        </div>
+
+        <div class="faq-item" data-hide-for="FireWatch AU">
           <h3>How does the app use AI?</h3>
           <p><span class="app-name">The app</span> uses Apple Intelligence, which runs entirely on your device. All AI processing happens locally on your iPhone or iPad, so your data never leaves your device.</p>
         </div>
 
-        <div class="faq-item">
+        <div class="faq-item" data-hide-for="FireWatch AU">
           <h3>Is my data private?</h3>
           <p>Yes. <span class="app-name">The app</span> doesn't collect any personal data. Everything stays on your device. No accounts, no tracking, no data sharing.</p>
         </div>
 
-        <div class="faq-item">
+        <div class="faq-item" data-only-for="FireWatch AU" style="display: none;">
+          <h3>Is my data private?</h3>
+          <p>Yes. FireWatch AU has no accounts, analytics, ads or tracking. Your location and saved places stay on your device. The app asks our server for public information such as warnings, fire danger and weather, and sends it nothing about you. The <a href="../privacy/?app=FireWatch%20AU">privacy policy</a> has the details.</p>
+        </div>
+
+        <div class="faq-item" data-hide-for="FireWatch AU">
           <h3>Does it need internet?</h3>
           <p>No. <span class="app-name">The app</span> works completely offline since all processing happens on your device.</p>
+        </div>
+
+        <div class="faq-item" data-only-for="FireWatch AU" style="display: none;">
+          <h3>Does it need internet?</h3>
+          <p>Yes. FireWatch AU needs an internet connection for current warnings and data. Offline, it shows the last information it downloaded, marked with how old it is.</p>
+        </div>
+
+        <div class="faq-item" data-only-for="FireWatch AU" style="display: none;">
+          <h3>Where does the information come from?</h3>
+          <p>From every state and territory's fire and emergency agencies, the Bureau of Meteorology and other public sources. Each is credited in the app under Help &amp; About, and each layer's page names its publishers.</p>
         </div>
 
         <div class="faq-item">
@@ -91,6 +123,7 @@
           <p><strong>Before reaching out, try these:</strong></p>
           <ul style="margin-bottom: 0;">
             <li>Update to the latest version from the App Store</li>
+            <li data-only-for="FireWatch AU" style="display: none;">Check your internet connection: without one, FireWatch AU shows its last downloaded information</li>
             <li>Restart <span class="app-name">the app</span></li>
             <li>Make sure your device has enough storage</li>
           </ul>
