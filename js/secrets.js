@@ -471,7 +471,7 @@ function initNotepadCommands() {
                 'Ben Richardson\n' +
                 'Indie hacker, aerospace\n' +
                 'engineer, full-stack founder\n' +
-                'Canberra/Melbourne, AU\n\n' +
+                'Melbourne, AU\n\n' +
                 'hi@benrichardson.dev\n';
         } else if (text === 'DIR') {
             response = ' Volume: Apple OS 2\n' +
