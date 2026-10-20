@@ -66,12 +66,12 @@
           <p>No. FireWatch AU is unofficial and not affiliated with any agency. Information may be delayed or incomplete. Always follow the directions of your emergency services, and in an emergency call Triple Zero (000).</p>
         </div>
 
-        <div class="faq-item" data-hide-for="FireWatch AU">
+        <div class="faq-item" data-hide-for="FireWatch AU|Storeboard">
           <h3>How does the app use AI?</h3>
           <p><span class="app-name">The app</span> uses Apple Intelligence, which runs entirely on your device. All AI processing happens locally on your iPhone or iPad, so your data never leaves your device.</p>
         </div>
 
-        <div class="faq-item" data-hide-for="FireWatch AU">
+        <div class="faq-item" data-hide-for="FireWatch AU|Storeboard">
           <h3>Is my data private?</h3>
           <p>Yes. <span class="app-name">The app</span> doesn't collect any personal data. Everything stays on your device. No accounts, no tracking, no data sharing.</p>
         </div>
@@ -81,7 +81,7 @@
           <p>Yes. FireWatch AU has no accounts, analytics, ads or tracking. Your location and saved places stay on your device. The app asks our server for public information such as warnings, fire danger and weather, and sends it nothing about you. The <a href="../privacy/?app=FireWatch%20AU">privacy policy</a> has the details.</p>
         </div>
 
-        <div class="faq-item" data-hide-for="FireWatch AU">
+        <div class="faq-item" data-hide-for="FireWatch AU|Storeboard">
           <h3>Does it need internet?</h3>
           <p>No. <span class="app-name">The app</span> works completely offline since all processing happens on your device.</p>
         </div>
@@ -94,6 +94,31 @@
         <div class="faq-item" data-only-for="FireWatch AU" style="display: none;">
           <h3>Where does the information come from?</h3>
           <p>From every state and territory's fire and emergency agencies, the Bureau of Meteorology and other public sources. Each is credited in the app under Help &amp; About, and each layer's page names its publishers.</p>
+        </div>
+
+        <div class="faq-item" data-only-for="Storeboard" style="display: none;">
+          <h3>How do I connect App Store Connect?</h3>
+          <p>In App Store Connect, go to Users and Access → Integrations → App Store Connect API → <strong>Team Keys</strong> (Individual keys can't read sales reports) and create a key with Sales access, or Admin to include reviews. Download the .p8 file, AirDrop it to your iPhone and choose Storeboard, then follow the steps for the key ID, issuer ID and vendor number.</p>
+        </div>
+
+        <div class="faq-item" data-only-for="Storeboard" style="display: none;">
+          <h3>How do I connect Google Play?</h3>
+          <p>Create a Google Cloud service account and download its JSON key. In Play Console → Users and permissions, invite its email with <em>View app information and download bulk reports</em> and <em>View financial data</em> (access can take up to a day). AirDrop the key to your iPhone, choose Storeboard, and paste the Cloud Storage URI from Download reports.</p>
+        </div>
+
+        <div class="faq-item" data-only-for="Storeboard" style="display: none;">
+          <h3>"Apple didn't recognise this key"</h3>
+          <p>The issuer ID, key ID and .p8 file don't belong together. Each developer account has its own issuer ID, shown at the top of Users and Access → Integrations.</p>
+        </div>
+
+        <div class="faq-item" data-only-for="Storeboard" style="display: none;">
+          <h3>Why are yesterday's numbers missing, or different from the store?</h3>
+          <p>Apple publishes each day's report around 8am US Pacific time the next day, and Google within a day or two. Money is converted at each day's exchange rate and Google Play proceeds are estimated from its sales report, so use the stores' official reports for tax and accounting.</p>
+        </div>
+
+        <div class="faq-item" data-only-for="Storeboard" style="display: none;">
+          <h3>Is my data private?</h3>
+          <p>Yes. Storeboard has no accounts, server, analytics or tracking. Your store keys stay in your iPhone's keychain and are only sent to Apple and Google, to fetch your own reports, which are stored on your iPhone. The <a href="../privacy/?app=Storeboard">privacy policy</a> has the details.</p>
         </div>
 
         <div class="faq-item">
@@ -124,6 +149,7 @@
           <ul style="margin-bottom: 0;">
             <li>Update to the latest version from the App Store</li>
             <li data-only-for="FireWatch AU" style="display: none;">Check your internet connection: without one, FireWatch AU shows its last downloaded information</li>
+            <li data-only-for="Storeboard" style="display: none;">Pull down on Home to sync, and check Settings → Accounts for an error under each account</li>
             <li>Restart <span class="app-name">the app</span></li>
             <li>Make sure your device has enough storage</li>
           </ul>
